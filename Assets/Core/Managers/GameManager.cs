@@ -101,13 +101,6 @@ public class GameManager : MonoBehaviour
     public void PauseGame()
     {
 
-        // Que coño hace nada de esto
-        // AudioListener mainListener = FindObjectOfType<AudioListener>();
-        // if (mainListener != null)
-        // {
-        //     mainListener.enabled = false;
-        // }
-
         StartCoroutine(LoadSceneWithTransition("PauseMenu", true));
         Time.timeScale = 0f;
         isPaused = true;
@@ -119,12 +112,6 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
 
-        // ??????????????????
-        // AudioListener mainListener = FindObjectOfType<AudioListener>();
-        // if (mainListener != null)
-        // {
-        //     mainListener.enabled = true;
-        // }
     }
 
     public void StartMainMenu()
