@@ -18,6 +18,8 @@ public class LevelManager : MonoBehaviour
 
     public bool isLevelLoaded = false;
 
+
+
     private void Awake()
     {
         if (instance == null)
@@ -52,7 +54,10 @@ public class LevelManager : MonoBehaviour
 
     void Update()
     {
-        if (!SceneManager.GetSceneByName("Mazmorra1").isLoaded || isLevelLoaded)
+
+        string mazmorraActual = GameManager.instance.mazmorraSeleccionada;
+
+        if (!SceneManager.GetSceneByName(mazmorraActual).isLoaded || isLevelLoaded)
             return;
 
         if (!isLevelLoaded && GameManager.instance.personajeSeleccionado != null && !GameManager.instance.playerSpawned)
@@ -115,6 +120,12 @@ public class LevelManager : MonoBehaviour
     public void ReloadMazmorraLevel()
     {
         ResetLevelState();
-        SceneManager.LoadScene("Mazmorra1");
+
+        // Elegir una nueva mazmorra aleatoria
+        string[] mazmorras = { "Mazmorra1", "Mazmorra2", "Mazmorra3", "Mazmorra4" };
+        string nuevaMazmorra = mazmorras[Random.Range(0, mazmorras.Length)];
+        GameManager.instance.mazmorraSeleccionada = nuevaMazmorra;
+
+        SceneManager.LoadScene(nuevaMazmorra);
     }
 }

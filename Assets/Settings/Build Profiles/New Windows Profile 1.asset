@@ -23,6 +23,12 @@ MonoBehaviour:
   - m_enabled: 1
     m_path: Assets/Scenes/Mazmorra1.unity
   - m_enabled: 1
+    m_path: Assets/Scenes/Mazmorra2.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Mazmorra3.unity
+  - m_enabled: 1
+    m_path: Assets/Scenes/Mazmorra4.unity
+  - m_enabled: 1
     m_path: Assets/Scenes/MainMenu.unity
   - m_enabled: 1
     m_path: Assets/Scenes/CharacterSelection.unity

@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private float fadeDuration = 0.5f;
 
+    public string mazmorraSeleccionada;
+
     void Awake()
     {
         if (instance == null)
@@ -63,7 +65,7 @@ public class GameManager : MonoBehaviour
         personajeSeleccionado = null;
         playerSpawned = false;
         isLevelLoaded = false;
-
+        
         if (LevelManager.instance != null)
             LevelManager.instance.ResetLevelState(true);
         if (LevelManager.instance != null)
@@ -72,8 +74,7 @@ public class GameManager : MonoBehaviour
         // Limpiar cofres anteriores
         ItemDropTracker.Reiniciar();
         StartCoroutine(CargarMazmorraYSeleccion());
-    }
-
+}
     public void WinGame()
     {
         isPaused = true;
@@ -82,11 +83,20 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator CargarMazmorraYSeleccion()
     {
+        string currentScene = SceneManager.GetActiveScene().name;
+                // Elegir aleatoriamente una mazmorra
+        string[] mazmorras = { "Mazmorra1", "Mazmorra2", "Mazmorra3", "Mazmorra4" };
+        // mazmorraSeleccionada = mazmorras[UnityEngine.Random.Range(0, mazmorras.Length)];
+        string[] opcionesFiltradas = Array.FindAll(mazmorras, m => m != currentScene);
+        mazmorraSeleccionada = opcionesFiltradas[UnityEngine.Random.Range(0, opcionesFiltradas.Length)];
 
         GameObject fadeObject = CreateFadeOverlay();
         CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-        AsyncOperation loadMazmorra = SceneManager.LoadSceneAsync("Mazmorra1");
-        yield return loadMazmorra;
+        if (SceneManager.GetActiveScene().name != mazmorraSeleccionada)
+        {
+            AsyncOperation loadMazmorra = SceneManager.LoadSceneAsync(mazmorraSeleccionada);
+            yield return loadMazmorra;
+        }
 
         fadeObject = CreateFadeOverlay();
         fadeGroup = fadeObject.GetComponent<CanvasGroup>();
@@ -96,6 +106,37 @@ public class GameManager : MonoBehaviour
         yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
 
         Destroy(fadeObject);
+    }
+
+
+    private IEnumerator CargarMazmorraDirectamente()
+    {
+        string currentScene = SceneManager.GetActiveScene().name;
+        string[] mazmorras = { "Mazmorra1", "Mazmorra2", "Mazmorra3", "Mazmorra4" };
+        string[] opcionesFiltradas = Array.FindAll(mazmorras, m => m != currentScene);
+        mazmorraSeleccionada = opcionesFiltradas[UnityEngine.Random.Range(0, opcionesFiltradas.Length)];
+
+        GameObject fadeObject = CreateFadeOverlay();
+        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+
+        // Cargar directamente la mazmorra
+        if (SceneManager.GetActiveScene().name != mazmorraSeleccionada)
+        {
+            AsyncOperation loadMazmorra = SceneManager.LoadSceneAsync(mazmorraSeleccionada);
+            yield return loadMazmorra;
+        }
+
+        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
+        Destroy(fadeObject);
+
+        // Instanciar el arma si ya hay personaje
+        InstanciarArmaParaPersonaje();
+
+        // Reiniciar cronómetro
+        if (Cronometro.instance != null)
+        {
+            Cronometro.instance.ReiniciarCronometro();
+        }
     }
 
     public void PauseGame()
