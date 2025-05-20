@@ -108,36 +108,84 @@ public class GameManager : MonoBehaviour
         Destroy(fadeObject);
     }
 
+private IEnumerator CargarMazmorraSinSeleccion()
+{
+    string currentScene = SceneManager.GetActiveScene().name;
 
-    private IEnumerator CargarMazmorraDirectamente()
+    string[] mazmorras = { "Mazmorra1", "Mazmorra2", "Mazmorra3", "Mazmorra4" };
+    string[] opcionesFiltradas = System.Array.FindAll(mazmorras, m => m != currentScene);
+    mazmorraSeleccionada = opcionesFiltradas[UnityEngine.Random.Range(0, opcionesFiltradas.Length)];
+
+    GameObject fadeObject = CreateFadeOverlay();
+    CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+
+    yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
+
+    AsyncOperation loadMazmorra = SceneManager.LoadSceneAsync(mazmorraSeleccionada);
+    yield return loadMazmorra;
+
+    // Esperar un frame para asegurarse que la escena esté lista
+    yield return null;
+
+    // Volver a aplicar el personaje y arma
+    ReconfirmarSeleccionAnterior();
+
+    yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
+    Destroy(fadeObject);
+}
+
+    public void ReconfirmarSeleccionAnterior()
+{
+    if (characterIndex == 1)
     {
-        string currentScene = SceneManager.GetActiveScene().name;
-        string[] mazmorras = { "Mazmorra1", "Mazmorra2", "Mazmorra3", "Mazmorra4" };
-        string[] opcionesFiltradas = Array.FindAll(mazmorras, m => m != currentScene);
-        mazmorraSeleccionada = opcionesFiltradas[UnityEngine.Random.Range(0, opcionesFiltradas.Length)];
+        personajeSeleccionado = Lyx;
+    }
+    else if (characterIndex == 2)
+    {
+        personajeSeleccionado = Dreven;
+    }
+    else
+    {
+        Debug.LogWarning("No se pudo reconfirmar el personaje: índice inválido.");
+        return;
+    }
 
-        GameObject fadeObject = CreateFadeOverlay();
-        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+    playerSpawned = false;
+    InstanciarArmaParaPersonaje();
 
-        // Cargar directamente la mazmorra
-        if (SceneManager.GetActiveScene().name != mazmorraSeleccionada)
+    if (Cronometro.instance != null)
+    {
+        Cronometro.instance.ReiniciarCronometro();
+    }
+
+    isPaused = false;
+}
+
+public void ReiniciarPartidaConPersonajeAnterior()
+    {
+        if (characterIndex == -1 || personajeSeleccionado == null)
         {
-            AsyncOperation loadMazmorra = SceneManager.LoadSceneAsync(mazmorraSeleccionada);
-            yield return loadMazmorra;
+            Debug.LogWarning("No hay personaje seleccionado. No se puede reiniciar la partida.");
+            return;
         }
 
-        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
-        Destroy(fadeObject);
+        playerSpawned = false;
+        isLevelLoaded = false;
 
-        // Instanciar el arma si ya hay personaje
-        InstanciarArmaParaPersonaje();
+        if (LevelManager.instance != null)
+            LevelManager.instance.ResetLevelState(true);
+
+        // Limpiar cofres anteriores
+        ItemDropTracker.Reiniciar();
 
         // Reiniciar cronómetro
         if (Cronometro.instance != null)
-        {
             Cronometro.instance.ReiniciarCronometro();
-        }
+
+        StartCoroutine(CargarMazmorraSinSeleccion());
     }
+
+
 
     public void PauseGame()
     {

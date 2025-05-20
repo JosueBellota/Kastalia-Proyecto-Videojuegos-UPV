@@ -27,8 +27,7 @@ public class PauseMenu : MonoBehaviour
     {
         Time.timeScale = 1f; // Reanuda el tiempo
         GameManager.instance.ResumeGame(); // Cierra el menú de pausa
-        GameManager.instance.StartMainGameLoop(); // Vuelve a empezar con mismo personaje
-
+        GameManager.instance.ReiniciarPartidaConPersonajeAnterior(); // ✅ nuevo método limpio
     }
 
     private void CloseGame()
