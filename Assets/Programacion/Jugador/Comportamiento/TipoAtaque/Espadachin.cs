@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Espadachin : MonoBehaviour
@@ -18,47 +17,51 @@ public class Espadachin : MonoBehaviour
     private Vector3 attackDamageOffset;
     [SerializeField] private float empujeFuerza = 5f;
     public float attackCooldown = 0.5f;
+    private bool canAttack = true;
 
     void Start()
     {
         controller = GetComponent<LyxController>();
         playerInventory = GetComponent<PlayerInventory>();
         animator = GetComponentInChildren<Animator>();
+        attackDamageOffset = new Vector3(0, 0, 1f);
+        
+        // Set animator to update immediately
+        animator.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 
     void Update()
     {
-        if (Input.GetMouseButton(0) && playerInventory.selectedItemType == ItemType.Arma)
+        if (Input.GetMouseButtonDown(0) && playerInventory.selectedItemType == ItemType.Arma && canAttack)
         {
             if (controller.isAttacking) return;
 
+            if (playerInventory == null || playerInventory.weapon == null)
+            {
+                Debug.LogWarning("Player inventory or weapon not set!");
+                return;
+            }
+
             int damage = playerInventory.weapon.damage;
-            animator.SetTrigger("AtaqueLigero");
+            animator.SetTrigger("AtaqueLigero"); // Use trigger instead of Play()
             StartCoroutine(SwordAttack(damage));
-        }
-
-
-        if (Input.GetMouseButtonDown(1))
-        {
-            isRightMouseDown = true;
-            StartCoroutine(ChargeSword());
         }
 
         if (Input.GetMouseButtonUp(1))
         {
             isRightMouseDown = false;
 
-            if (isFullyCharged && !controller.isAttacking)
+            if (isFullyCharged && !controller.isAttacking && playerInventory != null && playerInventory.weapon != null && canAttack)
             {
                 int baseDamage = playerInventory.weapon.damage;
                 int damage = Mathf.CeilToInt(baseDamage * chargeMultiplier);
+                animator.SetTrigger("AtaquePesado"); // Use trigger instead of Play()
                 StartCoroutine(SwordAttack(damage));
                 attackCooldown = 1f;
                 isFullyCharged = false;
             }
         }
     }
-
     public IEnumerator ChargeSword()
     {
         if (isChargingSword)
@@ -112,10 +115,12 @@ public class Espadachin : MonoBehaviour
 
     public IEnumerator SwordAttack(int damage)
     {
+        canAttack = false;
         controller.isAttacking = true;
 
         try
         {
+            // Apply damage immediately (not waiting for animation)
             Vector3 attackPosition = controller.transform.position +
                                      controller.transform.forward * attackDamageOffset.z +
                                      controller.transform.up * attackDamageOffset.y +
@@ -136,13 +141,14 @@ public class Espadachin : MonoBehaviour
                     EmpujarEnemigo(enemigo.gameObject, fuerzaEmpujeActual);
                 }
             }
+
+            // Wait for cooldown (but animation plays independently)
             yield return new WaitForSeconds(attackCooldown);
-            controller.isAttacking = false;
-            attackCooldown = isFullyCharged ? 1f : 0.5f;
         }
         finally
         {
             controller.isAttacking = false;
+            canAttack = true;
         }
     }
 }
