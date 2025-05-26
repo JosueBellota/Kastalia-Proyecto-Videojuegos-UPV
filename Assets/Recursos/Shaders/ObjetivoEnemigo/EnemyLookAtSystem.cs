@@ -9,6 +9,10 @@ public class EnemyLookAtSystem : MonoBehaviour
     private Transform player;
     public bool isLocked = false;
 
+
+    // disabling system
+    public bool systemEnabled = true;
+
     void Start()
     {
         GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
@@ -24,45 +28,49 @@ public class EnemyLookAtSystem : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.instance.isPaused || player == null) return;
+        // Disabling the enemy look at system
+        if (!systemEnabled) return; 
 
-        // Desbloquear enemigo con tecla º
-        if (Input.GetKeyDown(KeyCode.BackQuote)) // Tecla º
-        {
-            SetHighlightLock(currentTarget, false); // Quitar highlight
-            isLocked = false;
-            currentTarget = null;
-        }
 
-        // Fijar a un enemigo con click izquierdo
-        if (Input.GetMouseButtonDown(0))
-        {
-            Transform aimedEnemy = GetEnemyUnderMouse();
-            if (aimedEnemy != null)
-            {
-                SetHighlightLock(currentTarget, false); // Quitar highlight del anterior
+        // if (GameManager.instance.isPaused || player == null) return;
 
-                currentTarget = aimedEnemy;
-                isLocked = true;
+        // // Desbloquear enemigo con tecla º
+        // if (Input.GetKeyDown(KeyCode.BackQuote)) // Tecla º
+        // {
+        //     SetHighlightLock(currentTarget, false); // Quitar highlight
+        //     isLocked = false;
+        //     currentTarget = null;
+        // }
 
-                SetHighlightLock(currentTarget, true); // Mostrar highlight del nuevo
-            }
-        }
+        // // Fijar a un enemigo con click izquierdo
+        // if (Input.GetMouseButtonDown(0))
+        // {
+        //     Transform aimedEnemy = GetEnemyUnderMouse();
+        //     if (aimedEnemy != null)
+        //     {
+        //         SetHighlightLock(currentTarget, false); // Quitar highlight del anterior
 
-        // Si hay enemigo fijado, mirar hacia él
-        if (currentTarget != null && isLocked)
-        {
-            Vector3 targetPos = new Vector3(currentTarget.position.x, player.position.y, currentTarget.position.z);
-            player.LookAt(targetPos);
+        //         currentTarget = aimedEnemy;
+        //         isLocked = true;
 
-            // Desbloquear si se va fuera de rango
-            if (Vector3.Distance(player.position, currentTarget.position) > detectionRange)
-            {
-                SetHighlightLock(currentTarget, false);
-                isLocked = false;
-                currentTarget = null;
-            }
-        }
+        //         SetHighlightLock(currentTarget, true); // Mostrar highlight del nuevo
+        //     }
+        // }
+
+        // // Si hay enemigo fijado, mirar hacia él
+        // if (currentTarget != null && isLocked)
+        // {
+        //     Vector3 targetPos = new Vector3(currentTarget.position.x, player.position.y, currentTarget.position.z);
+        //     player.LookAt(targetPos);
+
+        //     // Desbloquear si se va fuera de rango
+        //     if (Vector3.Distance(player.position, currentTarget.position) > detectionRange)
+        //     {
+        //         SetHighlightLock(currentTarget, false);
+        //         isLocked = false;
+        //         currentTarget = null;
+        //     }
+        // }
     }
 
     Transform GetEnemyUnderMouse()
