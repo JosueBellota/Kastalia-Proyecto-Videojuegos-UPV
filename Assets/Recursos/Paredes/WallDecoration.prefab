@@ -78,10 +78,11 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: bb3cff1c074f9c04680acee824510a17, type: 2}
     - target: {fileID: 919132149155446097, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
       propertyPath: m_Name
-      value: WallBottom
+      value: WallDecoration
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 5148817236446094103, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: -1599826595754709761, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
@@ -90,9 +91,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -7029948723529949830, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4977434927264950913}
-    - targetCorrespondingSourceObject: {fileID: 5148817236446094103, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4483965090458281111}
   m_SourcePrefab: {fileID: 100100000, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
 --- !u!1 &458394314658325586 stripped
 GameObject:
@@ -120,32 +118,6 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.001080377, y: 0.009999999, z: 0.009999999}
   m_Center: {x: -0.00470002, y: -3.5527136e-17, z: 0.0049999994}
---- !u!1 &6870333786946198079 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5148817236446094103, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
-  m_PrefabInstance: {fileID: 1741786751884458280}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &4483965090458281111
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6870333786946198079}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.01, y: 0.009999999, z: 7.105427e-17}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8205655267176388055 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -1599826595754709761, guid: 5613363e251c16744aca51b6e5959e6f, type: 3}
