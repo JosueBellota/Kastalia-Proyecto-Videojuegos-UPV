@@ -151,17 +151,21 @@ public class GameManager : MonoBehaviour
     // 🆕 NUEVO: Método para instanciar el arma cerca del personaje seleccionado
     public void InstanciarArmaParaPersonaje()
     {
-        if (personajeSeleccionado == null) return;
+        if (LevelManager.instance == null || LevelManager.instance.player == null)
+            return;
 
-        Vector3 posicionFrente = personajeSeleccionado.transform.position + personajeSeleccionado.transform.forward * 1f;
+        GameObject playerInstance = LevelManager.instance.player;
 
-        if (personajeSeleccionado == Lyx && prefabHojaAfilada != null)
+        Vector3 posicionJugador = playerInstance.transform.position;
+        Quaternion rotacionJugador = playerInstance.transform.rotation;
+
+        if (playerInstance.name.Contains("Lyx") && prefabHojaAfilada != null)
         {
-            Instantiate(prefabHojaAfilada, posicionFrente, Quaternion.identity);
+            Instantiate(prefabHojaAfilada, posicionJugador, rotacionJugador);
         }
-        else if (personajeSeleccionado == Dreven && prefabArco != null)
+        else if (playerInstance.name.Contains("Dreven") && prefabArco != null)
         {
-            Instantiate(prefabArco, posicionFrente, Quaternion.identity);
+            Instantiate(prefabArco, posicionJugador, rotacionJugador);
         }
     }
 
@@ -171,7 +175,7 @@ public class GameManager : MonoBehaviour
         personajeSeleccionado = personaje;
         playerSpawned = true;
 
-        InstanciarArmaParaPersonaje(); // 🆕 Instancia el arma correspondiente
+        // InstanciarArmaParaPersonaje(); // 🆕 Instancia el arma correspondiente
     }
 
 
