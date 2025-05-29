@@ -67,10 +67,17 @@ public abstract class PlayerController : MonoBehaviour
 
         if (!isDashing && !isAttacking)
         {
+
+            if (playerInventory.weapon != null)
+            {
+                ShowWeapon(true);
+            }
+
+
             if (Input.GetKeyDown(KeyCode.Alpha1) && playerInventory.weapon != null)
             {
                 playerInventory.selectedItemType = ItemType.Arma;
-                ShowWeapon(true);
+                
                 mainInterface.LightUpItem(ItemType.Arma, AbilityType.None);
             }
             if (Input.GetKeyDown(KeyCode.Q) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))

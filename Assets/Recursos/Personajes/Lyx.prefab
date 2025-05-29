@@ -190,6 +190,8 @@ MonoBehaviour:
   vidaMaxima: 100
   vidaActual: 0
   defensiveAbilityHits: 0
+  transitionDuration: 0.25
+  fadeDuration: 0.25
 --- !u!114 &2329343856140047616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -278,6 +280,7 @@ MonoBehaviour:
     m_Bits: 128
   currentTarget: {fileID: 0}
   isLocked: 0
+  systemEnabled: 1
 --- !u!65 &6148346884715623303
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -605,6 +608,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: d9f2278e9385ca245af544e9828d0973, type: 3}
       propertyPath: m_Name
       value: Lyx 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d9f2278e9385ca245af544e9828d0973, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

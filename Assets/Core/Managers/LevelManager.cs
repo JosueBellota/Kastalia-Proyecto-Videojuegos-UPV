@@ -83,7 +83,7 @@ public class LevelManager : MonoBehaviour
 
         player = Instantiate(prefab, spawnPoint - new Vector3(0, 1, 0), Quaternion.identity);
         UI = Instantiate(GameManager.instance.UI, Vector3.zero, Quaternion.identity);
-        GameManager.instance.isPaused  = false;
+        GameManager.instance.isPaused = false;
         Time.timeScale = 1f;
 
         cinemachineCamera = FindAnyObjectByType<CinemachineCamera>();
@@ -91,6 +91,9 @@ public class LevelManager : MonoBehaviour
         {
             cinemachineCamera.Follow = player.transform;
         }
+        
+        // ✅ Now the player exists — safe to instantiate the weapon
+        GameManager.instance.InstanciarArmaParaPersonaje();
     }
 
     private void LoadEnemies()
