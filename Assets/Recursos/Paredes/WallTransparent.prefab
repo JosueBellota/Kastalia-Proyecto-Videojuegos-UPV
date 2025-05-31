@@ -24,6 +24,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: WallTransparent
       objectReference: {fileID: 0}
+    - target: {fileID: 1507993406272488569, guid: b1903b0e4a48c94409c30c1aa9211b11, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825652682340214870, guid: b1903b0e4a48c94409c30c1aa9211b11, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 3bb42e2aba3c51641bb532ce2faf1851, type: 2}
     - target: {fileID: 2280695734945750723, guid: b1903b0e4a48c94409c30c1aa9211b11, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
