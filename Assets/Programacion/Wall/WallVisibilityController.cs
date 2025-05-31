@@ -1,58 +1,53 @@
 using UnityEngine;
 
-[RequireComponent(typeof(Renderer))]
-public class WallVisibilityController : MonoBehaviour
+[RequireComponent(typeof(SphereCollider))]
+public class WallProximityDetector : MonoBehaviour
 {
-    [Header("Settings")]
-    [SerializeField] private float fadeDistance = 3f;
-    [SerializeField] private Material transparentMaterial;
+    public float detectionRadius = 3f;
+    public Material defaultMaterial;
+    public Material proximityMaterial;
 
     private Renderer wallRenderer;
-    private Material[] originalMaterials;
-    private Transform playerTransform;
-    private bool isTransparent = false;
 
     private void Start()
     {
-        wallRenderer = GetComponent<Renderer>();
-        originalMaterials = wallRenderer.sharedMaterials;
+        SphereCollider sc = GetComponent<SphereCollider>();
+        sc.isTrigger = true;
+        sc.radius = detectionRadius;
 
-        Debug.Log("[WallVisibility] Initialized on object: " + gameObject.name);
+        wallRenderer = GetComponent<Renderer>();
+
+        if (wallRenderer == null)
+        {
+            Debug.LogError("No se encontró un Renderer en el objeto.");
+        }
+        else
+        {
+            wallRenderer.material = defaultMaterial; // Asegura que empiece con el material por defecto
+        }
     }
 
-    private void Update()
+    private void OnTriggerEnter(Collider other)
     {
-        if (playerTransform == null && GameManager.instance != null && GameManager.instance.personajeSeleccionado != null)
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            playerTransform = GameManager.instance.personajeSeleccionado.transform;
-            Debug.Log("[WallVisibility] Player found: " + playerTransform.name);
+            Debug.Log("jugador cerca");
+            if (wallRenderer != null && proximityMaterial != null)
+            {
+                wallRenderer.material = proximityMaterial;
+            }
         }
+    }
 
-        if (playerTransform == null) return;
-
-        float distance = Vector3.Distance(transform.position, playerTransform.position);
-        bool shouldBeTransparent = distance < fadeDistance;
-
-        if (shouldBeTransparent != isTransparent)
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            if (shouldBeTransparent)
+            Debug.Log("jugador se alejó");
+            if (wallRenderer != null && defaultMaterial != null)
             {
-                // Replace all materials with the transparent one
-                Material[] transparentMats = new Material[wallRenderer.sharedMaterials.Length];
-                for (int i = 0; i < transparentMats.Length; i++)
-                {
-                    transparentMats[i] = transparentMaterial;
-                }
-                wallRenderer.sharedMaterials = transparentMats;
+                wallRenderer.material = defaultMaterial;
             }
-            else
-            {
-                // Restore original materials
-                wallRenderer.sharedMaterials = originalMaterials;
-            }
-
-            isTransparent = shouldBeTransparent;
-            Debug.Log($"[WallVisibility] Wall '{gameObject.name}' material switched to {(isTransparent ? "TRANSPARENT" : "ORIGINAL")} at distance {distance:F2}");
         }
     }
 }
