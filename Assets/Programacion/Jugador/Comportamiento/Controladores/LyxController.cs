@@ -20,22 +20,18 @@ public class LyxController : PlayerController
             // Iniciar carga al mantener clic derecho
             if (Input.GetKeyDown(KeyCode.Mouse1))
             {
-                espadachin.isRightMouseDown = true;
                 cargaCoroutine = StartCoroutine(espadachin.ChargeSword());
             }
 
             // Soltar clic derecho
             if (Input.GetKeyUp(KeyCode.Mouse1))
             {
-                espadachin.isRightMouseDown = false;
-
                 if (cargaCoroutine != null)
                 {
                     StopCoroutine(cargaCoroutine);
                     cargaCoroutine = null;
                 }
 
-                // Si estaba completamente cargado, ejecutar ataque cargado directamente
                 if (espadachin.isFullyCharged && !isAttacking && !isDashing)
                 {
                     int damage = Mathf.CeilToInt(playerInventory.weapon.damage * espadachin.chargeMultiplier);
@@ -54,7 +50,6 @@ public class LyxController : PlayerController
                 {
                     int damage = playerInventory.weapon.damage;
 
-                    // Si estaba en proceso de carga pero se interrumpe: hacer daño reducido
                     if (espadachin.isChargingSword)
                     {
                         damage = Mathf.CeilToInt(damage * 0.5f);

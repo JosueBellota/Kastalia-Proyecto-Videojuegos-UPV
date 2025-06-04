@@ -10,7 +10,6 @@ public class Espadachin : MonoBehaviour
     public float chargeTime = 0f;
     public bool isChargingSword = false;
     public bool isFullyCharged = false;
-    public bool isRightMouseDown = false;
     private LyxController controller;
     private PlayerInventory playerInventory;
     private Animator animator;
@@ -18,6 +17,7 @@ public class Espadachin : MonoBehaviour
     [SerializeField] private float empujeFuerza = 5f;
     public float attackCooldown = 0.5f;
     private bool canAttack = true;
+    private bool isRightMouseHeld = false;
 
     void Start()
     {
@@ -25,13 +25,12 @@ public class Espadachin : MonoBehaviour
         playerInventory = GetComponent<PlayerInventory>();
         animator = GetComponentInChildren<Animator>();
         attackDamageOffset = new Vector3(0, 0, 1f);
-        
-        // Set animator to update immediately
         animator.updateMode = AnimatorUpdateMode.UnscaledTime;
     }
 
     void Update()
     {
+        // Ataque ligero
         if (Input.GetMouseButtonDown(0) && playerInventory.selectedItemType == ItemType.Arma && canAttack)
         {
             if (controller.isAttacking) return;
@@ -43,25 +42,32 @@ public class Espadachin : MonoBehaviour
             }
 
             int damage = playerInventory.weapon.damage;
-            animator.SetTrigger("AtaqueLigero"); // Use trigger instead of Play()
             StartCoroutine(SwordAttack(damage));
         }
 
+        // Iniciar carga con botón derecho
+        if (Input.GetMouseButtonDown(1))
+        {
+            isRightMouseHeld = true;
+            StartCoroutine(ChargeSword());
+        }
+
+        // Cancelar carga al soltar botón derecho
         if (Input.GetMouseButtonUp(1))
         {
-            isRightMouseDown = false;
+            isRightMouseHeld = false;
 
             if (isFullyCharged && !controller.isAttacking && playerInventory != null && playerInventory.weapon != null && canAttack)
             {
                 int baseDamage = playerInventory.weapon.damage;
                 int damage = Mathf.CeilToInt(baseDamage * chargeMultiplier);
-                animator.SetTrigger("AtaquePesado"); // Use trigger instead of Play()
                 StartCoroutine(SwordAttack(damage));
                 attackCooldown = 1f;
                 isFullyCharged = false;
             }
         }
     }
+
     public IEnumerator ChargeSword()
     {
         if (isChargingSword)
@@ -73,19 +79,34 @@ public class Espadachin : MonoBehaviour
         chargeTime = 0f;
         animator.SetFloat("Fuerza", 0);
 
-        while (isRightMouseDown && chargeTime < chargeRequiredTime)
+        Debug.Log("INICIO DE CARGA");
+
+        while (isRightMouseHeld && chargeTime < chargeRequiredTime)
         {
             chargeTime += Time.deltaTime;
             animator.SetFloat("Fuerza", chargeTime / chargeRequiredTime);
             yield return null;
         }
 
+        Debug.Log("SALIDA DEL WHILE");
+
         if (chargeTime >= chargeRequiredTime)
         {
+            Debug.Log("CARGA COMPLETA");
+            int baseDamage = playerInventory.weapon.damage;
+            int calculatedDamage = Mathf.CeilToInt(baseDamage * chargeMultiplier);
+
             isFullyCharged = true;
             animator.SetFloat("Fuerza", 1);
             animator.SetTrigger("ReleaseClick");
+            StartCoroutine(SwordAttack(calculatedDamage));
         }
+        else
+        {
+            Debug.Log("CARGA CANCELADA");
+            animator.SetTrigger("CancelarCarga");
+        }
+
         animator.SetBool("Cargando", false);
         isChargingSword = false;
     }
@@ -118,9 +139,13 @@ public class Espadachin : MonoBehaviour
         canAttack = false;
         controller.isAttacking = true;
 
+        if (isFullyCharged)
+            animator.SetTrigger("AtaquePesado");
+        else
+            animator.SetTrigger("AtaqueLigero");
+
         try
         {
-            // Apply damage immediately (not waiting for animation)
             Vector3 attackPosition = controller.transform.position +
                                      controller.transform.forward * attackDamageOffset.z +
                                      controller.transform.up * attackDamageOffset.y +
@@ -142,7 +167,6 @@ public class Espadachin : MonoBehaviour
                 }
             }
 
-            // Wait for cooldown (but animation plays independently)
             yield return new WaitForSeconds(attackCooldown);
         }
         finally
