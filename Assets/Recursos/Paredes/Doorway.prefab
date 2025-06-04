@@ -102,7 +102,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 699874ec3e261a44c924ec20d32cd352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRadius: 3
+  detectionRadius: 6
   defaultMaterial: {fileID: 6892232844440235036, guid: de8e979eb86a6b344aea29fa9497d87e, type: 3}
   proximityMaterial: {fileID: 2100000, guid: 3bb42e2aba3c51641bb532ce2faf1851, type: 2}
 --- !u!64 &4811698832215433868
