@@ -83,6 +83,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 168595819443718531, guid: b1903b0e4a48c94409c30c1aa9211b11, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2984625604908076534}
+    - targetCorrespondingSourceObject: {fileID: 168595819443718531, guid: b1903b0e4a48c94409c30c1aa9211b11, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8971438511668714766}
   m_SourcePrefab: {fileID: 100100000, guid: b1903b0e4a48c94409c30c1aa9211b11, type: 3}
 --- !u!1 &5125443857124886516 stripped
 GameObject:
@@ -101,7 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 699874ec3e261a44c924ec20d32cd352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRadius: 3
+  detectionRadius: 9
   defaultMaterial: {fileID: 2100000, guid: f76af225587d2b34bbf644baf4ac3f57, type: 2}
   proximityMaterial: {fileID: 2100000, guid: 3bb42e2aba3c51641bb532ce2faf1851, type: 2}
 --- !u!135 &2984625604908076534
@@ -125,3 +128,25 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 2.0000002
   m_Center: {x: 0, y: 2, z: -0.00000032782557}
+--- !u!64 &8971438511668714766
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5125443857124886516}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -6281424698479989189, guid: 5fb90e87b8f2e4c4e8d9615e8aac13b3, type: 3}
