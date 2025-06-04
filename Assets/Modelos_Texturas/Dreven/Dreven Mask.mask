@@ -12,28 +12,28 @@ AvatarMask:
   - m_Path: 
     m_Weight: 1
   - m_Path: Armature
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Arm_L
     m_Weight: 1
   - m_Path: Armature/Arm_L/Arm_L_end
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Arm_R
     m_Weight: 1
   - m_Path: Armature/Arm_R/Arm_R_end
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Leg_L
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Leg_L/Leg_L_end
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Leg_R
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Leg_R/Leg_R_end
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Torso
     m_Weight: 1
   - m_Path: Armature/Torso/Head
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Armature/Torso/Head/Head_end
-    m_Weight: 0
+    m_Weight: 1
   - m_Path: Cube.001
-    m_Weight: 0
+    m_Weight: 1

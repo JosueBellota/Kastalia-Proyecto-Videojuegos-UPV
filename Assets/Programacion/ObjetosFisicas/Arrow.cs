@@ -25,31 +25,29 @@ public class Arrow : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
+{
+    if (hasHit) return;
+    hasHit = true;
+
+    // ✅ Esta línea es segura para todos los tipos de Collider
+    Vector3 hitPoint = other.bounds.ClosestPoint(transform.position);
+
+    PlayerHealth playerHealth = other.GetComponentInParent<PlayerHealth>();
+    EnemyHealth enemyHealth = other.GetComponentInParent<EnemyHealth>();
+
+    if (playerHealth)
     {
-        if (hasHit) return;
-        hasHit = true;
-        
-        Vector3 hitPoint = other.ClosestPoint(transform.position);
-        
-        PlayerHealth playerHealth = other.GetComponentInParent<PlayerHealth>();
-        EnemyHealth enemyHealth = other.GetComponentInParent<EnemyHealth>();
-        
-        if (playerHealth)
-        {
-            playerHealth.takeDamage(damage);
-            // CreateBloodEffect(hitPoint);
-        }
-        else if (enemyHealth)
-        {
-            enemyHealth.TakeDamage(Mathf.CeilToInt(damage));
-            // CreateBloodEffect(hitPoint);
-        }
-        
-        //  Create main blood splatter
-        // CreateMainBloodSplatter(hitPoint, other.transform);
-        
-        StickToTarget(other.transform);
+        playerHealth.takeDamage(damage);
+        // CreateBloodEffect(hitPoint);
     }
+    else if (enemyHealth)
+    {
+        enemyHealth.TakeDamage(Mathf.CeilToInt(damage));
+        // CreateBloodEffect(hitPoint);
+    }
+
+    StickToTarget(other.transform);
+}
 
     //Fédor: "Nada de esto funciona como esperado, crea charcos enormes que ocupan la pantalla entera y a veces dejan el juego en rojo"
 
