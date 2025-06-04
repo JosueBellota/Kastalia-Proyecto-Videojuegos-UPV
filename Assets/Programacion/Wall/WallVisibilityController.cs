@@ -31,13 +31,50 @@ public class WallProximityDetector : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
-            Debug.Log("jugador cerca");
-            if (wallRenderer != null && proximityMaterial != null)
+            Vector3 localPos = transform.InverseTransformPoint(other.transform.position);
+            Debug.Log($"Jugador entró - Z local: {localPos.z:F2}");
+
+            if (localPos.z < 0f)
             {
-                wallRenderer.material = proximityMaterial;
+                Debug.Log("jugador en frente, cambiando material");
+                if (wallRenderer != null && proximityMaterial != null)
+                {
+                    wallRenderer.material = proximityMaterial;
+                }
+            }
+            else
+            {
+                Debug.Log("jugador detrás, no se cambia el material");
             }
         }
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
+        {
+            Vector3 localPos = transform.InverseTransformPoint(other.transform.position);
+            Debug.Log($"Jugador dentro - Z local: {localPos.z:F2}");
+
+            if (localPos.z < 0f)
+            {
+                if (wallRenderer != null && proximityMaterial != null && wallRenderer.material != proximityMaterial)
+                {
+                    wallRenderer.material = proximityMaterial;
+                    Debug.Log("Jugador en frente dentro del trigger, cambiando a material de proximidad");
+                }
+            }
+            else
+            {
+                if (wallRenderer != null && defaultMaterial != null && wallRenderer.material != defaultMaterial)
+                {
+                    wallRenderer.material = defaultMaterial;
+                    Debug.Log("Jugador detrás dentro del trigger, restaurando material por defecto");
+                }
+            }
+        }
+    }
+
 
     private void OnTriggerExit(Collider other)
     {

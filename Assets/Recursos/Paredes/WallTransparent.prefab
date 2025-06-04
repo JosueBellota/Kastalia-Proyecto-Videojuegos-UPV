@@ -34,7 +34,7 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: f76af225587d2b34bbf644baf4ac3f57, type: 2}
     - target: {fileID: 2280695734945750723, guid: b1903b0e4a48c94409c30c1aa9211b11, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -2.33
       objectReference: {fileID: 0}
     - target: {fileID: 2280695734945750723, guid: b1903b0e4a48c94409c30c1aa9211b11, type: 3}
       propertyPath: m_LocalPosition.y
@@ -104,7 +104,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 699874ec3e261a44c924ec20d32cd352, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRadius: 9
+  detectionRadius: 6
   defaultMaterial: {fileID: 2100000, guid: f76af225587d2b34bbf644baf4ac3f57, type: 2}
   proximityMaterial: {fileID: 2100000, guid: 3bb42e2aba3c51641bb532ce2faf1851, type: 2}
 --- !u!135 &2984625604908076534
