@@ -117,17 +117,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: b0b1d6a2264dc734f8eb39f5993b4c2e, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: b0b1d6a2264dc734f8eb39f5993b4c2e, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 9b308e1c0f597c54aa8eeb15ed019ffd, type: 2}
+      objectReference: {fileID: 2100000, guid: 39cbeb9b45bd1af4e9edfa461a0294d7, type: 2}
     - target: {fileID: -7511558181221131132, guid: b0b1d6a2264dc734f8eb39f5993b4c2e, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: 9b308e1c0f597c54aa8eeb15ed019ffd, type: 2}
+      objectReference: {fileID: 2100000, guid: 39cbeb9b45bd1af4e9edfa461a0294d7, type: 2}
     - target: {fileID: -7511558181221131132, guid: b0b1d6a2264dc734f8eb39f5993b4c2e, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
-      objectReference: {fileID: 2100000, guid: 9b308e1c0f597c54aa8eeb15ed019ffd, type: 2}
+      objectReference: {fileID: 2100000, guid: 39cbeb9b45bd1af4e9edfa461a0294d7, type: 2}
     - target: {fileID: 919132149155446097, guid: b0b1d6a2264dc734f8eb39f5993b4c2e, type: 3}
       propertyPath: m_Name
       value: HojaAfilada
