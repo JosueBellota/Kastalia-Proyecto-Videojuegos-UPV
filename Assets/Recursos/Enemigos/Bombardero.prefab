@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8455342541118458666}
   - component: {fileID: 6817588594778981369}
   - component: {fileID: 9141975531390571173}
+  - component: {fileID: -2592489927805776023}
   - component: {fileID: 7429913557499489046}
   m_Layer: 7
   m_Name: Bombardero
@@ -94,7 +95,6 @@ MonoBehaviour:
   agroPopupPrefab: {fileID: 800571591104117930, guid: 0c5884c97bf2e0b4ba4b1cd51956da87, type: 3}
   shootingDistance: 15
   safeDistance: 10
-  fireCooldown: 10
   isFiring: 0
   jugador: {fileID: 0}
   distanciaAJugador: 0
@@ -145,6 +145,20 @@ MonoBehaviour:
   nombre: {fileID: 11400000, guid: 7bf034c6c692631449da9cc046d398fe, type: 2}
   inicial: 0
   bombaForce: 8
+--- !u!114 &-2592489927805776023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7133347364983744333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d296dd7607ed3141a6db237e5334d63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: 59c8c241538d81642a972644e8a00260, type: 2}
+  flashDuration: 0.2
 --- !u!65 &7429913557499489046
 BoxCollider:
   m_ObjectHideFlags: 0
