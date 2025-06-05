@@ -27,6 +27,9 @@ public class Arrow : MonoBehaviour
     private void OnTriggerEnter(Collider other)
 {
     if (hasHit) return;
+
+    if (other is SphereCollider) return;
+
     hasHit = true;
 
     // ✅ Esta línea es segura para todos los tipos de Collider

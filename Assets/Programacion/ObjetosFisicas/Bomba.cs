@@ -40,6 +40,8 @@ public class Bomba : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (hasExploded) return;
+        
+        if (other is SphereCollider) return;
 
         PlayerHealth playerHealth = other.GetComponentInParent<PlayerHealth>();
         EnemyHealth enemyHealth = other.GetComponentInParent<EnemyHealth>();
