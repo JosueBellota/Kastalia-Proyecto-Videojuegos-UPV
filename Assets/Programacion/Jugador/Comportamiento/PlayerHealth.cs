@@ -83,18 +83,31 @@ public class PlayerHealth : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
-        // Freeze game time
+        // Detener input y lógica de juego
         GameManager.instance.isPaused = true;
         Time.timeScale = 0f;
 
+        // Preparar animator para reproducir animación sin interferencias
+        Animator anim = playerController.animator;
+        anim.updateMode = AnimatorUpdateMode.UnscaledTime;
+        anim.Rebind(); // Resetea el Animator completamente
+        anim.Update(0f);
 
-        // Set animator to unscaled time
-        playerController.animator.updateMode = AnimatorUpdateMode.UnscaledTime;
+        // Desactivar cualquier estado conflictivo del player
+        playerController.isDashing = false;
+        playerController.isAttacking = false;
+        playerController.isCastingAbility = false;
+        playerController.ShowWeapon(false);
+        playerController.ToggleShieldPrefab(false);
 
-        // Trigger death animation
-        playerController.animator.SetTrigger("Death");
+        // Desactivar movimiento
+        if (playerController.GetComponent<CharacterController>())
+            playerController.GetComponent<CharacterController>().enabled = false;
 
-        // Start coroutine to wait for animation and load scene
+        // Reproducir animación de muerte directamente
+        anim.Play("Death", 0, 0f);
+
+        // Esperar animación antes de cargar escena
         StartCoroutine(WaitForDeathAnimation());
     }
 
