@@ -19,8 +19,15 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField] private float fadeDuration = 0.25f;
 
+
+    private DamageFlash damageFlash;
+
+
     void Start()
     {
+
+        damageFlash = GetComponent<DamageFlash>();
+
         vidaActual = vidaMaxima;
         playerController = GetComponent<PlayerController>();
         mainInterface = FindFirstObjectByType<MainInterface>();
@@ -39,6 +46,8 @@ public class PlayerHealth : MonoBehaviour
         if (vidaActual - damage > 0)
         {
             vidaActual -= damage;
+            damageFlash?.Flash();
+
             mainInterface.updateVidaText(vidaActual);
             StartCoroutine(ActivarInmunidad());
         }

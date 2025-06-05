@@ -26,7 +26,7 @@ Transform:
   m_GameObject: {fileID: 7086254744617174579}
   serializedVersion: 2
   m_LocalRotation: {x: 0.0000001872535, y: 3.5063874e-14, z: -0.0000001872535, w: 1}
-  m_LocalPosition: {x: 0.379, y: 0.83899987, z: -0.02899986}
+  m_LocalPosition: {x: 0.379, y: 0.83899975, z: -0.028999848}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -43,10 +43,10 @@ ParentConstraint:
   m_Enabled: 1
   serializedVersion: 2
   m_Weight: 1
-  m_TranslationAtRest: {x: 0.379, y: 0.83899987, z: -0.02899986}
+  m_TranslationAtRest: {x: 0.379, y: 0.83899975, z: -0.028999848}
   m_RotationAtRest: {x: 0, y: 0, z: 0}
   m_TranslationOffsets:
-  - {x: -0.025942637, y: 0.55124754, z: -0.08266759}
+  - {x: -0.025942625, y: 0.55124766, z: -0.08266759}
   m_RotationOffsets:
   - {x: 0, y: 90, z: 180}
   m_AffectTranslationX: 1
@@ -80,6 +80,7 @@ GameObject:
   - component: {fileID: 7460853828753018524}
   - component: {fileID: 5118215918898081989}
   - component: {fileID: 6148346884715623303}
+  - component: {fileID: 5598295927097056680}
   m_Layer: 6
   m_Name: Lyx
   m_TagString: Player
@@ -172,7 +173,6 @@ MonoBehaviour:
   chargeTime: 0
   isChargingSword: 0
   isFullyCharged: 0
-  isRightMouseDown: 0
   empujeFuerza: 5
   attackCooldown: 0.5
 --- !u!114 &5396867147106388286
@@ -302,6 +302,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.22, y: 2, z: 0.68}
   m_Center: {x: 0, y: 1, z: -0.04}
+--- !u!114 &5598295927097056680
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8343663245281204225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d296dd7607ed3141a6db237e5334d63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: afbf5e38be577554e9e20cee0d479ae1, type: 2}
+  flashDuration: 0.2
 --- !u!1001 &2446558911280584230
 PrefabInstance:
   m_ObjectHideFlags: 0
