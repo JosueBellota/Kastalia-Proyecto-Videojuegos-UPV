@@ -286,6 +286,9 @@ public class GameManager : MonoBehaviour
 
         while (elapsed < duration)
         {
+
+            if (group == null) yield break;
+
             group.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsed / duration);
             elapsed += Time.unscaledDeltaTime;
             yield return null;
