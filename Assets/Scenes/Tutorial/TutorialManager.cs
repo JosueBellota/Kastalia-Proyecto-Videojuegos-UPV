@@ -11,7 +11,7 @@ public class TutorialManager : MonoBehaviour
     [SerializeField] private Button resume;
     [SerializeField] private Button nextBtn;
 
-    [SerializeField] private List<string> tutorialScenes = new List<string> { "Tutorial1", "Tutorial2"};
+    [SerializeField] private List<string> tutorialScenes = new List<string> { "Tutorial1", "Tutorial2, Tutorial3"};
 
     private int currentIndex;
     void Start()
@@ -60,14 +60,25 @@ public class TutorialManager : MonoBehaviour
 
         currentIndex++;
 
-        if (currentIndex < tutorialScenes.Count)
+        // Loop through remaining scenes and find the next valid one
+        while (currentIndex < tutorialScenes.Count)
         {
             string nextScene = tutorialScenes[currentIndex];
-            GameManager.instance.LoadTutorialScene(nextScene, true);
+
+            if (Application.CanStreamedLevelBeLoaded(nextScene))
+            {
+                GameManager.instance.LoadTutorialScene(nextScene, true);
+                return;
+            }
+            else
+            {
+                Debug.LogWarning($"Scene '{nextScene}' is not available in Build Settings. Skipping...");
+                currentIndex++;
+            }
         }
-        else
-        {
-            skip();
-        }
+
+        // If no more valid scenes
+        skip();
     }
+
 }
