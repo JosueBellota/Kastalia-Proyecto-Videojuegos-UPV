@@ -106,12 +106,27 @@ public class GameManager : MonoBehaviour
         isPaused = true;
     }
 
+    public void Tutorial()
+    {
+
+        StartCoroutine(LoadSceneWithTransition("Tutorial1", true));
+        Time.timeScale = 0f;
+        isPaused = true;
+    }
+
     public void ResumeGame()
     {
         StartCoroutine(UnloadSceneWithTransition("PauseMenu"));
         Time.timeScale = 1f;
         isPaused = false;
 
+    }
+
+    public void SkipTutorial(string sceneToUnload)
+    {
+        StartCoroutine(UnloadSceneWithOutTransition(sceneToUnload));
+        Time.timeScale = 1f;
+        isPaused = false;
     }
 
     public void StartMainMenu()
@@ -167,6 +182,8 @@ public class GameManager : MonoBehaviour
         {
             Instantiate(prefabArco, posicionJugador, rotacionJugador);
         }
+
+        Tutorial();
     }
 
     // 🆕 NUEVO: Método sugerido para ser llamado después de seleccionar personaje
@@ -245,6 +262,25 @@ public class GameManager : MonoBehaviour
 
         // Fade out (to clear)
         yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
+
+        // Clean up
+        Destroy(fadeObject);
+    }
+
+    private IEnumerator UnloadSceneWithOutTransition(string sceneName)
+    {
+        // Create a simple fade overlay
+        GameObject fadeObject = CreateFadeOverlay();
+        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+
+        // // Fade in (to black)
+        // yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
+
+        // Unload the scene
+        yield return SceneManager.UnloadSceneAsync(sceneName);
+
+        // // Fade out (to clear)
+        // yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
 
         // Clean up
         Destroy(fadeObject);
