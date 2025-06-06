@@ -264,21 +264,24 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator LoadSceneWithOutTransition(string sceneName, bool additive)
     {
+        GameObject fadeObject = CreateSubtleFadeOverlay();
+        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
 
-        AsyncOperation asyncLoad;
-        if (additive)
-        {
-            asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-        }
-        else
-        {
-            asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+        // Soft fade in
+        yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
 
-        }
+        AsyncOperation asyncLoad = additive
+            ? SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive)
+            : SceneManager.LoadSceneAsync(sceneName);
 
         yield return asyncLoad;
 
+        // Soft fade out
+        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
+
+        Destroy(fadeObject);
     }
+
 
     private IEnumerator UnloadSceneWithTransition(string sceneName)
     {
@@ -299,24 +302,22 @@ public class GameManager : MonoBehaviour
         Destroy(fadeObject);
     }
 
-    private IEnumerator UnloadSceneWithOutTransition(string sceneName)
+   private IEnumerator UnloadSceneWithOutTransition(string sceneName)
     {
-        // Create a simple fade overlay
-        GameObject fadeObject = CreateFadeOverlay();
+        GameObject fadeObject = CreateSubtleFadeOverlay();
         CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
 
-        // // Fade in (to black)
-        // yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
+        // Soft fade in
+        yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
 
-        // Unload the scene
         yield return SceneManager.UnloadSceneAsync(sceneName);
 
-        // // Fade out (to clear)
-        // yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
+        // Soft fade out
+        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
 
-        // Clean up
         Destroy(fadeObject);
     }
+
 
     // Helper method to create a simple fade overlay
     private GameObject CreateFadeOverlay()
@@ -347,21 +348,53 @@ public class GameManager : MonoBehaviour
         return fadeObject;
     }
 
+    private GameObject CreateSubtleFadeOverlay()
+    {
+        GameObject fadeObject = new GameObject("SubtleFadeOverlay");
+
+        // Setup Canvas
+        Canvas canvas = fadeObject.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 9999;
+
+        // Setup CanvasGroup
+        CanvasGroup group = fadeObject.AddComponent<CanvasGroup>();
+
+        // Create full-screen image
+        GameObject imageObject = new GameObject("FadeImage");
+        imageObject.transform.SetParent(fadeObject.transform);
+        UnityEngine.UI.Image image = imageObject.AddComponent<UnityEngine.UI.Image>();
+
+        // Use black with low alpha (subtle)
+        image.color = new Color(0f, 0f, 0f, 0.2f); 
+
+        // Stretch to full screen
+        RectTransform rect = imageObject.GetComponent<RectTransform>();
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+
+        return fadeObject;
+    }
+
+
     // Helper method to handle fading
     private IEnumerator Fade(CanvasGroup group, float startAlpha, float endAlpha, float duration)
     {
         float elapsed = 0f;
-
         while (elapsed < duration)
         {
-
             if (group == null) yield break;
 
-            group.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsed / duration);
+            float t = elapsed / duration;
+            group.alpha = Mathf.Lerp(startAlpha, endAlpha, Mathf.SmoothStep(0f, 1f, t));
+
             elapsed += Time.unscaledDeltaTime;
             yield return null;
         }
 
         group.alpha = endAlpha;
     }
+
 }
