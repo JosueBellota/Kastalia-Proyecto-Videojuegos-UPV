@@ -106,12 +106,24 @@ public class GameManager : MonoBehaviour
         isPaused = true;
     }
 
+
     public void Tutorial()
     {
+        StartCoroutine(TutorialCoroutine());
+    }
 
-        StartCoroutine(LoadSceneWithTransition("Tutorial1", true));
-        Time.timeScale = 0f;
-        isPaused = true;
+    public void LoadTutorialScene(string sceneName, bool additive)
+    {
+        StartCoroutine(LoadSceneWithOutTransition(sceneName, additive));
+    }
+
+    private IEnumerator TutorialCoroutine()
+    {
+        yield return new WaitForSeconds(5f);
+
+        StartCoroutine(LoadSceneWithOutTransition("Tutorial1", true));
+        // Time.timeScale = 0f;
+        // isPaused = true;
     }
 
     public void ResumeGame()
@@ -125,8 +137,8 @@ public class GameManager : MonoBehaviour
     public void SkipTutorial(string sceneToUnload)
     {
         StartCoroutine(UnloadSceneWithOutTransition(sceneToUnload));
-        Time.timeScale = 1f;
-        isPaused = false;
+        // Time.timeScale = 1f;
+        // isPaused = false;
     }
 
     public void StartMainMenu()
@@ -246,6 +258,26 @@ public class GameManager : MonoBehaviour
         // Clean up
         if (fadeObject != null)
             Destroy(fadeObject);
+    }
+
+
+
+    private IEnumerator LoadSceneWithOutTransition(string sceneName, bool additive)
+    {
+
+        AsyncOperation asyncLoad;
+        if (additive)
+        {
+            asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
+        }
+        else
+        {
+            asyncLoad = SceneManager.LoadSceneAsync(sceneName);
+
+        }
+
+        yield return asyncLoad;
+
     }
 
     private IEnumerator UnloadSceneWithTransition(string sceneName)

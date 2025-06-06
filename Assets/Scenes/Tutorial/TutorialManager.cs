@@ -1,32 +1,73 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+
+
 public class TutorialManager : MonoBehaviour
 {
-    [SerializeField] Button resume;
-    // [SerializeField] Button quit;
-    // [SerializeField] Button backToMenu;
-   
 
+    [SerializeField] private string thisSceneName;
+    [SerializeField] private Button resume;
+    [SerializeField] private Button nextBtn;
+
+    [SerializeField] private List<string> tutorialScenes = new List<string> { "Tutorial1", "Tutorial2"};
+
+    private int currentIndex;
     void Start()
     {
-       
-        resume.onClick.AddListener(() => Continue());
-        // quit.onClick.AddListener(() => CloseGame());
-        // backToMenu.onClick.AddListener(() => BackToMenu());
+        resume.onClick.AddListener(skip);
+        nextBtn.onClick.AddListener(next);
+        currentIndex = tutorialScenes.IndexOf(thisSceneName);
+
+         // Optional: Warn if the scene name isn't found
+        if (currentIndex == -1)
+        {
+            Debug.LogWarning($"'{thisSceneName}' not found in tutorialScenes list.");
+        }
     }
 
-    private void Continue()
+    private void skip()
     {
-        GameManager.instance.SkipTutorial("Tutorial1");
+        // Unload all tutorial scenes
+        foreach (string scene in tutorialScenes)
+        {
+            if (SceneManager.GetSceneByName(scene).isLoaded)
+            {
+                GameManager.instance.SkipTutorial(scene);
+            }
+        }
 
+        // Optionally resume game
+        // GameManager.instance.ResumeGame();
     }
 
-    // private void CloseGame(){
-    //     Application.Quit();
+    private void next()
+    {
+        if (currentIndex >= tutorialScenes.Count)
+        {
+            skip();
+            return;
+        }
 
-    //     #if UNITY_EDITOR
-    //     UnityEditor.EditorApplication.isPlaying = false;
-    //     #endif
-    // }
+        string currentScene = tutorialScenes[currentIndex];
+
+        // Unload current tutorial scene
+        if (SceneManager.GetSceneByName(currentScene).isLoaded)
+        {
+            GameManager.instance.SkipTutorial(currentScene);
+        }
+
+        currentIndex++;
+
+        if (currentIndex < tutorialScenes.Count)
+        {
+            string nextScene = tutorialScenes[currentIndex];
+            GameManager.instance.LoadTutorialScene(nextScene, true);
+        }
+        else
+        {
+            skip();
+        }
+    }
 }
