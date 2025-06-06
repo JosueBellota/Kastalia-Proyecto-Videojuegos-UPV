@@ -10,12 +10,16 @@ public class EnemyHealth : MonoBehaviour
     private int currentHealth;
     public GameObject jugador;
 
+    private DamageFlash damageFlash;
     private void Start()
     {
         currentHealth = maxHealth;
         jugador = GameObject.FindGameObjectWithTag("Player");
 
-        if(EnemyManager.Instance){
+        damageFlash = GetComponent<DamageFlash>();
+
+        if (EnemyManager.Instance)
+        {
             EnemyManager.Instance.RegisterEnemy();
         }
     }
@@ -31,7 +35,10 @@ public class EnemyHealth : MonoBehaviour
         if(DamagePopupPrefab && currentHealth > 0) ShowDamagePopup(damage);
         if(currentHealth - damage > 0){
             currentHealth -= damage;
-            StartCoroutine(FlashOnHit());
+
+            if (damageFlash != null)
+            damageFlash.Flash();
+
         }
         else
         {
@@ -49,15 +56,6 @@ public class EnemyHealth : MonoBehaviour
     public void SetHealth(int value){
         if(value <= 0) return;
         maxHealth = value; currentHealth = value;
-    }
-
-    IEnumerator FlashOnHit()
-    {
-        Renderer enemyRenderer = GetComponentInChildren<Renderer>();
-        Color originalColor = enemyRenderer.material.color;
-        enemyRenderer.material.color = Color.blue;
-        yield return new WaitForSeconds(0.2f);
-        enemyRenderer.material.color = originalColor;
     }
     private void Die()
     {

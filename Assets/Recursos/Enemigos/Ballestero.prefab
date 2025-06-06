@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 1328817221307898398}
   - component: {fileID: 2742938890233957175}
   - component: {fileID: 1443544947387974726}
+  - component: {fileID: 6716601777566972004}
   - component: {fileID: 5003332550468180761}
   m_Layer: 7
   m_Name: Ballestero
@@ -146,6 +147,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   nombre: {fileID: 11400000, guid: 016cee37b90cbaf418b7be71f384c8c8, type: 2}
   inicial: 0
+--- !u!114 &6716601777566972004
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7133347364983744333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d296dd7607ed3141a6db237e5334d63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: 59c8c241538d81642a972644e8a00260, type: 2}
+  flashDuration: 0.2
 --- !u!65 &5003332550468180761
 BoxCollider:
   m_ObjectHideFlags: 0
