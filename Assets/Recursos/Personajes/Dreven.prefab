@@ -79,6 +79,7 @@ GameObject:
   - component: {fileID: 2593802296230818012}
   - component: {fileID: 7460853828753018524}
   - component: {fileID: -8338348011190478613}
+  - component: {fileID: -3191123728993265180}
   m_Layer: 6
   m_Name: Dreven
   m_TagString: Player
@@ -167,7 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabFlecha: {fileID: 1082511336032855041, guid: bd5ab033dd4978c4886ccba1cce15e50, type: 3}
   fuerza: 30
-  delayDisparo: 0.1
+  delayDisparoVisual: 1.4
   delayRafaga: 0.05
 --- !u!114 &5396867147106388286
 MonoBehaviour:
@@ -274,6 +275,21 @@ MonoBehaviour:
     m_Bits: 128
   currentTarget: {fileID: 0}
   isLocked: 0
+  systemEnabled: 1
+--- !u!114 &-3191123728993265180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8343663245281204225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d296dd7607ed3141a6db237e5334d63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: afbf5e38be577554e9e20cee0d479ae1, type: 2}
+  flashDuration: 0.2
 --- !u!1001 &184603812573136305
 PrefabInstance:
   m_ObjectHideFlags: 0
