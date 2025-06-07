@@ -106,12 +106,39 @@ public class GameManager : MonoBehaviour
         isPaused = true;
     }
 
+
+    public void Tutorial()
+    {
+        StartCoroutine(TutorialCoroutine());
+    }
+
+    public void LoadTutorialScene(string sceneName, bool additive)
+    {
+        StartCoroutine(LoadSceneWithOutTransition(sceneName, additive));
+    }
+
+    private IEnumerator TutorialCoroutine()
+    {
+        yield return new WaitForSeconds(5f);
+
+        StartCoroutine(LoadSceneWithOutTransition("Tutorial1", true));
+        // Time.timeScale = 0f;
+        // isPaused = true;
+    }
+
     public void ResumeGame()
     {
         StartCoroutine(UnloadSceneWithTransition("PauseMenu"));
         Time.timeScale = 1f;
         isPaused = false;
 
+    }
+
+    public void SkipTutorial(string sceneToUnload)
+    {
+        StartCoroutine(UnloadSceneWithOutTransition(sceneToUnload));
+        // Time.timeScale = 1f;
+        // isPaused = false;
     }
 
     public void StartMainMenu()
@@ -167,6 +194,8 @@ public class GameManager : MonoBehaviour
         {
             Instantiate(prefabArco, posicionJugador, rotacionJugador);
         }
+
+        Tutorial();
     }
 
     // 🆕 NUEVO: Método sugerido para ser llamado después de seleccionar personaje
@@ -231,6 +260,29 @@ public class GameManager : MonoBehaviour
             Destroy(fadeObject);
     }
 
+
+
+    private IEnumerator LoadSceneWithOutTransition(string sceneName, bool additive)
+    {
+        GameObject fadeObject = CreateSubtleFadeOverlay();
+        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+
+        // Soft fade in
+        yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
+
+        AsyncOperation asyncLoad = additive
+            ? SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive)
+            : SceneManager.LoadSceneAsync(sceneName);
+
+        yield return asyncLoad;
+
+        // Soft fade out
+        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
+
+        Destroy(fadeObject);
+    }
+
+
     private IEnumerator UnloadSceneWithTransition(string sceneName)
     {
         // Create a simple fade overlay
@@ -249,6 +301,23 @@ public class GameManager : MonoBehaviour
         // Clean up
         Destroy(fadeObject);
     }
+
+   private IEnumerator UnloadSceneWithOutTransition(string sceneName)
+    {
+        GameObject fadeObject = CreateSubtleFadeOverlay();
+        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+
+        // Soft fade in
+        yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
+
+        yield return SceneManager.UnloadSceneAsync(sceneName);
+
+        // Soft fade out
+        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
+
+        Destroy(fadeObject);
+    }
+
 
     // Helper method to create a simple fade overlay
     private GameObject CreateFadeOverlay()
@@ -279,21 +348,53 @@ public class GameManager : MonoBehaviour
         return fadeObject;
     }
 
+    private GameObject CreateSubtleFadeOverlay()
+    {
+        GameObject fadeObject = new GameObject("SubtleFadeOverlay");
+
+        // Setup Canvas
+        Canvas canvas = fadeObject.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+        canvas.sortingOrder = 9999;
+
+        // Setup CanvasGroup
+        CanvasGroup group = fadeObject.AddComponent<CanvasGroup>();
+
+        // Create full-screen image
+        GameObject imageObject = new GameObject("FadeImage");
+        imageObject.transform.SetParent(fadeObject.transform);
+        UnityEngine.UI.Image image = imageObject.AddComponent<UnityEngine.UI.Image>();
+
+        // Use black with low alpha (subtle)
+        image.color = new Color(0f, 0f, 0f, 0.2f); 
+
+        // Stretch to full screen
+        RectTransform rect = imageObject.GetComponent<RectTransform>();
+        rect.anchorMin = Vector2.zero;
+        rect.anchorMax = Vector2.one;
+        rect.offsetMin = Vector2.zero;
+        rect.offsetMax = Vector2.zero;
+
+        return fadeObject;
+    }
+
+
     // Helper method to handle fading
     private IEnumerator Fade(CanvasGroup group, float startAlpha, float endAlpha, float duration)
     {
         float elapsed = 0f;
-
         while (elapsed < duration)
         {
-
             if (group == null) yield break;
 
-            group.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsed / duration);
+            float t = elapsed / duration;
+            group.alpha = Mathf.Lerp(startAlpha, endAlpha, Mathf.SmoothStep(0f, 1f, t));
+
             elapsed += Time.unscaledDeltaTime;
             yield return null;
         }
 
         group.alpha = endAlpha;
     }
+
 }

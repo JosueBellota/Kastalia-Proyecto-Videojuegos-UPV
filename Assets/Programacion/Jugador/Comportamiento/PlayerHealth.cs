@@ -15,8 +15,6 @@ public class PlayerHealth : MonoBehaviour
     private PlayerController playerController;
     private MainInterface mainInterface;
 
-    [SerializeField] private float transitionDuration = 0.25f;
-
     [SerializeField] private float fadeDuration = 0.25f;
 
 

@@ -9,7 +9,7 @@ public class Bomba : MonoBehaviour
 
     [Header("Proximity Explosion")]
     [SerializeField] private float proximityRadius = 3f;
-    [SerializeField] private float explosionDelay = 3f;
+    // [SerializeField] private float explosionDelay = 3f;
 
     [SerializeField] private GameObject explosionRadiusIndicatorPrefab;
     [SerializeField] private GameObject dangerRadiusIndicatorPrefab;
