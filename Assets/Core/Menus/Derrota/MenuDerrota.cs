@@ -1,21 +1,33 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MenuDerrota : MonoBehaviour
 {
-    public void Reintentar()
+    [SerializeField] private Button reintentarButton;
+    [SerializeField] private Button irAlMenuPrincipalButton;
+    [SerializeField] private Button salirDelJuegoButton;
+
+    void Start()
+    {
+        reintentarButton.onClick.AddListener(Reintentar);
+        irAlMenuPrincipalButton.onClick.AddListener(IrAlMenuPrincipal);
+        salirDelJuegoButton.onClick.AddListener(SalirDelJuego);
+    }
+
+    private void Reintentar()
     {
         Time.timeScale = 1f;
         GameManager.instance.StartMainGameLoop();
     }
 
-    public void IrAlMenuPrincipal()
+    private void IrAlMenuPrincipal()
     {
         Time.timeScale = 1f;
         GameManager.instance.StartMainMenu();
     }
 
-    public void SalirDelJuego()
+    private void SalirDelJuego()
     {
-        Application.Quit();
+        GameManager.instance.QuitGame();
     }
 }
