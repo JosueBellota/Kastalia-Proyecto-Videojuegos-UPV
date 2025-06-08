@@ -1006,17 +1006,7 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 1982072658132262059, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
-    - {fileID: 3248331834327170092, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
-    - {fileID: 5396867147106388286, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
-    - {fileID: 2329343856140047616, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
-    - {fileID: 6416512566687185867, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
-    - {fileID: 4590723734969508553, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
-    - {fileID: 2593802296230818012, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
-    - {fileID: 7460853828753018524, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
-    - {fileID: 5118215918898081989, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
-    - {fileID: 5598295927097056680, guid: 833d8433435efbe46b2856a9f5c8c1b1, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2208,50 +2198,11 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 2107909818202326770, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
-    - {fileID: 6514164735661229838, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
-    - {fileID: 5396867147106388286, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
-    - {fileID: 2329343856140047616, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
-    - {fileID: 6416512566687185867, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
-    - {fileID: 4590723734969508553, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
-    - {fileID: 2593802296230818012, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
-    - {fileID: 7460853828753018524, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
-    - {fileID: -8338348011190478613, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
-    - {fileID: -3191123728993265180, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8343663245281204225, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 758944063}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
---- !u!1 &758944062 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8343663245281204225, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
-  m_PrefabInstance: {fileID: 758944061}
-  m_PrefabAsset: {fileID: 0}
---- !u!65 &758944063
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 758944062}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &820506076
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4019,6 +3970,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1686524868}
   - component: {fileID: 1686524867}
+  - component: {fileID: 1686524866}
+  - component: {fileID: 1686524865}
   m_Layer: 0
   m_Name: CinemachineCamera
   m_TagString: Untagged
@@ -4026,6 +3979,40 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1686524865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686524864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 110d6b7b3c1895b44a0093065ee9fd5c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  layerMask:
+    serializedVersion: 2
+    m_Bits: 8
+--- !u!114 &1686524866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1686524864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b617507da6d07e749b7efdb34e1173e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  TrackerSettings:
+    BindingMode: 4
+    PositionDamping: {x: 0.5, y: 1, z: 0.5}
+    AngularDampingMode: 0
+    RotationDamping: {x: 1, y: 1, z: 1}
+    QuaternionDamping: 1
+  FollowOffset: {x: 0, y: 10, z: -10}
 --- !u!114 &1686524867
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19507,10 +19494,6 @@ PrefabInstance:
     - target: {fileID: 7195948001984693631, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
       propertyPath: m_Name
       value: GameManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 7195948001984693631, guid: a2b73fb21a0c59740b641830d746d28b, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

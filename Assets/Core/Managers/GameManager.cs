@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
 
         fadeGroup.alpha = 1f;
 
-        AsyncOperation loadSelection = SceneManager.LoadSceneAsync("MazmorraSelection", LoadSceneMode.Additive);
+        AsyncOperation loadSelection = SceneManager.LoadSceneAsync("CharacterSelection", LoadSceneMode.Additive);
         yield return loadSelection;
 
         // Unload MainMenu if it's still loaded
@@ -114,7 +114,7 @@ public class GameManager : MonoBehaviour
         GameObject fadeObject = CreateFadeOverlay();
         CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
 
-    
+        // Fade to black
         yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
 
         // Load Mazmorra1 first (additively)
@@ -127,21 +127,11 @@ public class GameManager : MonoBehaviour
         {
             SceneManager.SetActiveScene(mazmorraScene);
         }
-        
-
-        // 🔧 FIX: Remove old MainCamera tag before unloading selection scene
-        Camera oldCamera = GameObject.FindGameObjectWithTag("MainCamera")?.GetComponent<Camera>();
-        if (oldCamera != null)
-        {
-            oldCamera.tag = "Untagged";
-            oldCamera.gameObject.SetActive(false); // Optional but safer
-        }
 
         // THEN unload CharacterSelection
-        if (SceneManager.GetSceneByName("MazmorraSelection").isLoaded)
+        if (SceneManager.GetSceneByName("CharacterSelection").isLoaded)
         {
-
-            yield return SceneManager.UnloadSceneAsync("MazmorraSelection");
+            yield return SceneManager.UnloadSceneAsync("CharacterSelection");
         }
 
         // Fade in
@@ -178,7 +168,8 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(5f);
 
         StartCoroutine(LoadSceneWithOutTransition("Tutorial1", true));
-
+        // Time.timeScale = 0f;
+        // isPaused = true;
     }
 
     public void ResumeGame()
@@ -230,6 +221,7 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    // 🆕 NUEVO: Método para instanciar el arma cerca del personaje seleccionado
     public void InstanciarArmaParaPersonaje()
     {
         if (LevelManager.instance == null || LevelManager.instance.player == null)
@@ -251,11 +243,14 @@ public class GameManager : MonoBehaviour
 
         Tutorial();
     }
+
+    // 🆕 NUEVO: Método sugerido para ser llamado después de seleccionar personaje
     public void SeleccionarPersonaje(GameObject personaje)
     {
         personajeSeleccionado = personaje;
         playerSpawned = true;
 
+        // InstanciarArmaParaPersonaje(); // 🆕 Instancia el arma correspondiente
     }
 
 
