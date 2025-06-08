@@ -82,67 +82,21 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator CargarMazmorraYSeleccion()
     {
+
         GameObject fadeObject = CreateFadeOverlay();
         CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-
-        fadeGroup.alpha = 1f;
-
-        AsyncOperation loadSelection = SceneManager.LoadSceneAsync("CharacterSelection", LoadSceneMode.Additive);
-        yield return loadSelection;
-
-        // Unload MainMenu if it's still loaded
-        Scene mainMenuScene = SceneManager.GetSceneByName("MainMenu");
-        if (mainMenuScene.IsValid() && mainMenuScene.isLoaded)
-        {
-            yield return SceneManager.UnloadSceneAsync("MainMenu");
-        }
-
-        // Fade out to show the CharacterSelection
-        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
-
-        Destroy(fadeObject);
-    }
-
-
-    public void LoadMazmorraAfterSelection()
-    {
-        StartCoroutine(LoadMazmorraAfterSelectionCoroutine());
-    }
-
-    private IEnumerator LoadMazmorraAfterSelectionCoroutine()
-    {
-        GameObject fadeObject = CreateFadeOverlay();
-        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-
-        // Fade to black
-        yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
-
-        // Load Mazmorra1 first (additively)
-        AsyncOperation loadMazmorra = SceneManager.LoadSceneAsync("Mazmorra1", LoadSceneMode.Additive);
+        AsyncOperation loadMazmorra = SceneManager.LoadSceneAsync("Mazmorra1");
         yield return loadMazmorra;
 
-        // Optional: Set Mazmorra1 as the active scene
-        Scene mazmorraScene = SceneManager.GetSceneByName("Mazmorra1");
-        if (mazmorraScene.IsValid())
-        {
-            SceneManager.SetActiveScene(mazmorraScene);
-        }
-
-        // THEN unload CharacterSelection
-        if (SceneManager.GetSceneByName("CharacterSelection").isLoaded)
-        {
-            yield return SceneManager.UnloadSceneAsync("CharacterSelection");
-        }
-
-        // Fade in
+        fadeObject = CreateFadeOverlay();
+        fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+        fadeGroup.alpha = 1f; // Start from black
+        AsyncOperation loadSelection = SceneManager.LoadSceneAsync("CharacterSelection", LoadSceneMode.Additive);
+        yield return loadSelection;
         yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
 
         Destroy(fadeObject);
-
-        isLevelLoaded = true;
     }
-
-
 
     public void PauseGame()
     {

@@ -34,6 +34,7 @@ public class CharacterSelection : MonoBehaviour
 
             GameManager.instance.playerSpawned = false;
 
+             // 🆕 NUEVO: Instanciar arma para el personaje seleccionado
             GameManager.instance.InstanciarArmaParaPersonaje();
 
             if (Cronometro.instance != null)
@@ -41,9 +42,11 @@ public class CharacterSelection : MonoBehaviour
                 Cronometro.instance.ReiniciarCronometro();
             }
 
-            // Trigger loading the dungeon AFTER character is selected
-            GameManager.instance.LoadMazmorraAfterSelection();
+            if (SceneManager.GetSceneByName("CharacterSelection").isLoaded)
+            {
+                SceneManager.UnloadSceneAsync("CharacterSelection");
+            }
+            GameManager.instance.isPaused = false;
         }
     }
-
 }
