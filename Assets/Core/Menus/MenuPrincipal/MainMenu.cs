@@ -16,7 +16,7 @@ public class MainMenu : MonoBehaviour
     {
         if (GameManager.instance != null)
         {
-            GameManager.instance.StartMainGameLoop();
+            GameManager.instance.StartSeleccionMenu();
         }
     }
 

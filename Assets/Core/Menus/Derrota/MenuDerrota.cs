@@ -17,7 +17,7 @@ public class MenuDerrota : MonoBehaviour
     private void Reintentar()
     {
         Time.timeScale = 1f;
-        GameManager.instance.StartMainGameLoop();
+        GameManager.instance.StartSeleccionMenu();
     }
 
     private void IrAlMenuPrincipal()

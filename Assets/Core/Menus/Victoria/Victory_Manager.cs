@@ -14,7 +14,7 @@ public class Victory_Manager : MonoBehaviour
     public void JugarDeNuevo()
     {
         SceneManager.UnloadSceneAsync("Menu_Victoria");
-        GameManager.instance.StartMainGameLoop();
+        GameManager.instance.StartSeleccionMenu();
         GameManager.instance.isPaused = false;
     }
 

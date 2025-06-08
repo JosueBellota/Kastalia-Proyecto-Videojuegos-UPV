@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void StartMainGameLoop()
+    public void StartSeleccionMenu()
     {
         characterIndex = -1;
         personajeSeleccionado = null;
@@ -71,7 +71,8 @@ public class GameManager : MonoBehaviour
 
         // Limpiar cofres anteriores
         ItemDropTracker.Reiniciar();
-        StartCoroutine(CargarMazmorraYSeleccion());
+
+        StartCoroutine(LoadSceneWithTransition("CharacterSelection", false));
     }
 
     public void WinGame()
@@ -80,22 +81,9 @@ public class GameManager : MonoBehaviour
         StartCoroutine(LoadSceneWithTransition("Menu_Victoria", true));
     }
 
-    private IEnumerator CargarMazmorraYSeleccion()
+    public void StartMazmorraScene()
     {
-
-        GameObject fadeObject = CreateFadeOverlay();
-        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-        AsyncOperation loadMazmorra = SceneManager.LoadSceneAsync("Mazmorra1");
-        yield return loadMazmorra;
-
-        fadeObject = CreateFadeOverlay();
-        fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-        fadeGroup.alpha = 1f; // Start from black
-        AsyncOperation loadSelection = SceneManager.LoadSceneAsync("CharacterSelection", LoadSceneMode.Additive);
-        yield return loadSelection;
-        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
-
-        Destroy(fadeObject);
+        StartCoroutine(LoadSceneWithTransition("Mazmorra1", false));
     }
 
     public void PauseGame()
