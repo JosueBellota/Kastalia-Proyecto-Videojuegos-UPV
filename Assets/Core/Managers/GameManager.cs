@@ -82,77 +82,21 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator CargarMazmorraYSeleccion()
     {
+
         GameObject fadeObject = CreateFadeOverlay();
         CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-
-        fadeGroup.alpha = 1f;
-
-        AsyncOperation loadSelection = SceneManager.LoadSceneAsync("MazmorraSelection", LoadSceneMode.Additive);
-        yield return loadSelection;
-
-        // Unload MainMenu if it's still loaded
-        Scene mainMenuScene = SceneManager.GetSceneByName("MainMenu");
-        if (mainMenuScene.IsValid() && mainMenuScene.isLoaded)
-        {
-            yield return SceneManager.UnloadSceneAsync("MainMenu");
-        }
-
-        // Fade out to show the CharacterSelection
-        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
-
-        Destroy(fadeObject);
-    }
-
-
-    public void LoadMazmorraAfterSelection()
-    {
-        StartCoroutine(LoadMazmorraAfterSelectionCoroutine());
-    }
-
-    private IEnumerator LoadMazmorraAfterSelectionCoroutine()
-    {
-        GameObject fadeObject = CreateFadeOverlay();
-        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-
-    
-        yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
-
-        // Load Mazmorra1 first (additively)
-        AsyncOperation loadMazmorra = SceneManager.LoadSceneAsync("Mazmorra1", LoadSceneMode.Additive);
+        AsyncOperation loadMazmorra = SceneManager.LoadSceneAsync("Mazmorra1");
         yield return loadMazmorra;
 
-        // Optional: Set Mazmorra1 as the active scene
-        Scene mazmorraScene = SceneManager.GetSceneByName("Mazmorra1");
-        if (mazmorraScene.IsValid())
-        {
-            SceneManager.SetActiveScene(mazmorraScene);
-        }
-        
-
-        // 🔧 FIX: Remove old MainCamera tag before unloading selection scene
-        Camera oldCamera = GameObject.FindGameObjectWithTag("MainCamera")?.GetComponent<Camera>();
-        if (oldCamera != null)
-        {
-            oldCamera.tag = "Untagged";
-            oldCamera.gameObject.SetActive(false); // Optional but safer
-        }
-
-        // THEN unload CharacterSelection
-        if (SceneManager.GetSceneByName("MazmorraSelection").isLoaded)
-        {
-
-            yield return SceneManager.UnloadSceneAsync("MazmorraSelection");
-        }
-
-        // Fade in
+        fadeObject = CreateFadeOverlay();
+        fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+        fadeGroup.alpha = 1f; // Start from black
+        AsyncOperation loadSelection = SceneManager.LoadSceneAsync("CharacterSelection", LoadSceneMode.Additive);
+        yield return loadSelection;
         yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
 
         Destroy(fadeObject);
-
-        isLevelLoaded = true;
     }
-
-
 
     public void PauseGame()
     {
@@ -178,7 +122,8 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(5f);
 
         StartCoroutine(LoadSceneWithOutTransition("Tutorial1", true));
-
+        // Time.timeScale = 0f;
+        // isPaused = true;
     }
 
     public void ResumeGame()
@@ -230,6 +175,7 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
+    // 🆕 NUEVO: Método para instanciar el arma cerca del personaje seleccionado
     public void InstanciarArmaParaPersonaje()
     {
         if (LevelManager.instance == null || LevelManager.instance.player == null)
@@ -251,11 +197,14 @@ public class GameManager : MonoBehaviour
 
         Tutorial();
     }
+
+    // 🆕 NUEVO: Método sugerido para ser llamado después de seleccionar personaje
     public void SeleccionarPersonaje(GameObject personaje)
     {
         personajeSeleccionado = personaje;
         playerSpawned = true;
 
+        // InstanciarArmaParaPersonaje(); // 🆕 Instancia el arma correspondiente
     }
 
 
