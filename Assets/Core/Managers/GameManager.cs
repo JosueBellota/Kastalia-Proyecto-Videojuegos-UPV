@@ -17,7 +17,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] public GameObject Lyx;
     [SerializeField] public GameObject Dreven;
 
-    // 🆕 NUEVO: Referencias a los prefabs de armas
     [SerializeField] private GameObject prefabHojaAfilada;
     [SerializeField] private GameObject prefabArco;
 
@@ -25,10 +24,7 @@ public class GameManager : MonoBehaviour
 
     public GameObject personajeSeleccionado;
 
-
-    // [SerializeField] private float transitionDuration = 0.5f;
-
-    [SerializeField] private float fadeDuration = 0.5f;
+    [SerializeField] private float fadeDuration = 0.25f;
 
     void Awake()
     {
@@ -57,30 +53,28 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public void StartSeleccionMenu()
+    private void ResetGameState()
     {
         characterIndex = -1;
         personajeSeleccionado = null;
         playerSpawned = false;
+        isPaused = false;
         isLevelLoaded = false;
 
-        if (LevelManager.instance != null)
-            LevelManager.instance.ResetLevelState(true);
-        if (LevelManager.instance != null)
-            LevelManager.instance.ResetLevelState(true);
-
-        // Limpiar cofres anteriores
+        LevelManager.instance?.ResetLevelState(true);
+        Cronometro.instance?.ReiniciarCronometro();
         ItemDropTracker.Reiniciar();
+    }
+
+
+
+    public void StartSeleccionMenu()
+    {
+
+        ResetGameState();
 
         StartCoroutine(LoadSceneWithTransition("CharacterSelection", false));
     }
-
-    public void WinGame()
-    {
-        isPaused = true;
-        StartCoroutine(LoadSceneWithTransition("Menu_Victoria", true));
-    }
-
     public void StartMazmorraScene()
     {
         StartCoroutine(LoadSceneWithTransition("Mazmorra1", false));
@@ -110,8 +104,7 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(5f);
 
         StartCoroutine(LoadSceneWithOutTransition("Tutorial1", true));
-        // Time.timeScale = 0f;
-        // isPaused = true;
+
     }
 
     public void ResumeGame()
@@ -125,8 +118,6 @@ public class GameManager : MonoBehaviour
     public void SkipTutorial(string sceneToUnload)
     {
         StartCoroutine(UnloadSceneWithOutTransition(sceneToUnload));
-        // Time.timeScale = 1f;
-        // isPaused = false;
     }
 
     public void StartMainMenu()
@@ -134,28 +125,16 @@ public class GameManager : MonoBehaviour
         StartCoroutine(LoadSceneWithTransition("MainMenu", false));
     }
 
+    public void WinGame()
+    {
+        isPaused = true;
+        StartCoroutine(LoadSceneWithTransition("Menu_Victoria", true));
+    }
+
     public void VolverAlMenuPrincipal()
     {
-        characterIndex = -1;
-        personajeSeleccionado = null;
-        playerSpawned = false;
-        isPaused = false;
-        isLevelLoaded = false;
-
-        if (LevelManager.instance != null)
-        {
-            LevelManager.instance.ResetLevelState(true);
-        }
-
-        if (Cronometro.instance != null)
-        {
-            Cronometro.instance.ReiniciarCronometro();
-        }
-
-        // 🔁 Limpiar ítems de cofres al volver al menú principal
-        ItemDropTracker.Reiniciar();
-
-        StartCoroutine(LoadSceneWithTransition("MainMenu", false));
+        ResetGameState();
+        StartMainMenu();
     }
 
     public void QuitGame()
@@ -163,7 +142,7 @@ public class GameManager : MonoBehaviour
         Application.Quit();
     }
 
-    // 🆕 NUEVO: Método para instanciar el arma cerca del personaje seleccionado
+   
     public void InstanciarArmaParaPersonaje()
     {
         if (LevelManager.instance == null || LevelManager.instance.player == null)
@@ -186,33 +165,23 @@ public class GameManager : MonoBehaviour
         Tutorial();
     }
 
-    // 🆕 NUEVO: Método sugerido para ser llamado después de seleccionar personaje
     public void SeleccionarPersonaje(GameObject personaje)
     {
         personajeSeleccionado = personaje;
         playerSpawned = true;
 
-        // InstanciarArmaParaPersonaje(); // 🆕 Instancia el arma correspondiente
     }
 
 
     // -----------------------------------------------------------------------
     // -------------------Metodos Para Transiciones entre menus ----------------
     // -----------------------------------------------------------------------
-
     private IEnumerator LoadSceneWithTransition(string sceneName, bool additive)
     {
-        // Create a simple fade overlay
         GameObject fadeObject = CreateFadeOverlay();
         CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-
-        // Fade in (to black)
         yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
-
-        // Store reference before potential destruction
         var fadeObjectToDestroy = fadeObject;
-
-        // Load the target scene
         AsyncOperation asyncLoad;
         if (additive)
         {
@@ -221,8 +190,6 @@ public class GameManager : MonoBehaviour
         else
         {
             asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-            // When loading a new scene non-additively, our fade object will be destroyed
-            // so we need to recreate it after scene load
             asyncLoad.completed += (op) =>
             {
                 if (fadeObjectToDestroy != null)
@@ -231,19 +198,13 @@ public class GameManager : MonoBehaviour
         }
 
         yield return asyncLoad;
-
-        // For non-additive loads, recreate the fade object
         if (!additive)
         {
             fadeObject = CreateFadeOverlay();
             fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-            fadeGroup.alpha = 1f; // Start from black
+            fadeGroup.alpha = 1f; 
         }
-
-        // Fade out (to clear)
         yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
-
-        // Clean up
         if (fadeObject != null)
             Destroy(fadeObject);
     }
@@ -254,8 +215,6 @@ public class GameManager : MonoBehaviour
     {
         GameObject fadeObject = CreateSubtleFadeOverlay();
         CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-
-        // Soft fade in
         yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
 
         AsyncOperation asyncLoad = additive
@@ -263,30 +222,18 @@ public class GameManager : MonoBehaviour
             : SceneManager.LoadSceneAsync(sceneName);
 
         yield return asyncLoad;
-
-        // Soft fade out
         yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
-
         Destroy(fadeObject);
     }
 
 
     private IEnumerator UnloadSceneWithTransition(string sceneName)
     {
-        // Create a simple fade overlay
         GameObject fadeObject = CreateFadeOverlay();
         CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-
-        // Fade in (to black)
         yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
-
-        // Unload the scene
         yield return SceneManager.UnloadSceneAsync(sceneName);
-
-        // Fade out (to clear)
         yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
-
-        // Clean up
         Destroy(fadeObject);
     }
 
@@ -294,39 +241,26 @@ public class GameManager : MonoBehaviour
     {
         GameObject fadeObject = CreateSubtleFadeOverlay();
         CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-
-        // Soft fade in
         yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
-
         yield return SceneManager.UnloadSceneAsync(sceneName);
-
-        // Soft fade out
         yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
-
         Destroy(fadeObject);
     }
-
-
-    // Helper method to create a simple fade overlay
     private GameObject CreateFadeOverlay()
     {
         GameObject fadeObject = new GameObject("FadeOverlay");
 
-        // Setup Canvas
         Canvas canvas = fadeObject.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 9999; // Make sure it's on top
+        canvas.sortingOrder = 9999; 
 
-        // Setup CanvasGroup for fading
         CanvasGroup group = fadeObject.AddComponent<CanvasGroup>();
 
-        // Create full-screen image
         GameObject imageObject = new GameObject("FadeImage");
         imageObject.transform.SetParent(fadeObject.transform);
         UnityEngine.UI.Image image = imageObject.AddComponent<UnityEngine.UI.Image>();
         image.color = Color.black;
 
-        // Stretch to full screen
         RectTransform rect = imageObject.GetComponent<RectTransform>();
         rect.anchorMin = Vector2.zero;
         rect.anchorMax = Vector2.one;
@@ -340,49 +274,36 @@ public class GameManager : MonoBehaviour
     {
         GameObject fadeObject = new GameObject("SubtleFadeOverlay");
 
-        // Setup Canvas
         Canvas canvas = fadeObject.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.sortingOrder = 9999;
 
-        // Setup CanvasGroup
         CanvasGroup group = fadeObject.AddComponent<CanvasGroup>();
 
-        // Create full-screen image
         GameObject imageObject = new GameObject("FadeImage");
         imageObject.transform.SetParent(fadeObject.transform);
         UnityEngine.UI.Image image = imageObject.AddComponent<UnityEngine.UI.Image>();
 
-        // Use black with low alpha (subtle)
         image.color = new Color(0f, 0f, 0f, 0.2f); 
 
-        // Stretch to full screen
         RectTransform rect = imageObject.GetComponent<RectTransform>();
         rect.anchorMin = Vector2.zero;
         rect.anchorMax = Vector2.one;
         rect.offsetMin = Vector2.zero;
         rect.offsetMax = Vector2.zero;
-
         return fadeObject;
     }
-
-
-    // Helper method to handle fading
     private IEnumerator Fade(CanvasGroup group, float startAlpha, float endAlpha, float duration)
     {
         float elapsed = 0f;
         while (elapsed < duration)
         {
             if (group == null) yield break;
-
             float t = elapsed / duration;
             group.alpha = Mathf.Lerp(startAlpha, endAlpha, Mathf.SmoothStep(0f, 1f, t));
-
             elapsed += Time.unscaledDeltaTime;
             yield return null;
         }
-
         group.alpha = endAlpha;
     }
-
 }
