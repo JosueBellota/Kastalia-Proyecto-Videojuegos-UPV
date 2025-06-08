@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-
+    // revert
     public static GameManager instance;
     public int characterIndex = -1;
     public bool playerSpawned = false;
