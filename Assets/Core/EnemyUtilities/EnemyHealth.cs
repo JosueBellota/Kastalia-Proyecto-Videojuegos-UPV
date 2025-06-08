@@ -15,7 +15,8 @@ public class EnemyHealth : MonoBehaviour
         currentHealth = maxHealth;
         jugador = GameObject.FindGameObjectWithTag("Player");
 
-        if(EnemyManager.Instance){
+        if (EnemyManager.Instance)
+        {
             EnemyManager.Instance.RegisterEnemy();
         }
     }
@@ -28,8 +29,9 @@ public class EnemyHealth : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
-        if(DamagePopupPrefab && currentHealth > 0) ShowDamagePopup(damage);
-        if(currentHealth - damage > 0){
+        if (DamagePopupPrefab && currentHealth > 0) ShowDamagePopup(damage);
+        if (currentHealth - damage > 0)
+        {
             currentHealth -= damage;
             StartCoroutine(FlashOnHit());
         }
@@ -46,8 +48,9 @@ public class EnemyHealth : MonoBehaviour
         popup.GetComponent<TextMeshPro>().text = damage.ToString();
     }
 
-    public void SetHealth(int value){
-        if(value <= 0) return;
+    public void SetHealth(int value)
+    {
+        if (value <= 0) return;
         maxHealth = value; currentHealth = value;
     }
 
@@ -61,6 +64,7 @@ public class EnemyHealth : MonoBehaviour
     }
     private void Die()
     {
+        // Habilidades del jugador
         OffensiveAbility offensiveAbilityController = jugador.GetComponent<OffensiveAbility>();
         DefensiveAbility defensiveAbilityController = jugador.GetComponent<DefensiveAbility>();
         HealingAbility healingAbilityController = jugador.GetComponent<HealingAbility>();
@@ -74,14 +78,25 @@ public class EnemyHealth : MonoBehaviour
 
         MainInterface mainInterface = FindFirstObjectByType<MainInterface>();
         if (mainInterface)
-        {
             mainInterface.SubtractCooldown();
-        }
+
         StopAllCoroutines();
 
         if (EnemyManager.Instance) EnemyManager.Instance.UnregisterEnemy();
 
-        Destroy(gameObject);
-    }
+        // ✅ En lugar de destruir directamente, dispara la animación
+        var bomb = GetComponent<BombarderoController>();
+        var ball = GetComponent<BallesteroController>();
+        var cab = GetComponent<CaballeroNormalController>();
 
+        if (bomb != null)
+            bomb.Morir();
+        else if (ball != null)
+            ball.Morir();
+        else if (cab != null)
+            cab.Morir();
+        else
+            Destroy(gameObject);
+
+    }
 }

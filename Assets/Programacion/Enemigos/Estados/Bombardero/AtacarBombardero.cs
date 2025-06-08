@@ -6,8 +6,6 @@ public class AtacarBombardero : Estado
     NavMeshAgent agent;
     BombarderoController controller;
 
-    public float bombaForce = 8f;
-
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
@@ -17,32 +15,30 @@ public class AtacarBombardero : Estado
 
     void Update()
     {
-        transform.LookAt(controller.jugador);
-        if (controller.jugador)
-        {
-            //Si el jugador se encuentra a tiro y lejos
-            if (controller.distanciaAJugador < controller.shootingDistance && controller.distanciaAJugador > controller.safeDistance)
-            {
-                if (!controller.isFiring)
-                {
-                    controller.isFiring = true;
-                    StartCoroutine(controller.ShootBomba());
-                }
-            }
-            //Si el jugador se encuentra a demasiado cerca
-            if (controller.distanciaAJugador < controller.safeDistance)
-            {
+        if (!controller || !controller.jugador) return;
 
-                
-                agent.ResetPath();
-                transform.LookAt(controller.jugador);
-                controller.SetEstado(controller.mantenerDistanciaEstado.Value);
-            }
-            if (controller.distanciaAJugador > controller.shootingDistance)
-            {
-                agent.ResetPath();
-                controller.SetEstado(controller.deambularEstado.Value);
-            }
+        transform.LookAt(controller.jugador);
+        controller.velocidadActual = agent.velocity.magnitude;
+
+        if (controller.distanciaAJugador < controller.shootingDistance && controller.distanciaAJugador > controller.safeDistance)
+{
+    if (!controller.isFiring)
+    {
+        controller.isFiring = true;
+        controller.animator.SetTrigger("Atacar"); // ← lanza la animación directamente
+        StartCoroutine(controller.ShootBomba());
+    }
+}
+        else if (controller.distanciaAJugador < controller.safeDistance)
+        {
+            agent.ResetPath();
+            transform.LookAt(controller.jugador);
+            controller.SetEstado(controller.mantenerDistanciaEstado.Value);
+        }
+        else if (controller.distanciaAJugador > controller.shootingDistance)
+        {
+            agent.ResetPath();
+            controller.SetEstado(controller.deambularEstado.Value);
         }
     }
 }

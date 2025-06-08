@@ -1,54 +1,64 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BombarderoController : Maquina
 {
-    //Atributos relacionados al enemigo
     public float shootingDistance = 15f;
     public float safeDistance = 5f;
-    // public float fireCooldown = 0f;
     public bool isFiring = false;
-
-    //Atributos relacionados al jugador
     public Transform jugador;
     public float distanciaAJugador;
-    
-    //Estados
+
     public NombreEstado deambularEstado;
     public NombreEstado mantenerDistanciaEstado;
     public NombreEstado atacarEstado;
     public Bomba bombaPrefab;
 
+    [HideInInspector] public Animator animator;
+    [HideInInspector] public NavMeshAgent agente;
+    [HideInInspector] public float velocidadActual = 0f;
+    [HideInInspector] public bool dispararAnimacion = false;
+
+    bool yaHaMuerto = false;
+
     void Start()
     {
-        if (FindFirstObjectByType<CharacterController>() == null) { return; }
-        else { jugador = FindFirstObjectByType<CharacterController>().transform; }
+        jugador = FindFirstObjectByType<CharacterController>()?.transform;
+        animator = GetComponentInChildren<Animator>();
+        agente = GetComponent<NavMeshAgent>();
+
+        if (animator == null) Debug.LogError("Animator no encontrado.");
+        if (agente == null) Debug.LogError("NavMeshAgent no encontrado.");
     }
 
     void Update()
     {
         if (!jugador)
         {
-            if (FindFirstObjectByType<CharacterController>() == null) return;
-            else { jugador = FindFirstObjectByType<CharacterController>().transform; }
+            var character = FindFirstObjectByType<CharacterController>();
+            if (character == null) return;
+            jugador = character.transform;
         }
+
         distanciaAJugador = getDistanceToPlayer();
-        
-        //   // NUEVA LÓGICA PARA DISPARO AUTOMÁTICO
-        // if (!isFiring && distanciaAJugador <= shootingDistance)
-        // {
-        //     isFiring = true;
-        //     StartCoroutine(ShootBomba());
-        // }
+
+        // Animaciones
+        if (animator != null)
+        {
+            animator.SetFloat("Speed", velocidadActual);
+
+            if (dispararAnimacion)
+            {
+                animator.SetTrigger("Atacar");
+                dispararAnimacion = false;
+            }
+        }
     }
 
-    private float getDistanceToPlayer(){
-        if (jugador){
-            return Vector3.Distance(transform.position, jugador.position);
-        } else {
-            Debug.LogError("No se ha encontrado al jugador.");
-            return 0;
-        }
+    private float getDistanceToPlayer()
+    {
+        return jugador ? Vector3.Distance(transform.position, jugador.position) : 0f;
     }
 
     public IEnumerator ShootBomba()
@@ -59,32 +69,39 @@ public class BombarderoController : Maquina
         Bomba bomba = Instantiate(bombaPrefab, spawnPos, Quaternion.identity);
         Rigidbody rb = bomba.GetComponent<Rigidbody>();
 
-        // Tiempo deseado en el aire — más alto = más lento y parabólico
-        float flightTime = 1.4f; // Aumentado para hacerlo más visible y lento
-
+        float flightTime = 1.4f;
         Vector3 toTarget = targetPos - spawnPos;
         Vector3 toTargetXZ = new Vector3(toTarget.x, 0, toTarget.z);
         float yOffset = toTarget.y;
         float gravity = Mathf.Abs(Physics.gravity.y);
 
-        // Calcular velocidades
         float verticalVelocity = (yOffset + 0.5f * gravity * flightTime * flightTime) / flightTime;
-
-        // Acentuar el arco parabólico ligeramente (opcional: +20%)
         verticalVelocity *= 1.2f;
 
         Vector3 horizontalVelocity = toTargetXZ / flightTime;
         Vector3 launchVelocity = horizontalVelocity + Vector3.up * verticalVelocity;
 
-        // Aplicar velocidad
         rb.linearVelocity = launchVelocity;
 
-        // Iniciar cuenta regresiva para explosión
         bomba.IniciarCuentaRegresiva();
 
         yield return new WaitForSeconds(4);
         isFiring = false;
     }
 
+    public void Morir()
+{
+    if (!yaHaMuerto)
+    {
+        animator.SetTrigger("Morir");
+        yaHaMuerto = true;
+        StartCoroutine(EsperarYDesaparecer());
+    }
+}
 
+IEnumerator EsperarYDesaparecer()
+{
+    yield return new WaitForSeconds(3f); // ⏱️ espera a que la animación se vea
+    gameObject.SetActive(false);         // o Destroy(gameObject); si prefieres
+}
 }

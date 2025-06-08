@@ -19,11 +19,14 @@ public class DeambularEstadoBallestero : Estado
     void Update()
     {
         if (GameManager.instance.isPaused) return;
+
         if (controller != null && controller.jugador != null)
         {
+            controller.velocidadActual = agent.velocity.magnitude;
+
             if (controller.distanciaAJugador <= controller.shootingDistance && controller.distanciaAJugador > controller.safeDistance)
             {
-                StopCoroutine(DeambularCoorutina());
+                StopAllCoroutines();
                 estaDeambulando = false;
                 transform.LookAt(controller.jugador);
                 controller.DisplayAgroPopup();
@@ -31,7 +34,7 @@ public class DeambularEstadoBallestero : Estado
             }
             else if (controller.distanciaAJugador <= controller.safeDistance)
             {
-                StopCoroutine(DeambularCoorutina());
+                StopAllCoroutines();
                 estaDeambulando = false;
                 transform.LookAt(controller.jugador);
                 controller.DisplayAgroPopup();
@@ -62,27 +65,20 @@ public class DeambularEstadoBallestero : Estado
         return transform.position;
     }
 
-
     IEnumerator DeambularCoorutina()
     {
         estaDeambulando = true;
         posicionAleatoria = ElegirPosicionAleatoria();
 
-        while (posicionAleatoria != null && Vector3.Distance(agent.transform.position, posicionAleatoria) > .5f)
+        agent.SetDestination(posicionAleatoria);
+        agent.transform.LookAt(posicionAleatoria);
+
+        while (agent.pathPending || (agent.isOnNavMesh && agent.remainingDistance > .2f))
         {
-
-            agent.SetDestination(posicionAleatoria);
-            agent.transform.LookAt(posicionAleatoria);
-
-            while (agent.pathPending || (agent.isOnNavMesh && agent.remainingDistance > .2f))
-            {
-                yield return null;
-            }
-
-            float tiempoEspera = Random.Range(1f, 4f);
-            yield return new WaitForSeconds(tiempoEspera);
+            yield return null;
         }
 
+        yield return new WaitForSeconds(Random.Range(1f, 4f));
         estaDeambulando = false;
     }
 }
