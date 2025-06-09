@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7749914513162820646}
   - component: {fileID: 7972243225495057880}
-  - component: {fileID: 935414492618483923}
   - component: {fileID: 1176653581348777109}
   m_Layer: 0
   m_Name: Musica
@@ -133,18 +132,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &935414492618483923
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2675948112821083827}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a8fc6e6f576c6e4fb5468a965beff95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1176653581348777109
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -174,7 +161,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2978112412057169433
 Transform:
   m_ObjectHideFlags: 0
@@ -5045,6 +5032,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 703890eebe960884294068ee89c2b252, type: 3}
       propertyPath: m_Name
       value: B_Daily_R_Vr_N_Unknow_0002
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 703890eebe960884294068ee89c2b252, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
