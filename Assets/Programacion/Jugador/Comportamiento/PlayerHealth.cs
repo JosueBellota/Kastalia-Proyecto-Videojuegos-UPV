@@ -14,10 +14,6 @@ public class PlayerHealth : MonoBehaviour
 
     private PlayerController playerController;
     private MainInterface mainInterface;
-
-    [SerializeField] private float fadeDuration = 0.25f;
-
-
     private DamageFlash damageFlash;
 
 
@@ -134,128 +130,7 @@ public class PlayerHealth : MonoBehaviour
             yield return null;
         }
 
-        // Load defeat scene additively
-        StartCoroutine(LoadSceneWithTransition("Derrota", true));
-
-        // Optionally destroy the player here or after scene finishes loading
-        // Destroy(gameObject);
+         GameManager.instance.StartDeathMenu();
     }
-
-
-    // --------------------------------------------------------------------------
-    // ------------------- Metodos Para Transiciones entre menus ----------------
-    // --------------------------------------------------------------------------
-    
-
-        private IEnumerator LoadSceneWithTransition(string sceneName, bool additive)
-    {
-        // Create a simple fade overlay
-        GameObject fadeObject = CreateFadeOverlay();
-        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-
-        // Fade in (to black)
-        yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
-
-        // Store reference before potential destruction
-        var fadeObjectToDestroy = fadeObject;
-
-        // Load the target scene
-        AsyncOperation asyncLoad;
-        if (additive)
-        {
-            asyncLoad = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
-        }
-        else
-        {
-            asyncLoad = SceneManager.LoadSceneAsync(sceneName);
-            // When loading a new scene non-additively, our fade object will be destroyed
-            // so we need to recreate it after scene load
-            asyncLoad.completed += (op) =>
-            {
-                if (fadeObjectToDestroy != null)
-                    Destroy(fadeObjectToDestroy);
-            };
-        }
-
-        yield return asyncLoad;
-
-        // For non-additive loads, recreate the fade object
-        if (!additive)
-        {
-            fadeObject = CreateFadeOverlay();
-            fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-            fadeGroup.alpha = 1f; // Start from black
-        }
-
-        // Fade out (to clear)
-        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
-
-        // Clean up
-        if (fadeObject != null)
-            Destroy(fadeObject);
-    }
-
-    private IEnumerator UnloadSceneWithTransition(string sceneName)
-    {
-        // Create a simple fade overlay
-        GameObject fadeObject = CreateFadeOverlay();
-        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-        
-        // Fade in (to black)
-        yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
-        
-        // Unload the scene
-        yield return SceneManager.UnloadSceneAsync(sceneName);
-        
-        // Fade out (to clear)
-        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
-        
-        // Clean up
-        Destroy(fadeObject);
-    }
-
-    // Helper method to create a simple fade overlay
-    private GameObject CreateFadeOverlay()
-    {
-        GameObject fadeObject = new GameObject("FadeOverlay");
-        
-        // Setup Canvas
-        Canvas canvas = fadeObject.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-        canvas.sortingOrder = 9999; // Make sure it's on top
-        
-        // Setup CanvasGroup for fading
-        CanvasGroup group = fadeObject.AddComponent<CanvasGroup>();
-        
-        // Create full-screen image
-        GameObject imageObject = new GameObject("FadeImage");
-        imageObject.transform.SetParent(fadeObject.transform);
-        UnityEngine.UI.Image image = imageObject.AddComponent<UnityEngine.UI.Image>();
-        image.color = Color.black;
-        
-        // Stretch to full screen
-        RectTransform rect = imageObject.GetComponent<RectTransform>();
-        rect.anchorMin = Vector2.zero;
-        rect.anchorMax = Vector2.one;
-        rect.offsetMin = Vector2.zero;
-        rect.offsetMax = Vector2.zero;
-        
-        return fadeObject;
-    }
-
-    // Helper method to handle fading
-    private IEnumerator Fade(CanvasGroup group, float startAlpha, float endAlpha, float duration)
-    {
-        float elapsed = 0f;
-        
-        while (elapsed < duration)
-        {
-            group.alpha = Mathf.Lerp(startAlpha, endAlpha, elapsed / duration);
-            elapsed += Time.unscaledDeltaTime;
-            yield return null;
-        }
-        
-        group.alpha = endAlpha;
-    }   
 
 }

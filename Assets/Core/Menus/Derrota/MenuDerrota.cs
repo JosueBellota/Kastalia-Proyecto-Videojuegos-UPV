@@ -23,7 +23,7 @@ public class MenuDerrota : MonoBehaviour
     private void IrAlMenuPrincipal()
     {
         Time.timeScale = 1f;
-        GameManager.instance.StartMainMenu();
+        GameManager.instance.VolverAlMenuPrincipal();
     }
 
     private void SalirDelJuego()

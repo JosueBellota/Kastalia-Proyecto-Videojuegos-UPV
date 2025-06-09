@@ -36,17 +36,19 @@ public class CharacterSelection : MonoBehaviour
 
             GameManager.instance.StartMazmorraScene();
 
-            // 🆕 NUEVO: Instanciar arma para el personaje seleccionado
+             // 🆕 NUEVO: Instanciar arma para el personaje seleccionado
             GameManager.instance.InstanciarArmaParaPersonaje();
 
             if (Cronometro.instance != null)
             {
                 Cronometro.instance.ReiniciarCronometro();
             }
-            
-            GameManager.instance.isPaused = false;
-            
 
+            if (SceneManager.GetSceneByName("CharacterSelection").isLoaded)
+            {
+                SceneManager.UnloadSceneAsync("CharacterSelection");
+            }
+            GameManager.instance.isPaused = false;
         }
     }
 }

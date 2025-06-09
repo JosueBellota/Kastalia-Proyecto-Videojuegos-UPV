@@ -6,7 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-
     public static GameManager instance;
     public int characterIndex = -1;
     public bool playerSpawned = false;
@@ -14,13 +13,13 @@ public class GameManager : MonoBehaviour
     public bool isLevelLoaded = false;
     [SerializeField] public GameObject Lyx;
     [SerializeField] public GameObject Dreven;
-
     [SerializeField] private GameObject prefabHojaAfilada;
     [SerializeField] private GameObject prefabArco;
-
     public GameObject UI;
     public GameObject personajeSeleccionado;
     [SerializeField] private float fadeDuration = 0.25f;
+
+    [SerializeField] private string[] mazmorras = { "Mazmorra1" };
 
     void Awake()
     {
@@ -37,6 +36,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        ResetGameState();
         StartMainMenu();
     }
 
@@ -49,32 +49,40 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private void ResetGameState()
+    public void StartMainMenu()
     {
-        characterIndex = -1;
-        personajeSeleccionado = null;
-        playerSpawned = false;
-        isPaused = false;
-        isLevelLoaded = false;
-
-        LevelManager.instance?.ResetLevelState(true);
-        Cronometro.instance?.ReiniciarCronometro();
-        ItemDropTracker.Reiniciar();
+        StartCoroutine(LoadSceneWithTransition("MainMenu", false));
     }
 
+    public void StartOptionsMenu()
+    {
+        StartCoroutine(LoadSceneWithTransition("MenuOpciones", false));
+    }
 
+    public void StartControlsMenu()
+    {
+        StartCoroutine(LoadSceneWithTransition("MenuControles", false));
+    }
 
     public void StartSeleccionMenu()
     {
 
         ResetGameState();
 
-        StartCoroutine(LoadSceneWithTransition("MazmorraSelection", false));
+        StartCoroutine(LoadSceneWithTransition("MenuSelection", false));
     }
     public void StartMazmorraScene()
     {
-        StartCoroutine(LoadSceneWithTransition("Mazmorra1", false));
+        if (mazmorras.Length == 0)
+        {
+            Debug.LogError("No hay mazmorras configuradas en el array.");
+            return;
+        }
+
+        string mazmorraAleatoria = mazmorras[UnityEngine.Random.Range(0, mazmorras.Length)];
+        StartCoroutine(LoadSceneWithTransition(mazmorraAleatoria, false));
     }
+    
 
     public void PauseGame()
     {
@@ -87,11 +95,11 @@ public class GameManager : MonoBehaviour
 
     public void Tutorial()
     {
-        if (SceneManager.GetActiveScene().name == "Mazmorra1")
+        if (SceneManager.GetActiveScene().name.StartsWith("Mazmorra"))
         {
             StartCoroutine(TutorialCoroutine());
         }
-        }
+    }
 
     public void LoadTutorialScene(string sceneName, bool additive)
     {
@@ -103,13 +111,13 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(5f);
 
         // Verificamos nuevamente que el jugador sigue en la escena "Mazmorra1"
-        if (SceneManager.GetActiveScene().name == "Mazmorra1")
+        if (SceneManager.GetActiveScene().name.StartsWith("Mazmorra"))
         {
             StartCoroutine(LoadSceneWithOutTransition("Tutorial1", true));
         }
         else
         {
-            Debug.Log("Tutorial cancelado: el jugador ya no está en Mazmorra1.");
+            Debug.Log("Tutorial cancelado: el jugador ya no está en una mazmorra.");
         }
 
     }
@@ -127,9 +135,9 @@ public class GameManager : MonoBehaviour
         StartCoroutine(UnloadSceneWithOutTransition(sceneToUnload));
     }
 
-    public void StartMainMenu()
+    public void StartDeathMenu()
     {
-        StartCoroutine(LoadSceneWithTransition("MainMenu", false));
+        StartCoroutine(LoadSceneWithTransition("Derrota", false));
     }
 
     public void WinGame()
@@ -142,6 +150,19 @@ public class GameManager : MonoBehaviour
     {
         ResetGameState();
         StartMainMenu();
+    }
+
+    private void ResetGameState()
+    {
+        characterIndex = -1;
+        personajeSeleccionado = null;
+        playerSpawned = false;
+        isPaused = false;
+        isLevelLoaded = false;
+
+        LevelManager.instance?.ResetLevelState(true);
+        Cronometro.instance?.ReiniciarCronometro();
+        ItemDropTracker.Reiniciar();
     }
 
     public void QuitGame()
