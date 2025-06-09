@@ -8,6 +8,7 @@ TagManager:
   - SpawnPoint
   - Floor
   - Pet
+  - BotonUI
   layers:
   - Default
   - TransparentFX

@@ -265,27 +265,27 @@ public class GameManager : MonoBehaviour
         Destroy(fadeObject);
     }
 
-private IEnumerator UnloadSceneWithOutTransition(string sceneName)
-{
-    GameObject fadeObject = CreateSubtleFadeOverlay();
-    CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-    yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
-    var scene = SceneManager.GetSceneByName(sceneName);
-    if (scene.IsValid() && scene.isLoaded)
+    private IEnumerator UnloadSceneWithOutTransition(string sceneName)
     {
-        AsyncOperation unloadOp = SceneManager.UnloadSceneAsync(sceneName);
-        if (unloadOp != null)
+        GameObject fadeObject = CreateSubtleFadeOverlay();
+        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+        yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
+        var scene = SceneManager.GetSceneByName(sceneName);
+        if (scene.IsValid() && scene.isLoaded)
         {
-            yield return unloadOp;
+            AsyncOperation unloadOp = SceneManager.UnloadSceneAsync(sceneName);
+            if (unloadOp != null)
+            {
+                yield return unloadOp;
+            }
         }
+        else
+        {
+            Debug.LogWarning($"Scene '{sceneName}' is not valid or not loaded. Skipping unload.");
+        }
+        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
+        Destroy(fadeObject);
     }
-    else
-    {
-        Debug.LogWarning($"Scene '{sceneName}' is not valid or not loaded. Skipping unload.");
-    }
-    yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
-    Destroy(fadeObject);
-}
 
     private GameObject CreateFadeOverlay()
     {

@@ -2879,7 +2879,7 @@ GameObject:
   - component: {fileID: 486018866}
   m_Layer: 5
   m_Name: Volver
-  m_TagString: Untagged
+  m_TagString: BotonUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5603,7 +5603,7 @@ GameObject:
   - component: {fileID: 1374898820}
   m_Layer: 5
   m_Name: Controls
-  m_TagString: Untagged
+  m_TagString: BotonUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5793,7 +5793,7 @@ GameObject:
   - component: {fileID: 1396204045}
   m_Layer: 5
   m_Name: Dropdown (Legacy)
-  m_TagString: Untagged
+  m_TagString: BotonUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22722,7 +22722,7 @@ GameObject:
   - component: {fileID: 1996767948}
   m_Layer: 5
   m_Name: Resolucion
-  m_TagString: Untagged
+  m_TagString: BotonUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -23118,7 +23118,7 @@ GameObject:
   - component: {fileID: 2006135969}
   m_Layer: 5
   m_Name: Pantalla
-  m_TagString: Untagged
+  m_TagString: BotonUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
