@@ -36,4 +36,11 @@ public class PlaySFX : MonoBehaviour
             audioSource.PlayOneShot(selected);
         }
     }
+
+    public void PlayOneShot(AudioClip clip)
+    {
+        if (clip != null)
+            audioSource.PlayOneShot(clip);
+    }
+
 }

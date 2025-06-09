@@ -45,6 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sfxPrefab: {fileID: 7394375080322816930, guid: f6e1ba8d1a0e9e441adcffdaf230954d, type: 3}
-  clickClip: {fileID: 8300000, guid: 526620108942c9d48aa4c1637bc5412e, type: 3}
+  clickClip: {fileID: 8300000, guid: cb35bef9420636c4ea13f2d1c55753fb, type: 3}
   hoverClip: {fileID: 8300000, guid: bfeb0c41855068c4593f0e30c13ca12b, type: 3}
   targetTag: BotonUI

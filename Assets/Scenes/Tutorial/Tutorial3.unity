@@ -212,7 +212,7 @@ GameObject:
   - component: {fileID: 774426800}
   m_Layer: 5
   m_Name: Saltar
-  m_TagString: Untagged
+  m_TagString: BotonUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -956,7 +956,7 @@ GameObject:
   - component: {fileID: 1710908488}
   m_Layer: 5
   m_Name: Siguiente
-  m_TagString: Untagged
+  m_TagString: BotonUI
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

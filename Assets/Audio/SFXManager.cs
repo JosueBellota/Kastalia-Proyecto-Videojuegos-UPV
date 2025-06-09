@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class SFXManager : MonoBehaviour
 {
-    public GameObject sfxPrefab; // Solo 1 prefab con PlaySFX
+    public GameObject sfxPrefab;
     public AudioClip clickClip;
     public AudioClip hoverClip;
     public string targetTag = "BotonUI";
@@ -47,10 +47,22 @@ public class SFXManager : MonoBehaviour
                     sfxPlayer.clickClip = clickClip;
                     sfxPlayer.hoverClip = hoverClip;
 
+
                     btn.onClick.AddListener(() =>
                     {
-                        sfxPlayer.Play(SFXType.Click);
+                        // Check if the button has a special sound
+                        SpecialSFXClip specialClip = obj.GetComponent<SpecialSFXClip>();
+
+                        if (specialClip != null && specialClip.clickOverride != null)
+                        {
+                            sfxPlayer.PlayOneShot(specialClip.clickOverride);
+                        }
+                        else
+                        {
+                            sfxPlayer.Play(SFXType.Click);
+                        }
                     });
+
 
                     // Hover
                     EventTrigger trigger = obj.GetComponent<EventTrigger>();
