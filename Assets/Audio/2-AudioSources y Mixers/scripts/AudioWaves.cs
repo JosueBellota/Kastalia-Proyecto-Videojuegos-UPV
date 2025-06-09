@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class AudioWaves : MonoBehaviour
 {
-
     ParticleSystem waves;
 
     AudioSource audioSource;

@@ -11,6 +11,10 @@ public class MusicManager : MonoBehaviour
     private PlayMusica musicaPlayer;
     private AudioSource audioSource;
 
+    // private bool wasPaused = false;
+
+
+
     void Awake()
     {
         // Singleton para que persista entre escenas
@@ -25,6 +29,23 @@ public class MusicManager : MonoBehaviour
 
         SetupMusica();
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    void Update()
+    {
+        
+        string sceneName = SceneManager.GetActiveScene().name;
+
+        if (sceneName == "PauseMenu")
+        {
+            if (audioSource.isPlaying)
+                audioSource.Pause();
+        }
+        else
+        {
+            if (!audioSource.isPlaying && audioSource.clip != null)
+                audioSource.UnPause();
+        }
     }
 
     void SetupMusica()
@@ -48,11 +69,11 @@ public class MusicManager : MonoBehaviour
     {
         if (musicaPlayer == null || audioSource == null) return;
 
-        if (sceneName == "MainMenu" || sceneName == "MenuSelection")
+        if (sceneName == "MainMenu" || sceneName == "MenuSelection" || sceneName == "MenuOpciones" || sceneName == "MenuControles")
         {
             ChangeMusic(menuClip);
         }
-        else if (sceneName.StartsWith("Mazmorra"))
+        else if (sceneName.StartsWith("Mazmorra") || sceneName.StartsWith("Tutorial") || sceneName == "PauseMenu")
         {
             ChangeMusic(mazmorraClip);
         }
