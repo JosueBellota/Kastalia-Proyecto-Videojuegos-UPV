@@ -12,8 +12,6 @@ public class GameManager : MonoBehaviour
     public bool playerSpawned = false;
     public bool isPaused = false;
     public bool isLevelLoaded = false;
-
-
     [SerializeField] public GameObject Lyx;
     [SerializeField] public GameObject Dreven;
 
@@ -21,9 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject prefabArco;
 
     public GameObject UI;
-
     public GameObject personajeSeleccionado;
-
     [SerializeField] private float fadeDuration = 0.25f;
 
     void Awake()
@@ -73,7 +69,7 @@ public class GameManager : MonoBehaviour
 
         ResetGameState();
 
-        StartCoroutine(LoadSceneWithTransition("CharacterSelection", false));
+        StartCoroutine(LoadSceneWithTransition("MazmorraSelection", false));
     }
     public void StartMazmorraScene()
     {
@@ -237,15 +233,28 @@ public class GameManager : MonoBehaviour
         Destroy(fadeObject);
     }
 
-   private IEnumerator UnloadSceneWithOutTransition(string sceneName)
+private IEnumerator UnloadSceneWithOutTransition(string sceneName)
+{
+    GameObject fadeObject = CreateSubtleFadeOverlay();
+    CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
+    yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
+    var scene = SceneManager.GetSceneByName(sceneName);
+    if (scene.IsValid() && scene.isLoaded)
     {
-        GameObject fadeObject = CreateSubtleFadeOverlay();
-        CanvasGroup fadeGroup = fadeObject.GetComponent<CanvasGroup>();
-        yield return Fade(fadeGroup, 0f, 1f, fadeDuration);
-        yield return SceneManager.UnloadSceneAsync(sceneName);
-        yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
-        Destroy(fadeObject);
+        AsyncOperation unloadOp = SceneManager.UnloadSceneAsync(sceneName);
+        if (unloadOp != null)
+        {
+            yield return unloadOp;
+        }
     }
+    else
+    {
+        Debug.LogWarning($"Scene '{sceneName}' is not valid or not loaded. Skipping unload.");
+    }
+    yield return Fade(fadeGroup, 1f, 0f, fadeDuration);
+    Destroy(fadeObject);
+}
+
     private GameObject CreateFadeOverlay()
     {
         GameObject fadeObject = new GameObject("FadeOverlay");
