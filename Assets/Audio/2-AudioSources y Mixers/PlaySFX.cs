@@ -1,25 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+
+public enum SFXType
+{
+    Click,
+    Hover
+}
 
 public class PlaySFX : MonoBehaviour
 {
-
-    public AudioClip[] clips;
+    public AudioClip clickClip;
+    public AudioClip hoverClip;
 
     AudioSource audioSource;
 
-    int count = 0;
-
-    // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
     }
 
-    public void Play()
+    public void Play(SFXType type)
     {
-        audioSource.PlayOneShot(clips[count % clips.Length]);
-        count++;
+        AudioClip selected = null;
+        switch (type)
+        {
+            case SFXType.Click:
+                selected = clickClip;
+                break;
+            case SFXType.Hover:
+                selected = hoverClip;
+                break;
+        }
+
+        if (selected != null)
+        {
+            audioSource.PlayOneShot(selected);
+        }
     }
 }
