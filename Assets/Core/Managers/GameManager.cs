@@ -87,8 +87,11 @@ public class GameManager : MonoBehaviour
 
     public void Tutorial()
     {
-        StartCoroutine(TutorialCoroutine());
-    }
+        if (SceneManager.GetActiveScene().name == "Mazmorra1")
+        {
+            StartCoroutine(TutorialCoroutine());
+        }
+        }
 
     public void LoadTutorialScene(string sceneName, bool additive)
     {
@@ -99,7 +102,15 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
 
-        StartCoroutine(LoadSceneWithOutTransition("Tutorial1", true));
+        // Verificamos nuevamente que el jugador sigue en la escena "Mazmorra1"
+        if (SceneManager.GetActiveScene().name == "Mazmorra1")
+        {
+            StartCoroutine(LoadSceneWithOutTransition("Tutorial1", true));
+        }
+        else
+        {
+            Debug.Log("Tutorial cancelado: el jugador ya no está en Mazmorra1.");
+        }
 
     }
 
