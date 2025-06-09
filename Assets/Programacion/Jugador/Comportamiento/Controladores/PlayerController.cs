@@ -58,7 +58,11 @@ public abstract class PlayerController : MonoBehaviour
         Vector3 finalMove = move * playerSpeed * speedMultiplier;
         float inputMagnitude = finalMove.magnitude;
         animator.SetFloat("InputMagnitude", inputMagnitude, 0.05f, Time.deltaTime);
-        controller.Move(finalMove * Time.deltaTime );
+
+        if (controller != null && controller.enabled && controller.gameObject.activeInHierarchy)
+        {
+            controller.Move(finalMove * Time.deltaTime);
+        }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
@@ -67,19 +71,17 @@ public abstract class PlayerController : MonoBehaviour
 
         if (!isDashing && !isAttacking)
         {
-
             if (playerInventory.weapon != null)
             {
                 ShowWeapon(true);
             }
 
-
             if (Input.GetKeyDown(KeyCode.Alpha1) && playerInventory.weapon != null)
             {
                 playerInventory.selectedItemType = ItemType.Arma;
-                
                 mainInterface.LightUpItem(ItemType.Arma, AbilityType.None);
             }
+
             if (Input.GetKeyDown(KeyCode.Q) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
             {
                 if (offensiveAbilityController.offensiveAbilityCooldown == 0)
@@ -89,6 +91,7 @@ public abstract class PlayerController : MonoBehaviour
                     mainInterface.LightUpItem(ItemType.Habilidad, AbilityType.Ofensiva);
                 }
             }
+
             if (Input.GetKeyDown(KeyCode.E) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva))
             {
                 if (defensiveAbilityController.defensiveAbilityCooldown == 0)
@@ -99,6 +102,7 @@ public abstract class PlayerController : MonoBehaviour
                     ShowWeapon(true);
                 }
             }
+
             if (Input.GetKeyDown(KeyCode.R) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa))
             {
                 if (healingAbilityController.healingAbilityCooldown == 0)
@@ -110,7 +114,8 @@ public abstract class PlayerController : MonoBehaviour
                 }
             }
 
-            if (playerInventory.selectedItemType == ItemType.Habilidad && playerInventory.selectedAbilityType == AbilityType.Ofensiva)
+            if (playerInventory.selectedItemType == ItemType.Habilidad &&
+                playerInventory.selectedAbilityType == AbilityType.Ofensiva)
             {
                 if (Input.GetKeyDown(KeyCode.Mouse0))
                 {
@@ -119,32 +124,40 @@ public abstract class PlayerController : MonoBehaviour
             }
         }
 
-        if (controller.isGrounded && playerVelocity.y < 0)
+        if (controller != null && controller.enabled && controller.gameObject.activeInHierarchy)
         {
-            playerVelocity.y = -1f;
-        }
-        else
-        {
-            playerVelocity.y += gravityValue * Time.deltaTime;
-        }
+            if (controller.isGrounded && playerVelocity.y < 0)
+            {
+                playerVelocity.y = -1f;
+            }
+            else
+            {
+                playerVelocity.y += gravityValue * Time.deltaTime;
+            }
 
-
-        controller.Move(playerVelocity * Time.deltaTime);
+            controller.Move(playerVelocity * Time.deltaTime);
+        }
     }
+
 
     IEnumerator Dash(Vector3 move)
     {
-
         float startTime = Time.time;
         isDashing = true;
+
         while (Time.time < startTime + dashTime)
         {
-            controller.Move(move * dashSpeed * Time.deltaTime);
+            if (controller != null && controller.enabled && controller.gameObject.activeInHierarchy)
+            {
+                controller.Move(move * dashSpeed * Time.deltaTime);
+            }
             yield return null;
         }
+
         yield return new WaitForSeconds(dashCooldown - dashTime);
         isDashing = false;
     }
+
 
     public void comprobarEnemigosEnArea(Vector3 attackPosition, float attackRadius, int damage)
     {

@@ -7,7 +7,22 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: Assets/Scenes/MainMenu.unity
-    guid: 08d2dac3a122e2f4884c749149bdccdb
+    guid: 888a390d727f1124fb5fe5661c2b3f5f
+  - enabled: 1
+    path: Assets/Scenes/MenuSelection.unity
+    guid: 4f4b7aaf438fb954d80ac5c6cf7eaff3
+  - enabled: 1
+    path: Assets/Scenes/MenuOpciones.unity
+    guid: a16e4123f6469e94fa9a63e82e426ff8
+  - enabled: 1
+    path: Assets/Scenes/MenuControles.unity
+    guid: 5a801596ffab25b4cb42b9bb51d6d751
+  - enabled: 1
+    path: Assets/Scenes/Mazmorra1.unity
+    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/PauseMenu.unity
+    guid: 58e70a7bdfaafb4489c8462a1a551280
   - enabled: 1
     path: Assets/Scenes/Tutorial/Tutorial1.unity
     guid: cfa925c7d4f83e44d9f99330b961d238
@@ -17,18 +32,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tutorial/Tutorial3.unity
     guid: f656e16ddadf74640a30e2cbcda04bde
-  - enabled: 1
-    path: Assets/Scenes/Opciones.unity
-    guid: c62ee3cb3c12fab4ba7ef8e6e7c8e67e
-  - enabled: 1
-    path: Assets/Scenes/CharacterSelection.unity
-    guid: 98e539cd79890cf45a02154b282d437d
-  - enabled: 1
-    path: Assets/Scenes/Mazmorra1.unity
-    guid: 99c9720ab356a0642a771bea13969a05
-  - enabled: 1
-    path: Assets/Scenes/PauseMenu.unity
-    guid: 58e70a7bdfaafb4489c8462a1a551280
   - enabled: 1
     path: Assets/Scenes/Derrota.unity
     guid: 01dbf72a0159de440aa7a54b3eeb657a

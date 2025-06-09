@@ -34,6 +34,8 @@ public class CharacterSelection : MonoBehaviour
 
             GameManager.instance.playerSpawned = false;
 
+            GameManager.instance.StartMazmorraScene();
+
              // 🆕 NUEVO: Instanciar arma para el personaje seleccionado
             GameManager.instance.InstanciarArmaParaPersonaje();
 
