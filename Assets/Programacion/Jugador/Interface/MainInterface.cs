@@ -1,5 +1,4 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,13 +10,18 @@ public class MainInterface : MonoBehaviour
     [SerializeField] private Button ShieldButton;
     [SerializeField] private Button PotionButton;
 
+    [Header("Prefabs")]
+    [SerializeField] private GameObject weaponPrefab;
+    [SerializeField] private GameObject ofensivaPrefab;
+    [SerializeField] private GameObject defensivaPrefab;
+    [SerializeField] private GameObject curativaPrefab;
+
     private bool isPlayerFound = false;
     private GameObject player;
     private PlayerInventory playerInventory;
     private OffensiveAbility offensiveAbilityController;
     private DefensiveAbility defensiveAbilityController;
     private HealingAbility healingAbilityController;
-
 
     public void updateVidaText(float vida)
     {
@@ -26,12 +30,7 @@ public class MainInterface : MonoBehaviour
 
     public void updateWeaponSlot(Weapon weapon)
     {
-        if (weapon.icon)
-        {
-            WeaponButton.GetComponent<Image>().sprite = weapon.icon;
-            return;
-        }
-        WeaponButton.GetComponentInChildren<TMP_Text>().text = weapon.name;
+        ReplaceHabilidadImage(WeaponButton.transform, weaponPrefab, weapon.icon, weapon.name);
     }
 
     public void updateHabilitySlots(AbilityType abilityType, Ability ability)
@@ -39,15 +38,63 @@ public class MainInterface : MonoBehaviour
         switch (abilityType)
         {
             case AbilityType.Ofensiva:
-                Debug.Log(ability.abilityName);
-                OffensiveButton.GetComponentInChildren<TMP_Text>().text = ability.abilityName;
+                ReplaceHabilidadImage(OffensiveButton.transform, ofensivaPrefab, ability.icon, ability.name);
                 break;
             case AbilityType.Defensiva:
-                ShieldButton.GetComponentInChildren<TMP_Text>().text = ability.abilityName;
+                ReplaceHabilidadImage(ShieldButton.transform, defensivaPrefab, ability.icon, ability.name);
                 break;
             case AbilityType.Curativa:
-                PotionButton.GetComponentInChildren<TMP_Text>().text = ability.abilityName;
+                ReplaceHabilidadImage(PotionButton.transform, curativaPrefab, ability.icon, ability.name);
                 break;
+        }
+    }
+
+    private void ReplaceHabilidadImage(Transform parent, GameObject prefab, Sprite icon, string fallbackName)
+    {
+        Debug.Log($"[UI] Updating slot: {parent.name} with ability {fallbackName}");
+
+        Transform oldHabilidad = parent.Find("habilidad");
+        if (oldHabilidad != null)
+        {
+            Debug.Log("[UI] Destroying old habilidad object.");
+            Destroy(oldHabilidad.gameObject);
+        }
+
+        GameObject newHabilidad = Instantiate(prefab, parent);
+        newHabilidad.name = "habilidad";
+        
+        // Try to find an Image component in the new object or its children
+        Image img = newHabilidad.GetComponentInChildren<Image>(true);
+        
+        if (img != null)
+        {
+            if (icon != null)
+            {
+                img.sprite = icon;
+                img.color = Color.white;
+                Debug.Log("[UI] Sprite assigned successfully to new object.");
+            }
+            else
+            {
+                // Optional: assign a default placeholder sprite
+                // img.sprite = defaultSprite; // You can define and serialize this
+                Debug.Log("[UI] Icon was null — used default image or left as is.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[UI] No Image component found in the new prefab or its children.");
+        }
+
+        // Handle text fallback if no image is available at all
+        if (icon == null || img == null)
+        {
+            TMP_Text text = newHabilidad.GetComponentInChildren<TMP_Text>(true);
+            if (text != null) 
+            {
+                text.text = fallbackName;
+                Debug.LogWarning("[UI] Using text fallback in new object.");
+            }
         }
     }
 
@@ -67,21 +114,19 @@ public class MainInterface : MonoBehaviour
         }
     }
 
-
     private bool FindPlayerAtributes()
     {
         if (player)
         {
             if (player.GetComponent<OffensiveAbility>() &&
-            player.GetComponent<DefensiveAbility>() &&
-            player.GetComponent<HealingAbility>() &&
-            player.GetComponent<PlayerInventory>())
+                player.GetComponent<DefensiveAbility>() &&
+                player.GetComponent<HealingAbility>() &&
+                player.GetComponent<PlayerInventory>())
             {
                 offensiveAbilityController = player.GetComponent<OffensiveAbility>();
                 defensiveAbilityController = player.GetComponent<DefensiveAbility>();
                 healingAbilityController = player.GetComponent<HealingAbility>();
                 playerInventory = player.GetComponent<PlayerInventory>();
-
                 return true;
             }
         }
@@ -92,26 +137,26 @@ public class MainInterface : MonoBehaviour
     {
         if (itemType == ItemType.Arma)
         {
-            WeaponButton.GetComponent<Image>().color = Color.yellow;
+            WeaponButton.image.color = Color.yellow;
             DarkenItems(ItemType.Arma, AbilityType.None);
             return;
         }
 
         if (abilityType == AbilityType.Ofensiva)
         {
-            OffensiveButton.GetComponent<Image>().color = Color.yellow;
+            OffensiveButton.image.color = Color.yellow;
             DarkenItems(ItemType.Habilidad, AbilityType.Ofensiva);
             return;
         }
         if (abilityType == AbilityType.Defensiva)
         {
-            ShieldButton.GetComponent<Image>().color = Color.yellow;
+            ShieldButton.image.color = Color.yellow;
             DarkenItems(ItemType.Habilidad, AbilityType.Defensiva);
             return;
         }
         if (abilityType == AbilityType.Curativa)
         {
-            PotionButton.GetComponent<Image>().color = Color.yellow;
+            PotionButton.image.color = Color.yellow;
             DarkenItems(ItemType.Habilidad, AbilityType.Curativa);
             return;
         }
@@ -121,46 +166,25 @@ public class MainInterface : MonoBehaviour
     {
         if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
         {
-            if (offensiveAbilityController.offensiveAbilityCooldown == 0)
-            {
-                OffensiveButton.GetComponentInChildren<TMP_Text>().text = playerInventory.equippedAbilities[AbilityType.Ofensiva].abilityName;
-            }
-            else
-            {
-                OffensiveButton.GetComponentInChildren<TMP_Text>().text = offensiveAbilityController.offensiveAbilityCooldown.ToString("F1");
-            }
+            if (offensiveAbilityController.offensiveAbilityCooldown == 0) { }
         }
 
         if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva))
         {
-            if (defensiveAbilityController.defensiveAbilityCooldown == 0)
-            {
-                ShieldButton.GetComponentInChildren<TMP_Text>().text = playerInventory.equippedAbilities[AbilityType.Defensiva].abilityName;
-            }
-            else
-            {
-                ShieldButton.GetComponentInChildren<TMP_Text>().text = defensiveAbilityController.defensiveAbilityCooldown.ToString("F1");
-            }
+            if (defensiveAbilityController.defensiveAbilityCooldown == 0) { }
         }
 
         if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa))
         {
-            if (healingAbilityController.healingAbilityCooldown == 0)
-            {
-                PotionButton.GetComponentInChildren<TMP_Text>().text = playerInventory.equippedAbilities[AbilityType.Curativa].abilityName;
-            }
-            else
-            {
-                PotionButton.GetComponentInChildren<TMP_Text>().text = healingAbilityController.healingAbilityCooldown.ToString("F1");
-            }
+            if (healingAbilityController.healingAbilityCooldown == 0) { }
         }
     }
 
     private void DarkenItems(ItemType itemType, AbilityType abilityType)
     {
-        if (itemType != ItemType.Arma) WeaponButton.GetComponent<Image>().color = Color.white;
-        if (abilityType != AbilityType.Ofensiva) OffensiveButton.GetComponent<Image>().color = Color.white;
-        if (abilityType != AbilityType.Defensiva) ShieldButton.GetComponent<Image>().color = Color.white;
-        if (abilityType != AbilityType.Curativa) PotionButton.GetComponent<Image>().color = Color.white;
+        if (itemType != ItemType.Arma) WeaponButton.image.color = Color.white;
+        if (abilityType != AbilityType.Ofensiva) OffensiveButton.image.color = Color.white;
+        if (abilityType != AbilityType.Defensiva) ShieldButton.image.color = Color.white;
+        if (abilityType != AbilityType.Curativa) PotionButton.image.color = Color.white;
     }
 }

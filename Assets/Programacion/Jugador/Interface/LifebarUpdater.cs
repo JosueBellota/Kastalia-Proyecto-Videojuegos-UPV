@@ -4,21 +4,20 @@ using UnityEngine.UI;
 
 public class LifebarUpdater : MonoBehaviour
 {
-    private PlayerHealth playerHealth; // No longer public (assigned dynamically)
+    private PlayerHealth playerHealth; 
     private List<Image> lifebarSegments = new List<Image>();
     private float maxHealth;
     private float lastKnownHealth = -1f;
 
     void Start()
     {
-        // Initialize UI segments
         foreach (Transform child in transform)
         {
             Image img = child.GetComponent<Image>();
             if (img != null) lifebarSegments.Add(img);
         }
 
-        // Try to auto-detect player
+        
         AssignPlayerHealth();
     }
 
@@ -26,7 +25,7 @@ public class LifebarUpdater : MonoBehaviour
     {
         if (playerHealth == null)
         {
-            AssignPlayerHealth(); // Keep trying if player isn't spawned yet
+            AssignPlayerHealth(); 
             return;
         }
 
