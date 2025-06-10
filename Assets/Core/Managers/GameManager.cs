@@ -345,6 +345,13 @@ public class GameManager : MonoBehaviour
             elapsed += Time.unscaledDeltaTime;
             yield return null;
         }
-        group.alpha = endAlpha;
+        if (group != null)
+        {
+            group.alpha = endAlpha;
+        }
+        else
+        {
+            Debug.LogWarning("Could not set final alpha: CanvasGroup was destroyed");
+        }
     }
 }

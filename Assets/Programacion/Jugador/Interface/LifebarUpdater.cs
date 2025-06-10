@@ -9,6 +9,8 @@ public class LifebarUpdater : MonoBehaviour
     private float maxHealth;
     private float lastKnownHealth = -1f;
 
+    [SerializeField] private Color emptyColor = new Color(1f, 1f, 1f, 0f);
+
     void Start()
     {
         foreach (Transform child in transform)
@@ -58,7 +60,7 @@ public class LifebarUpdater : MonoBehaviour
 
         for (int i = 0; i < lifebarSegments.Count; i++)
         {
-            lifebarSegments[i].color = (i < filledSegments) ? Color.red : Color.white;
+            lifebarSegments[i].color = (i < filledSegments) ? Color.red : emptyColor;
         }
     }
 }
