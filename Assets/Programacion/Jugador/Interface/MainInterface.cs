@@ -63,7 +63,6 @@ public class MainInterface : MonoBehaviour
         GameObject newHabilidad = Instantiate(prefab, parent);
         newHabilidad.name = "habilidad";
         
-        // Try to find an Image component in the new object or its children
         Image img = newHabilidad.GetComponentInChildren<Image>(true);
         
         if (img != null)
@@ -76,8 +75,6 @@ public class MainInterface : MonoBehaviour
             }
             else
             {
-                // Optional: assign a default placeholder sprite
-                // img.sprite = defaultSprite; // You can define and serialize this
                 Debug.Log("[UI] Icon was null — used default image or left as is.");
             }
         }
@@ -86,7 +83,6 @@ public class MainInterface : MonoBehaviour
             Debug.LogWarning("[UI] No Image component found in the new prefab or its children.");
         }
 
-        // Handle text fallback if no image is available at all
         if (icon == null || img == null)
         {
             TMP_Text text = newHabilidad.GetComponentInChildren<TMP_Text>(true);
@@ -135,31 +131,51 @@ public class MainInterface : MonoBehaviour
 
     public void LightUpItem(ItemType itemType, AbilityType abilityType)
     {
+        // First deactivate all selected indicators
+        DeactivateAllSelectedIndicators();
+
+        // Activate the appropriate selected indicator
         if (itemType == ItemType.Arma)
         {
-            WeaponButton.image.color = Color.yellow;
-            DarkenItems(ItemType.Arma, AbilityType.None);
+            Transform selected = WeaponButton.transform.Find("selected");
+            if (selected != null) selected.gameObject.SetActive(true);
             return;
         }
 
-        if (abilityType == AbilityType.Ofensiva)
+        switch (abilityType)
         {
-            OffensiveButton.image.color = Color.yellow;
-            DarkenItems(ItemType.Habilidad, AbilityType.Ofensiva);
-            return;
+            case AbilityType.Ofensiva:
+                Transform offensiveSelected = OffensiveButton.transform.Find("selected");
+                if (offensiveSelected != null) offensiveSelected.gameObject.SetActive(true);
+                break;
+            case AbilityType.Defensiva:
+                Transform defensiveSelected = ShieldButton.transform.Find("selected");
+                if (defensiveSelected != null) defensiveSelected.gameObject.SetActive(true);
+                break;
+            case AbilityType.Curativa:
+                Transform curativeSelected = PotionButton.transform.Find("selected");
+                if (curativeSelected != null) curativeSelected.gameObject.SetActive(true);
+                break;
         }
-        if (abilityType == AbilityType.Defensiva)
-        {
-            ShieldButton.image.color = Color.yellow;
-            DarkenItems(ItemType.Habilidad, AbilityType.Defensiva);
-            return;
-        }
-        if (abilityType == AbilityType.Curativa)
-        {
-            PotionButton.image.color = Color.yellow;
-            DarkenItems(ItemType.Habilidad, AbilityType.Curativa);
-            return;
-        }
+    }
+
+    private void DeactivateAllSelectedIndicators()
+    {
+        // Weapon
+        Transform weaponSelected = WeaponButton.transform.Find("selected");
+        if (weaponSelected != null) weaponSelected.gameObject.SetActive(false);
+        
+        // Offensive
+        Transform offensiveSelected = OffensiveButton.transform.Find("selected");
+        if (offensiveSelected != null) offensiveSelected.gameObject.SetActive(false);
+        
+        // Defensive
+        Transform defensiveSelected = ShieldButton.transform.Find("selected");
+        if (defensiveSelected != null) defensiveSelected.gameObject.SetActive(false);
+        
+        // Curative
+        Transform curativeSelected = PotionButton.transform.Find("selected");
+        if (curativeSelected != null) curativeSelected.gameObject.SetActive(false);
     }
 
     public void SubtractCooldown()
@@ -178,13 +194,5 @@ public class MainInterface : MonoBehaviour
         {
             if (healingAbilityController.healingAbilityCooldown == 0) { }
         }
-    }
-
-    private void DarkenItems(ItemType itemType, AbilityType abilityType)
-    {
-        if (itemType != ItemType.Arma) WeaponButton.image.color = Color.white;
-        if (abilityType != AbilityType.Ofensiva) OffensiveButton.image.color = Color.white;
-        if (abilityType != AbilityType.Defensiva) ShieldButton.image.color = Color.white;
-        if (abilityType != AbilityType.Curativa) PotionButton.image.color = Color.white;
     }
 }
