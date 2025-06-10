@@ -82,48 +82,62 @@ public abstract class PlayerController : MonoBehaviour
                 mainInterface.LightUpItem(ItemType.Arma, AbilityType.None);
             }
 
-            if (Input.GetKeyDown(KeyCode.Q) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
+            if (Input.GetKeyDown(KeyCode.Alpha2) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
             {
-                if (offensiveAbilityController.offensiveAbilityCooldown == 0)
-                {
-                    playerInventory.selectedItemType = ItemType.Habilidad;
-                    playerInventory.selectedAbilityType = AbilityType.Ofensiva;
-                    mainInterface.LightUpItem(ItemType.Habilidad, AbilityType.Ofensiva);
-                }
+                playerInventory.selectedItemType = ItemType.Habilidad;
+                playerInventory.selectedAbilityType = AbilityType.Ofensiva;
+                mainInterface.LightUpItem(ItemType.Habilidad, AbilityType.Ofensiva);
             }
 
-            if (Input.GetKeyDown(KeyCode.E) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva))
+            if (Input.GetKeyDown(KeyCode.Alpha3) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva))
             {
-                if (defensiveAbilityController.defensiveAbilityCooldown == 0)
-                {
-                    playerInventory.selectedItemType = ItemType.Habilidad;
-                    playerInventory.selectedAbilityType = AbilityType.Defensiva;
-                    defensiveAbilityController.enableShield();
-                    ShowWeapon(true);
-                }
+                playerInventory.selectedItemType = ItemType.Habilidad;
+                playerInventory.selectedAbilityType = AbilityType.Defensiva;
+                mainInterface.LightUpItem(ItemType.Habilidad, AbilityType.Defensiva);
             }
 
-            if (Input.GetKeyDown(KeyCode.R) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa))
+            if (Input.GetKeyDown(KeyCode.Alpha4) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa))
             {
-                if (healingAbilityController.healingAbilityCooldown == 0)
-                {
-                    playerInventory.selectedItemType = ItemType.Habilidad;
-                    playerInventory.selectedAbilityType = AbilityType.Curativa;
-                    StartCoroutine(healingAbilityController.healingAbility());
-                    ShowWeapon(true);
-                }
+                playerInventory.selectedItemType = ItemType.Habilidad;
+                playerInventory.selectedAbilityType = AbilityType.Curativa;
+                mainInterface.LightUpItem(ItemType.Habilidad, AbilityType.Curativa);
             }
 
-            if (playerInventory.selectedItemType == ItemType.Habilidad &&
-                playerInventory.selectedAbilityType == AbilityType.Ofensiva)
+            // Left click activation for all abilities
+            if (Input.GetKeyDown(KeyCode.Mouse0))
             {
-                if (Input.GetKeyDown(KeyCode.Mouse0))
+                switch (playerInventory.selectedItemType)
                 {
-                    StartCoroutine(offensiveAbilityController.offensiveAbility());
+                    case ItemType.Habilidad:
+                        switch (playerInventory.selectedAbilityType)
+                        {
+                            case AbilityType.Ofensiva:
+                                if (offensiveAbilityController.offensiveAbilityCooldown == 0)
+                                {
+                                    StartCoroutine(offensiveAbilityController.offensiveAbility());
+                                }
+                                break;
+                            case AbilityType.Defensiva:
+                                if (defensiveAbilityController.defensiveAbilityCooldown == 0)
+                                {
+                                    defensiveAbilityController.enableShield();
+                                    ShowWeapon(true);
+                                }
+                                break;
+                            case AbilityType.Curativa:
+                                if (healingAbilityController.healingAbilityCooldown == 0)
+                                {
+                                    StartCoroutine(healingAbilityController.healingAbility());
+                                    ShowWeapon(true);
+                                }
+                                break;
+                        }
+                        break;
                 }
             }
         }
 
+        // Gravity and physics code remains the same...
         if (controller != null && controller.enabled && controller.gameObject.activeInHierarchy)
         {
             if (controller.isGrounded && playerVelocity.y < 0)
@@ -134,12 +148,9 @@ public abstract class PlayerController : MonoBehaviour
             {
                 playerVelocity.y += gravityValue * Time.deltaTime;
             }
-
             controller.Move(playerVelocity * Time.deltaTime);
         }
     }
-
-
     IEnumerator Dash(Vector3 move)
     {
         float startTime = Time.time;
