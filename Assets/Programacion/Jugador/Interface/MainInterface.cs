@@ -30,22 +30,54 @@ public class MainInterface : MonoBehaviour
 
     public void updateWeaponSlot(Weapon weapon)
     {
-        ReplaceHabilidadImage(WeaponButton.transform, weaponPrefab, weapon.icon, weapon.name);
+        // Weapon slot always remains active, just update the icon
+        UpdateSlotIcon(WeaponButton.transform, weaponPrefab, weapon.icon);
     }
-
     public void updateHabilitySlots(AbilityType abilityType, Ability ability)
     {
         switch (abilityType)
         {
             case AbilityType.Ofensiva:
-                ReplaceHabilidadImage(OffensiveButton.transform, ofensivaPrefab, ability.icon, ability.name);
+                UpdateSlotIcon(OffensiveButton.transform, ofensivaPrefab, ability.icon);
                 break;
             case AbilityType.Defensiva:
-                ReplaceHabilidadImage(ShieldButton.transform, defensivaPrefab, ability.icon, ability.name);
+                UpdateSlotIcon(ShieldButton.transform, defensivaPrefab, ability.icon);
                 break;
             case AbilityType.Curativa:
-                ReplaceHabilidadImage(PotionButton.transform, curativaPrefab, ability.icon, ability.name);
+                UpdateSlotIcon(PotionButton.transform, curativaPrefab, ability.icon);
                 break;
+        }
+    }
+
+
+    private void UpdateSlotIcon(Transform parent, GameObject prefab, Sprite icon)
+    {
+        // For weapon slot, we never destroy the prefab
+        if (parent == WeaponButton.transform)
+        {
+            Image img = weaponPrefab.GetComponentInChildren<Image>(true);
+            if (img != null && icon != null)
+            {
+                img.sprite = icon;
+                img.color = Color.white;
+            }
+            return;
+        }
+
+        // For abilities - normal behavior
+        Transform prefabInstance = parent.Find("AbilityPrefab");
+        if (prefabInstance == null)
+        {
+            GameObject newPrefab = Instantiate(prefab, parent);
+            newPrefab.name = "AbilityPrefab";
+            prefabInstance = newPrefab.transform;
+        }
+
+        Image abilityImg = prefabInstance.GetComponentInChildren<Image>(true);
+        if (abilityImg != null && icon != null)
+        {
+            abilityImg.sprite = icon;
+            abilityImg.color = Color.white;
         }
     }
 
@@ -62,9 +94,9 @@ public class MainInterface : MonoBehaviour
 
         GameObject newHabilidad = Instantiate(prefab, parent);
         newHabilidad.name = "habilidad";
-        
+
         Image img = newHabilidad.GetComponentInChildren<Image>(true);
-        
+
         if (img != null)
         {
             if (icon != null)
@@ -86,7 +118,7 @@ public class MainInterface : MonoBehaviour
         if (icon == null || img == null)
         {
             TMP_Text text = newHabilidad.GetComponentInChildren<TMP_Text>(true);
-            if (text != null) 
+            if (text != null)
             {
                 text.text = fallbackName;
                 Debug.LogWarning("[UI] Using text fallback in new object.");
@@ -164,15 +196,15 @@ public class MainInterface : MonoBehaviour
         // Weapon
         Transform weaponSelected = WeaponButton.transform.Find("selected");
         if (weaponSelected != null) weaponSelected.gameObject.SetActive(false);
-        
+
         // Offensive
         Transform offensiveSelected = OffensiveButton.transform.Find("selected");
         if (offensiveSelected != null) offensiveSelected.gameObject.SetActive(false);
-        
+
         // Defensive
         Transform defensiveSelected = ShieldButton.transform.Find("selected");
         if (defensiveSelected != null) defensiveSelected.gameObject.SetActive(false);
-        
+
         // Curative
         Transform curativeSelected = PotionButton.transform.Find("selected");
         if (curativeSelected != null) curativeSelected.gameObject.SetActive(false);
@@ -195,4 +227,37 @@ public class MainInterface : MonoBehaviour
             if (healingAbilityController.healingAbilityCooldown == 0) { }
         }
     }
+
+    public void ClearAllAbilityPrefabs()
+    {
+        ClearAbilityPrefabFromButton(OffensiveButton.transform);
+        ClearAbilityPrefabFromButton(ShieldButton.transform);
+        ClearAbilityPrefabFromButton(PotionButton.transform);
+    }
+
+    public void ClearAbilityPrefab(AbilityType abilityType)
+    {
+        switch (abilityType)
+        {
+            case AbilityType.Ofensiva:
+                ClearAbilityPrefabFromButton(OffensiveButton.transform);
+                break;
+            case AbilityType.Defensiva:
+                ClearAbilityPrefabFromButton(ShieldButton.transform);
+                break;
+            case AbilityType.Curativa:
+                ClearAbilityPrefabFromButton(PotionButton.transform);
+                break;
+        }
+    }
+
+    private void ClearAbilityPrefabFromButton(Transform buttonTransform)
+    {
+        Transform abilityPrefab = buttonTransform.Find("AbilityPrefab");
+        if (abilityPrefab != null)
+        {
+            Destroy(abilityPrefab.gameObject);
+        }
+    }
+
 }

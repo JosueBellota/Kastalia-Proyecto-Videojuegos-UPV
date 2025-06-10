@@ -38,7 +38,7 @@ public abstract class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         playerInventory = GetComponent<PlayerInventory>();
         playerHealth = GetComponent<PlayerHealth>();
-        animator = GetComponentInChildren<Animator>();  
+        animator = GetComponentInChildren<Animator>();
 
 
         offensiveAbilityController = GetComponent<OffensiveAbility>();
@@ -53,6 +53,7 @@ public abstract class PlayerController : MonoBehaviour
     {
         if (GameManager.instance.isPaused) return;
 
+        // Movement handling
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
         float speedMultiplier = Input.GetKey(KeyCode.LeftShift) ? sprintValue : 1f;
         Vector3 finalMove = move * playerSpeed * speedMultiplier;
@@ -64,24 +65,35 @@ public abstract class PlayerController : MonoBehaviour
             controller.Move(finalMove * Time.deltaTime);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        // Dash handling
+        if (Input.GetKeyDown(KeyCode.Space) && !isDashing)
         {
-            if (!isDashing) StartCoroutine(Dash(move));
+            StartCoroutine(Dash(move));
         }
 
         if (!isDashing && !isAttacking)
         {
+            // Show weapon if available
             if (playerInventory.weapon != null)
             {
                 ShowWeapon(true);
             }
 
+            // Weapon selection
             if (Input.GetKeyDown(KeyCode.Alpha1) && playerInventory.weapon != null)
             {
                 playerInventory.selectedItemType = ItemType.Arma;
+                playerInventory.selectedAbilityType = AbilityType.None;
                 mainInterface.LightUpItem(ItemType.Arma, AbilityType.None);
+
+                // Only clear abilities if we were previously using one
+                if (playerInventory.selectedItemType == ItemType.Habilidad)
+                {
+                    mainInterface.ClearAllAbilityPrefabs();
+                }
             }
 
+            // Ability selections
             if (Input.GetKeyDown(KeyCode.Alpha2) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
             {
                 playerInventory.selectedItemType = ItemType.Habilidad;
@@ -103,41 +115,53 @@ public abstract class PlayerController : MonoBehaviour
                 mainInterface.LightUpItem(ItemType.Habilidad, AbilityType.Curativa);
             }
 
-            // Left click activation for all abilities
+            // Ability activation
             if (Input.GetKeyDown(KeyCode.Mouse0))
             {
                 switch (playerInventory.selectedItemType)
                 {
                     case ItemType.Habilidad:
+                        // Hide weapon when using any ability
+                        ShowWeapon(false);
+                        
                         switch (playerInventory.selectedAbilityType)
                         {
                             case AbilityType.Ofensiva:
                                 if (offensiveAbilityController.offensiveAbilityCooldown == 0)
                                 {
-                                    StartCoroutine(offensiveAbilityController.offensiveAbility());
+                                    StartCoroutine(UseAbilityAndSwitchBack(
+                                        offensiveAbilityController.offensiveAbility(),
+                                        AbilityType.Ofensiva
+                                    ));
                                 }
                                 break;
                             case AbilityType.Defensiva:
                                 if (defensiveAbilityController.defensiveAbilityCooldown == 0)
                                 {
-                                    defensiveAbilityController.enableShield();
-                                    ShowWeapon(true);
+                                    StartCoroutine(UseAbilityAndSwitchBack(
+                                        defensiveAbilityController.enableShield(),
+                                        AbilityType.Defensiva
+                                    ));
                                 }
                                 break;
                             case AbilityType.Curativa:
                                 if (healingAbilityController.healingAbilityCooldown == 0)
                                 {
-                                    StartCoroutine(healingAbilityController.healingAbility());
-                                    ShowWeapon(true);
+                                    StartCoroutine(UseAbilityAndSwitchBack(
+                                        healingAbilityController.healingAbility(),
+                                        AbilityType.Curativa
+                                    ));
                                 }
                                 break;
                         }
                         break;
                 }
             }
+
+
         }
 
-        // Gravity and physics code remains the same...
+        // Gravity handling
         if (controller != null && controller.enabled && controller.gameObject.activeInHierarchy)
         {
             if (controller.isGrounded && playerVelocity.y < 0)
@@ -186,13 +210,93 @@ public abstract class PlayerController : MonoBehaviour
         }
     }
 
-    public void ShowWeapon(bool value)
-    {
-        mano.GetChild(0).gameObject.SetActive(value);
-    }
-
     public void ToggleShieldPrefab(bool value)
     {
         shieldPrefab.SetActive(value);
+    }
+
+    private void SelectWeapon()
+    {
+        // Only clear abilities if we were previously using one
+        bool wasUsingAbility = playerInventory.selectedItemType == ItemType.Habilidad;
+        
+        playerInventory.selectedItemType = ItemType.Arma;
+        playerInventory.selectedAbilityType = AbilityType.None;
+        mainInterface.LightUpItem(ItemType.Arma, AbilityType.None);
+        
+        if (wasUsingAbility)
+        {
+            mainInterface.ClearAllAbilityPrefabs();
+        }
+    }
+
+    private void SelectAbility(AbilityType abilityType)
+    {
+        playerInventory.selectedItemType = ItemType.Habilidad;
+        playerInventory.selectedAbilityType = abilityType;
+        mainInterface.LightUpItem(ItemType.Habilidad, abilityType);
+    }
+
+    private void ActivateSelectedAbility()
+    {
+        switch (playerInventory.selectedItemType)
+        {
+            case ItemType.Habilidad:
+                switch (playerInventory.selectedAbilityType)
+                {
+                    case AbilityType.Ofensiva:
+                        if (offensiveAbilityController.offensiveAbilityCooldown == 0)
+                        {
+                            StartCoroutine(UseAbilityAndSwitchBack(
+                                offensiveAbilityController.offensiveAbility(),
+                                AbilityType.Ofensiva
+                            ));
+                        }
+                        break;
+                    case AbilityType.Defensiva:
+                        if (defensiveAbilityController.defensiveAbilityCooldown == 0)
+                        {
+                            StartCoroutine(UseAbilityAndSwitchBack(
+                                defensiveAbilityController.enableShield(),
+                                AbilityType.Defensiva
+                            ));
+              
+                        }
+                        break;
+                    case AbilityType.Curativa:
+                        if (healingAbilityController.healingAbilityCooldown == 0)
+                        {
+                            StartCoroutine(UseAbilityAndSwitchBack(
+                                healingAbilityController.healingAbility(),
+                                AbilityType.Curativa
+                            ));
+                 
+                        }
+                        break;
+                }
+                break;
+        }
+    }
+
+    private IEnumerator UseAbilityAndSwitchBack(IEnumerator abilityCoroutine, AbilityType abilityType)
+    {
+        yield return StartCoroutine(abilityCoroutine);
+        
+        mainInterface.ClearAbilityPrefab(abilityType);
+        
+        SelectWeapon();
+        ShowWeapon(true);
+    }
+        
+
+    public void ShowWeapon(bool value)
+    {
+        if (mano != null && mano.childCount > 0)
+        {
+            // Only hide if we explicitly want to hide (value is false)
+            // Otherwise, always show if we have a weapon
+            bool shouldShow = value || playerInventory.weapon != null;
+            mano.GetChild(0).gameObject.SetActive(shouldShow);
+        }
     }
 }
