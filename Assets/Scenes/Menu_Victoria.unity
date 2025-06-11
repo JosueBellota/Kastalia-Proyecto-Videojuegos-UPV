@@ -831,7 +831,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: VICOTRIA
+  m_text: VICTORIA
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e464c5f160ca9ec4998fe29864bae639, type: 2}
   m_sharedMaterial: {fileID: 2826018764001040221, guid: e464c5f160ca9ec4998fe29864bae639, type: 2}
