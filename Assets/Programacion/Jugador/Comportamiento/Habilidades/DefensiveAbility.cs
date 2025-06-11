@@ -8,7 +8,6 @@ public class DefensiveAbility : MonoBehaviour
     private PlayerHealth playerHealth;
     public int defensiveAbilityCooldown = 0;
 
-
     void Start()
     {
         playerInventory = GetComponent<PlayerInventory>();
@@ -16,25 +15,30 @@ public class DefensiveAbility : MonoBehaviour
         playerHealth = GetComponent<PlayerHealth>();
     }
 
-    public void enableShield()
+    public IEnumerator enableShield()
     {
         if (!playerInventory.equippedAbilities.TryGetValue(AbilityType.Defensiva, out Ability defensiveAbility))
         {
             Debug.LogWarning("No defensive ability equipped!");
-            return;
+            yield break; // Use yield break instead of return
         }
+
         playerController.isCastingAbility = true;
         playerController.animator.SetTrigger("Shield");
         playerHealth.defensiveAbilityHits = 2;
         playerController.ToggleShieldPrefab(true);
         Debug.Log("Shield enabled");
         defensiveAbilityCooldown = defensiveAbility.killCountCooldown;
-        playerController.isCastingAbility = false;
+
         StartCoroutine(shieldDuration());
+        
         if (playerInventory.selectedAbilityType == AbilityType.Defensiva)
         {
             playerInventory.selectedItemType = ItemType.Arma;
         }
+
+        playerController.isCastingAbility = false;
+        yield return null;
     }
 
     public IEnumerator shieldDuration()

@@ -45,5 +45,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicaPrefab: {fileID: 2675948112821083827, guid: 13bf5cb7acb39a347b431298f49e6560, type: 3}
-  menuClip: {fileID: 8300000, guid: 7061a8a4a1f23564b900fbcf9d61243d, type: 3}
-  mazmorraClip: {fileID: 8300000, guid: af8a24e33dfd8cb44af4624db7aa7320, type: 3}
+  menuClip: {fileID: 8300000, guid: b02ea8977fa25f84a89eefb340674b4e, type: 3}
+  mazmorraClip: {fileID: 8300000, guid: 93a6c5d4298dda146b2a18ae0c6b604d, type: 3}

@@ -11,11 +11,11 @@ public class EnemyHealth : MonoBehaviour
     public GameObject jugador;
 
     private DamageFlash damageFlash;
+
     private void Start()
     {
         currentHealth = maxHealth;
         jugador = GameObject.FindGameObjectWithTag("Player");
-
         damageFlash = GetComponent<DamageFlash>();
 
         if (EnemyManager.Instance)
@@ -33,12 +33,12 @@ public class EnemyHealth : MonoBehaviour
     public void TakeDamage(int damage)
     {
         if(DamagePopupPrefab && currentHealth > 0) ShowDamagePopup(damage);
-        if(currentHealth - damage > 0){
+        
+        if(currentHealth - damage > 0)
+        {
             currentHealth -= damage;
-
             if (damageFlash != null)
-            damageFlash.Flash();
-
+                damageFlash.Flash();
         }
         else
         {
@@ -53,33 +53,21 @@ public class EnemyHealth : MonoBehaviour
         popup.GetComponent<TextMeshPro>().text = damage.ToString();
     }
 
-    public void SetHealth(int value){
+    public void SetHealth(int value)
+    {
         if(value <= 0) return;
-        maxHealth = value; currentHealth = value;
+        maxHealth = value; 
+        currentHealth = value;
     }
+
     private void Die()
     {
-        OffensiveAbility offensiveAbilityController = jugador.GetComponent<OffensiveAbility>();
-        DefensiveAbility defensiveAbilityController = jugador.GetComponent<DefensiveAbility>();
-        HealingAbility healingAbilityController = jugador.GetComponent<HealingAbility>();
-
-        if (offensiveAbilityController.offensiveAbilityCooldown > 0)
-            offensiveAbilityController.offensiveAbilityCooldown -= 1;
-        if (defensiveAbilityController.defensiveAbilityCooldown > 0)
-            defensiveAbilityController.defensiveAbilityCooldown -= 1;
-        if (healingAbilityController.healingAbilityCooldown > 0)
-            healingAbilityController.healingAbilityCooldown -= 1;
-
-        MainInterface mainInterface = FindFirstObjectByType<MainInterface>();
-        if (mainInterface)
-        {
-            mainInterface.SubtractCooldown();
-        }
+        
         StopAllCoroutines();
 
-        if (EnemyManager.Instance) EnemyManager.Instance.UnregisterEnemy();
+        if (EnemyManager.Instance) 
+            EnemyManager.Instance.UnregisterEnemy();
 
         Destroy(gameObject);
     }
-
 }

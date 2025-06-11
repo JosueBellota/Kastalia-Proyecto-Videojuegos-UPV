@@ -1,5 +1,4 @@
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,13 +10,18 @@ public class MainInterface : MonoBehaviour
     [SerializeField] private Button ShieldButton;
     [SerializeField] private Button PotionButton;
 
+    [Header("Prefabs")]
+    [SerializeField] private GameObject weaponPrefab;
+    [SerializeField] private GameObject ofensivaPrefab;
+    [SerializeField] private GameObject defensivaPrefab;
+    [SerializeField] private GameObject curativaPrefab;
+
     private bool isPlayerFound = false;
     private GameObject player;
     private PlayerInventory playerInventory;
     private OffensiveAbility offensiveAbilityController;
     private DefensiveAbility defensiveAbilityController;
     private HealingAbility healingAbilityController;
-
 
     public void updateVidaText(float vida)
     {
@@ -26,28 +30,99 @@ public class MainInterface : MonoBehaviour
 
     public void updateWeaponSlot(Weapon weapon)
     {
-        if (weapon.icon)
-        {
-            WeaponButton.GetComponent<Image>().sprite = weapon.icon;
-            return;
-        }
-        WeaponButton.GetComponentInChildren<TMP_Text>().text = weapon.name;
+        // Weapon slot always remains active, just update the icon
+        UpdateSlotIcon(WeaponButton.transform, weaponPrefab, weapon.icon);
     }
-
     public void updateHabilitySlots(AbilityType abilityType, Ability ability)
     {
         switch (abilityType)
         {
             case AbilityType.Ofensiva:
-                Debug.Log(ability.abilityName);
-                OffensiveButton.GetComponentInChildren<TMP_Text>().text = ability.abilityName;
+                UpdateSlotIcon(OffensiveButton.transform, ofensivaPrefab, ability.icon);
                 break;
             case AbilityType.Defensiva:
-                ShieldButton.GetComponentInChildren<TMP_Text>().text = ability.abilityName;
+                UpdateSlotIcon(ShieldButton.transform, defensivaPrefab, ability.icon);
                 break;
             case AbilityType.Curativa:
-                PotionButton.GetComponentInChildren<TMP_Text>().text = ability.abilityName;
+                UpdateSlotIcon(PotionButton.transform, curativaPrefab, ability.icon);
                 break;
+        }
+    }
+
+
+    private void UpdateSlotIcon(Transform parent, GameObject prefab, Sprite icon)
+    {
+        // For weapon slot, we never destroy the prefab
+        if (parent == WeaponButton.transform)
+        {
+            Image img = weaponPrefab.GetComponentInChildren<Image>(true);
+            if (img != null && icon != null)
+            {
+                img.sprite = icon;
+                img.color = Color.white;
+            }
+            return;
+        }
+
+        // For abilities - normal behavior
+        Transform prefabInstance = parent.Find("AbilityPrefab");
+        if (prefabInstance == null)
+        {
+            GameObject newPrefab = Instantiate(prefab, parent);
+            newPrefab.name = "AbilityPrefab";
+            prefabInstance = newPrefab.transform;
+        }
+
+        Image abilityImg = prefabInstance.GetComponentInChildren<Image>(true);
+        if (abilityImg != null && icon != null)
+        {
+            abilityImg.sprite = icon;
+            abilityImg.color = Color.white;
+        }
+    }
+
+    private void ReplaceHabilidadImage(Transform parent, GameObject prefab, Sprite icon, string fallbackName)
+    {
+        Debug.Log($"[UI] Updating slot: {parent.name} with ability {fallbackName}");
+
+        Transform oldHabilidad = parent.Find("habilidad");
+        if (oldHabilidad != null)
+        {
+            Debug.Log("[UI] Destroying old habilidad object.");
+            Destroy(oldHabilidad.gameObject);
+        }
+
+        GameObject newHabilidad = Instantiate(prefab, parent);
+        newHabilidad.name = "habilidad";
+
+        Image img = newHabilidad.GetComponentInChildren<Image>(true);
+
+        if (img != null)
+        {
+            if (icon != null)
+            {
+                img.sprite = icon;
+                img.color = Color.white;
+                Debug.Log("[UI] Sprite assigned successfully to new object.");
+            }
+            else
+            {
+                Debug.Log("[UI] Icon was null — used default image or left as is.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[UI] No Image component found in the new prefab or its children.");
+        }
+
+        if (icon == null || img == null)
+        {
+            TMP_Text text = newHabilidad.GetComponentInChildren<TMP_Text>(true);
+            if (text != null)
+            {
+                text.text = fallbackName;
+                Debug.LogWarning("[UI] Using text fallback in new object.");
+            }
         }
     }
 
@@ -67,21 +142,19 @@ public class MainInterface : MonoBehaviour
         }
     }
 
-
     private bool FindPlayerAtributes()
     {
         if (player)
         {
             if (player.GetComponent<OffensiveAbility>() &&
-            player.GetComponent<DefensiveAbility>() &&
-            player.GetComponent<HealingAbility>() &&
-            player.GetComponent<PlayerInventory>())
+                player.GetComponent<DefensiveAbility>() &&
+                player.GetComponent<HealingAbility>() &&
+                player.GetComponent<PlayerInventory>())
             {
                 offensiveAbilityController = player.GetComponent<OffensiveAbility>();
                 defensiveAbilityController = player.GetComponent<DefensiveAbility>();
                 healingAbilityController = player.GetComponent<HealingAbility>();
                 playerInventory = player.GetComponent<PlayerInventory>();
-
                 return true;
             }
         }
@@ -90,77 +163,83 @@ public class MainInterface : MonoBehaviour
 
     public void LightUpItem(ItemType itemType, AbilityType abilityType)
     {
+        // First deactivate all selected indicators
+        DeactivateAllSelectedIndicators();
+
+        // Activate the appropriate selected indicator
         if (itemType == ItemType.Arma)
         {
-            WeaponButton.GetComponent<Image>().color = Color.yellow;
-            DarkenItems(ItemType.Arma, AbilityType.None);
+            Transform selected = WeaponButton.transform.Find("selected");
+            if (selected != null) selected.gameObject.SetActive(true);
             return;
         }
 
-        if (abilityType == AbilityType.Ofensiva)
+        switch (abilityType)
         {
-            OffensiveButton.GetComponent<Image>().color = Color.yellow;
-            DarkenItems(ItemType.Habilidad, AbilityType.Ofensiva);
-            return;
-        }
-        if (abilityType == AbilityType.Defensiva)
-        {
-            ShieldButton.GetComponent<Image>().color = Color.yellow;
-            DarkenItems(ItemType.Habilidad, AbilityType.Defensiva);
-            return;
-        }
-        if (abilityType == AbilityType.Curativa)
-        {
-            PotionButton.GetComponent<Image>().color = Color.yellow;
-            DarkenItems(ItemType.Habilidad, AbilityType.Curativa);
-            return;
+            case AbilityType.Ofensiva:
+                Transform offensiveSelected = OffensiveButton.transform.Find("selected");
+                if (offensiveSelected != null) offensiveSelected.gameObject.SetActive(true);
+                break;
+            case AbilityType.Defensiva:
+                Transform defensiveSelected = ShieldButton.transform.Find("selected");
+                if (defensiveSelected != null) defensiveSelected.gameObject.SetActive(true);
+                break;
+            case AbilityType.Curativa:
+                Transform curativeSelected = PotionButton.transform.Find("selected");
+                if (curativeSelected != null) curativeSelected.gameObject.SetActive(true);
+                break;
         }
     }
 
-    public void SubtractCooldown()
+    private void DeactivateAllSelectedIndicators()
     {
-        if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
-        {
-            if (offensiveAbilityController.offensiveAbilityCooldown == 0)
-            {
-                OffensiveButton.GetComponentInChildren<TMP_Text>().text = playerInventory.equippedAbilities[AbilityType.Ofensiva].abilityName;
-            }
-            else
-            {
-                OffensiveButton.GetComponentInChildren<TMP_Text>().text = offensiveAbilityController.offensiveAbilityCooldown.ToString("F1");
-            }
-        }
+        // Weapon
+        Transform weaponSelected = WeaponButton.transform.Find("selected");
+        if (weaponSelected != null) weaponSelected.gameObject.SetActive(false);
 
-        if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva))
-        {
-            if (defensiveAbilityController.defensiveAbilityCooldown == 0)
-            {
-                ShieldButton.GetComponentInChildren<TMP_Text>().text = playerInventory.equippedAbilities[AbilityType.Defensiva].abilityName;
-            }
-            else
-            {
-                ShieldButton.GetComponentInChildren<TMP_Text>().text = defensiveAbilityController.defensiveAbilityCooldown.ToString("F1");
-            }
-        }
+        // Offensive
+        Transform offensiveSelected = OffensiveButton.transform.Find("selected");
+        if (offensiveSelected != null) offensiveSelected.gameObject.SetActive(false);
 
-        if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa))
-        {
-            if (healingAbilityController.healingAbilityCooldown == 0)
-            {
-                PotionButton.GetComponentInChildren<TMP_Text>().text = playerInventory.equippedAbilities[AbilityType.Curativa].abilityName;
-            }
-            else
-            {
-                PotionButton.GetComponentInChildren<TMP_Text>().text = healingAbilityController.healingAbilityCooldown.ToString("F1");
-            }
-        }
+        // Defensive
+        Transform defensiveSelected = ShieldButton.transform.Find("selected");
+        if (defensiveSelected != null) defensiveSelected.gameObject.SetActive(false);
+
+        // Curative
+        Transform curativeSelected = PotionButton.transform.Find("selected");
+        if (curativeSelected != null) curativeSelected.gameObject.SetActive(false);
     }
 
-    private void DarkenItems(ItemType itemType, AbilityType abilityType)
+    public void ClearAllAbilityPrefabs()
     {
-        if (itemType != ItemType.Arma) WeaponButton.GetComponent<Image>().color = Color.white;
-        if (abilityType != AbilityType.Ofensiva) OffensiveButton.GetComponent<Image>().color = Color.white;
-        if (abilityType != AbilityType.Defensiva) ShieldButton.GetComponent<Image>().color = Color.white;
-        if (abilityType != AbilityType.Curativa) PotionButton.GetComponent<Image>().color = Color.white;
+        ClearAbilityPrefabFromButton(OffensiveButton.transform);
+        ClearAbilityPrefabFromButton(ShieldButton.transform);
+        ClearAbilityPrefabFromButton(PotionButton.transform);
     }
+
+    public void ClearAbilityPrefab(AbilityType abilityType)
+    {
+        switch (abilityType)
+        {
+            case AbilityType.Ofensiva:
+                ClearAbilityPrefabFromButton(OffensiveButton.transform);
+                break;
+            case AbilityType.Defensiva:
+                ClearAbilityPrefabFromButton(ShieldButton.transform);
+                break;
+            case AbilityType.Curativa:
+                ClearAbilityPrefabFromButton(PotionButton.transform);
+                break;
+        }
+    }
+
+    private void ClearAbilityPrefabFromButton(Transform buttonTransform)
+    {
+        Transform abilityPrefab = buttonTransform.Find("AbilityPrefab");
+        if (abilityPrefab != null)
+        {
+            Destroy(abilityPrefab.gameObject);
+        }
+    }
+
 }

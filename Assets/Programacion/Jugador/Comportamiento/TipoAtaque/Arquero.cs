@@ -6,9 +6,9 @@ public class Arquero : MonoBehaviour
     [Header("Disparo")]
     public GameObject prefabFlecha;
     public float fuerza = 30f;
-    public float delayDisparoVisual = 1.4f; 
+    public float delayDisparoVisual = 0.5f; 
     public float delayRafaga = 0.05f;
-    private float cooldownLigero = 0.5f;
+    private float cooldownLigero = 0f;
     private float cooldownCargado = 1f;
 
     [Header("Carga")]

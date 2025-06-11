@@ -3,11 +3,9 @@ using UnityEngine;
 
 public class HealingAbility : MonoBehaviour
 {
-    PlayerController playerController;
-    PlayerInventory playerInventory;
-    PlayerHealth playerHealth;
-    public int healingAbilityCooldown = 0;
-
+    private PlayerController playerController;
+    private PlayerInventory playerInventory;
+    private PlayerHealth playerHealth;
 
     void Start()
     {
@@ -20,17 +18,20 @@ public class HealingAbility : MonoBehaviour
     {
         if (!playerInventory.equippedAbilities.TryGetValue(AbilityType.Curativa, out Ability healingAbility))
         {
-            Debug.LogWarning("No offensive ability equipped!");
+            Debug.LogWarning("No healing ability equipped!");
             yield break;
         }
+
         playerController.isCastingAbility = true;
         playerController.animator.SetTrigger("Healing");
-        healingAbilityCooldown = healingAbility.killCountCooldown;
-        playerHealth.healPlayer(60);
-        playerController.isCastingAbility = false;
-        if(playerInventory.selectedAbilityType == AbilityType.Curativa) {
-            playerInventory.selectedItemType = ItemType.Arma;
-        }
-    }
+        
+       
+        playerHealth.healPlayer(60); 
+        
 
+        yield return new WaitForSeconds(0.5f); 
+        
+        playerController.isCastingAbility = false;
+
+    }
 }

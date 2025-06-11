@@ -6,12 +6,11 @@ using UnityEngine.SceneManagement;
 
 public class PlayerHealth : MonoBehaviour
 {
-    [SerializeField] float vidaMaxima = 100f;
+    [SerializeField] public float vidaMaxima = 100f;
     public float vidaActual;
     private float tiempoInmunidad = .75f;
     private bool inmunidad = false;
     public int defensiveAbilityHits = 0;
-
     private PlayerController playerController;
     private MainInterface mainInterface;
     private DamageFlash damageFlash;
