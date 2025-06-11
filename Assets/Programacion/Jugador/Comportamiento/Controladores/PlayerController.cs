@@ -71,94 +71,73 @@ public abstract class PlayerController : MonoBehaviour
             StartCoroutine(Dash(move));
         }
 
-        if (!isDashing && !isAttacking)
+        if (playerInventory.weapon != null)
         {
-            // Show weapon if available
-            if (playerInventory.weapon != null)
+            ShowWeapon(true);
+        }
+
+        // Weapon selection
+        if (Input.GetKeyDown(KeyCode.Alpha1) && playerInventory.weapon != null)
+        {
+            playerInventory.selectedItemType = ItemType.Arma;
+            playerInventory.selectedAbilityType = AbilityType.None;
+            mainInterface.LightUpItem(ItemType.Arma, AbilityType.None);
+
+            // Only clear abilities if we were previously using one
+            if (playerInventory.selectedItemType == ItemType.Habilidad)
             {
-                ShowWeapon(true);
+                mainInterface.ClearAllAbilityPrefabs();
             }
+        }
 
-            // Weapon selection
-            if (Input.GetKeyDown(KeyCode.Alpha1) && playerInventory.weapon != null)
+        // Ability selections
+        if (Input.GetKeyDown(KeyCode.Alpha2) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
+        {
+            playerInventory.selectedItemType = ItemType.Habilidad;
+            playerInventory.selectedAbilityType = AbilityType.Ofensiva;
+            mainInterface.LightUpItem(ItemType.Habilidad, AbilityType.Ofensiva);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha3) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva))
+        {
+            playerInventory.selectedItemType = ItemType.Habilidad;
+            playerInventory.selectedAbilityType = AbilityType.Defensiva;
+            mainInterface.LightUpItem(ItemType.Habilidad, AbilityType.Defensiva);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Alpha4) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa))
+        {
+            playerInventory.selectedItemType = ItemType.Habilidad;
+            playerInventory.selectedAbilityType = AbilityType.Curativa;
+            mainInterface.LightUpItem(ItemType.Habilidad, AbilityType.Curativa);
+        }
+
+
+        if (Input.GetKeyDown(KeyCode.Mouse0))
+        {
+            switch (playerInventory.selectedAbilityType)
             {
-                playerInventory.selectedItemType = ItemType.Arma;
-                playerInventory.selectedAbilityType = AbilityType.None;
-                mainInterface.LightUpItem(ItemType.Arma, AbilityType.None);
+                case AbilityType.Ofensiva:
+                    StartCoroutine(UseAbilityAndSwitchBack(
+                        offensiveAbilityController.offensiveAbility(),
+                        AbilityType.Ofensiva
+                    ));
+                    break;
 
-                // Only clear abilities if we were previously using one
-                if (playerInventory.selectedItemType == ItemType.Habilidad)
-                {
-                    mainInterface.ClearAllAbilityPrefabs();
-                }
+                case AbilityType.Defensiva:
+                    StartCoroutine(UseAbilityAndSwitchBack(
+                        defensiveAbilityController.enableShield(),
+                        AbilityType.Defensiva
+                    ));
+                    break;
+
+                case AbilityType.Curativa:
+                    StartCoroutine(UseAbilityAndSwitchBack(
+                        healingAbilityController.healingAbility(),
+                        AbilityType.Curativa
+                    ));
+                    break;
             }
-
-            // Ability selections
-            if (Input.GetKeyDown(KeyCode.Alpha2) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
-            {
-                playerInventory.selectedItemType = ItemType.Habilidad;
-                playerInventory.selectedAbilityType = AbilityType.Ofensiva;
-                mainInterface.LightUpItem(ItemType.Habilidad, AbilityType.Ofensiva);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha3) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva))
-            {
-                playerInventory.selectedItemType = ItemType.Habilidad;
-                playerInventory.selectedAbilityType = AbilityType.Defensiva;
-                mainInterface.LightUpItem(ItemType.Habilidad, AbilityType.Defensiva);
-            }
-
-            if (Input.GetKeyDown(KeyCode.Alpha4) && playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa))
-            {
-                playerInventory.selectedItemType = ItemType.Habilidad;
-                playerInventory.selectedAbilityType = AbilityType.Curativa;
-                mainInterface.LightUpItem(ItemType.Habilidad, AbilityType.Curativa);
-            }
-
-            // Ability activation
-            if (Input.GetKeyDown(KeyCode.Mouse0))
-            {
-                switch (playerInventory.selectedItemType)
-                {
-                    case ItemType.Habilidad:
-                        // Hide weapon when using any ability
-                        ShowWeapon(false);
-                        
-                        switch (playerInventory.selectedAbilityType)
-                        {
-                            case AbilityType.Ofensiva:
-                                if (offensiveAbilityController.offensiveAbilityCooldown == 0)
-                                {
-                                    StartCoroutine(UseAbilityAndSwitchBack(
-                                        offensiveAbilityController.offensiveAbility(),
-                                        AbilityType.Ofensiva
-                                    ));
-                                }
-                                break;
-                            case AbilityType.Defensiva:
-                                if (defensiveAbilityController.defensiveAbilityCooldown == 0)
-                                {
-                                    StartCoroutine(UseAbilityAndSwitchBack(
-                                        defensiveAbilityController.enableShield(),
-                                        AbilityType.Defensiva
-                                    ));
-                                }
-                                break;
-                            case AbilityType.Curativa:
-                                if (healingAbilityController.healingAbilityCooldown == 0)
-                                {
-                                    StartCoroutine(UseAbilityAndSwitchBack(
-                                        healingAbilityController.healingAbility(),
-                                        AbilityType.Curativa
-                                    ));
-                                }
-                                break;
-                        }
-                        break;
-                }
-            }
-
-
         }
 
         // Gravity handling
@@ -175,6 +154,7 @@ public abstract class PlayerController : MonoBehaviour
             controller.Move(playerVelocity * Time.deltaTime);
         }
     }
+
     IEnumerator Dash(Vector3 move)
     {
         float startTime = Time.time;
@@ -219,15 +199,11 @@ public abstract class PlayerController : MonoBehaviour
     {
         // Only clear abilities if we were previously using one
         bool wasUsingAbility = playerInventory.selectedItemType == ItemType.Habilidad;
-        
+
         playerInventory.selectedItemType = ItemType.Arma;
         playerInventory.selectedAbilityType = AbilityType.None;
         mainInterface.LightUpItem(ItemType.Arma, AbilityType.None);
-        
-        if (wasUsingAbility)
-        {
-            mainInterface.ClearAllAbilityPrefabs();
-        }
+
     }
 
     private void SelectAbility(AbilityType abilityType)
@@ -245,33 +221,30 @@ public abstract class PlayerController : MonoBehaviour
                 switch (playerInventory.selectedAbilityType)
                 {
                     case AbilityType.Ofensiva:
-                        if (offensiveAbilityController.offensiveAbilityCooldown == 0)
-                        {
-                            StartCoroutine(UseAbilityAndSwitchBack(
-                                offensiveAbilityController.offensiveAbility(),
-                                AbilityType.Ofensiva
-                            ));
-                        }
+
+                        StartCoroutine(UseAbilityAndSwitchBack(
+                        offensiveAbilityController.offensiveAbility(),
+                        AbilityType.Ofensiva
+                        ));
+
                         break;
                     case AbilityType.Defensiva:
-                        if (defensiveAbilityController.defensiveAbilityCooldown == 0)
-                        {
-                            StartCoroutine(UseAbilityAndSwitchBack(
-                                defensiveAbilityController.enableShield(),
-                                AbilityType.Defensiva
-                            ));
-              
-                        }
+
+                        StartCoroutine(UseAbilityAndSwitchBack(
+                            defensiveAbilityController.enableShield(),
+                            AbilityType.Defensiva
+                        ));
+
+
                         break;
                     case AbilityType.Curativa:
-                        if (healingAbilityController.healingAbilityCooldown == 0)
-                        {
-                            StartCoroutine(UseAbilityAndSwitchBack(
-                                healingAbilityController.healingAbility(),
-                                AbilityType.Curativa
-                            ));
-                 
-                        }
+
+                        StartCoroutine(UseAbilityAndSwitchBack(
+                            healingAbilityController.healingAbility(),
+                            AbilityType.Curativa
+                        ));
+
+
                         break;
                 }
                 break;
@@ -281,13 +254,14 @@ public abstract class PlayerController : MonoBehaviour
     private IEnumerator UseAbilityAndSwitchBack(IEnumerator abilityCoroutine, AbilityType abilityType)
     {
         yield return StartCoroutine(abilityCoroutine);
-        
+
         mainInterface.ClearAbilityPrefab(abilityType);
-        
+        playerInventory.RemoveAbility(abilityType);
+
         SelectWeapon();
         ShowWeapon(true);
     }
-        
+
 
     public void ShowWeapon(bool value)
     {
@@ -299,4 +273,8 @@ public abstract class PlayerController : MonoBehaviour
             mano.GetChild(0).gameObject.SetActive(shouldShow);
         }
     }
+    
+
+
+
 }

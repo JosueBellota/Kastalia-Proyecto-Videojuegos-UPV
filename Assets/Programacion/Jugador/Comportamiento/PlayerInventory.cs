@@ -46,4 +46,13 @@ public class PlayerInventory : MonoBehaviour
     {
         return equippedAbilities.ContainsKey(ability.abilityType);
     }
+
+    public void RemoveAbility(AbilityType abilityType)
+    {
+        if (equippedAbilities.ContainsKey(abilityType))
+        {
+            equippedAbilities.Remove(abilityType);
+        }
+    }
+
 }

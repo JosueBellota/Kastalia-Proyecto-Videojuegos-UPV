@@ -210,24 +210,6 @@ public class MainInterface : MonoBehaviour
         if (curativeSelected != null) curativeSelected.gameObject.SetActive(false);
     }
 
-    public void SubtractCooldown()
-    {
-        if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Ofensiva))
-        {
-            if (offensiveAbilityController.offensiveAbilityCooldown == 0) { }
-        }
-
-        if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Defensiva))
-        {
-            if (defensiveAbilityController.defensiveAbilityCooldown == 0) { }
-        }
-
-        if (playerInventory.equippedAbilities.ContainsKey(AbilityType.Curativa))
-        {
-            if (healingAbilityController.healingAbilityCooldown == 0) { }
-        }
-    }
-
     public void ClearAllAbilityPrefabs()
     {
         ClearAbilityPrefabFromButton(OffensiveButton.transform);
