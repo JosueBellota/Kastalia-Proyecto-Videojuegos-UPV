@@ -5,8 +5,15 @@ public enum SFXType
     Click,
     Hover,
     Ligero,
-    Pesado
-}   
+    Pesado,
+    EnemyWounded,
+    PlayerWounded,
+    Sword,
+    Explosion,
+
+    Running
+}
+
 public class PlaySFX : MonoBehaviour
 {
     public AudioSource audioSource;
@@ -14,6 +21,12 @@ public class PlaySFX : MonoBehaviour
     public AudioClip hoverClip;
     public AudioClip disparoLigeroClip;
     public AudioClip disparoPesadoClip;
+    public AudioClip enemywoundedClip;
+    public AudioClip playerwoundedClip;
+    public AudioClip swordClip;
+    public AudioClip explosionClip;
+    public AudioClip runningClip;
+
     void Awake()
     {
         if (audioSource == null)
@@ -29,23 +42,46 @@ public class PlaySFX : MonoBehaviour
         }
     }
 
-
     public void Play(SFXType type)
     {
+        AudioClip clipToPlay = null;
+
         switch (type)
         {
             case SFXType.Click:
-                PlayOneShot(clickClip);
+                clipToPlay = clickClip;
                 break;
             case SFXType.Hover:
-                PlayOneShot(hoverClip);
+                clipToPlay = hoverClip;
                 break;
             case SFXType.Ligero:
-                PlayOneShot(disparoLigeroClip);
+                clipToPlay = disparoLigeroClip;
                 break;
             case SFXType.Pesado:
-                PlayOneShot(disparoPesadoClip);
+                clipToPlay = disparoPesadoClip;
                 break;
+            case SFXType.EnemyWounded:
+                clipToPlay = enemywoundedClip;
+                break;
+            case SFXType.PlayerWounded:
+                clipToPlay = playerwoundedClip;
+                break;
+            case SFXType.Sword:
+                clipToPlay = swordClip;
+                break;
+            case SFXType.Explosion:
+                clipToPlay = explosionClip;
+                break;
+
+            case SFXType.Running:
+                clipToPlay = runningClip;
+                break;
+            
+        }
+
+        if (clipToPlay != null)
+        {
+            PlaySimultaneous(clipToPlay);
         }
     }
 
@@ -55,5 +91,15 @@ public class PlaySFX : MonoBehaviour
         {
             audioSource.PlayOneShot(clip);
         }
+    }
+
+    private void PlaySimultaneous(AudioClip clip)
+    {
+        GameObject tempGO = new GameObject("TempSFX");
+        tempGO.transform.SetParent(transform); // keep hierarchy organized
+        AudioSource tempAudio = tempGO.AddComponent<AudioSource>();
+        tempAudio.clip = clip;
+        tempAudio.Play();
+        Destroy(tempGO, clip.length);
     }
 }

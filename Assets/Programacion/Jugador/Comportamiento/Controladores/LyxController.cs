@@ -55,6 +55,8 @@ public class LyxController : PlayerController
                         damage = Mathf.CeilToInt(damage * 0.5f);
                     }
 
+                    SFXManager.GetInstance()?.ReproducirSword();
+
                     StartCoroutine(espadachin.SwordAttack(damage));
 
                     espadachin.isChargingSword = false;

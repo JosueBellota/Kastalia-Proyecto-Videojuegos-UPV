@@ -14,6 +14,12 @@ public class SFXManager : MonoBehaviour
     [Header("SFX de combate")]
     public AudioClip disparoLigeroSFX;
     public AudioClip disparoPesadoSFX;
+    public AudioClip enemyWoundedSFX;
+    public AudioClip playerWoundedSFX;
+    public AudioClip swordSFX;
+
+    public AudioClip explosionSFX;
+    public AudioClip runningSFX;
 
     private PlaySFX combateSFXPlayer;
 
@@ -40,6 +46,11 @@ public class SFXManager : MonoBehaviour
             {
                 combateSFXPlayer.disparoLigeroClip = disparoLigeroSFX;
                 combateSFXPlayer.disparoPesadoClip = disparoPesadoSFX;
+                combateSFXPlayer.enemywoundedClip = enemyWoundedSFX;
+                combateSFXPlayer.playerwoundedClip = playerWoundedSFX;
+                combateSFXPlayer.swordClip = swordSFX;
+                combateSFXPlayer.explosionClip = explosionSFX;
+                combateSFXPlayer.runningClip = runningSFX;
             }
         }
     }
@@ -52,6 +63,32 @@ public class SFXManager : MonoBehaviour
     public void ReproducirDisparoPesado()
     {
         combateSFXPlayer?.Play(SFXType.Pesado);
+    }
+
+    public void ReproducirEnemyWounded()
+    {
+        combateSFXPlayer?.Play(SFXType.EnemyWounded);
+    }
+
+    public void ReproducirPlayerWounded()
+    {
+        combateSFXPlayer?.Play(SFXType.PlayerWounded);
+    }
+
+    public void ReproducirSword()
+    {
+        combateSFXPlayer?.Play(SFXType.Sword);
+    }
+
+
+    public void ReproducirRunning()
+    {
+        combateSFXPlayer?.Play(SFXType.Running);
+    }
+
+    public void ReproducirExplosion()
+    {
+        combateSFXPlayer?.Play(SFXType.Explosion);
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
