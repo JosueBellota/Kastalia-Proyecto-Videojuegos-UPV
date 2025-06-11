@@ -9,8 +9,13 @@ public class SFXManager : MonoBehaviour
     public AudioClip clickClip;
     public AudioClip hoverClip;
     public string targetTag = "BotonUI";
-
     private static SFXManager instance;
+
+    [Header("SFX de combate")]
+    public AudioClip disparoLigeroSFX;
+    public AudioClip disparoPesadoSFX;
+
+    private PlaySFX combateSFXPlayer;
 
     void Awake()
     {
@@ -23,6 +28,30 @@ public class SFXManager : MonoBehaviour
         instance = this;
         DontDestroyOnLoad(gameObject);
         SceneManager.sceneLoaded += OnSceneLoaded;
+
+        // Crear instancia persistente para sonidos de combate
+        if (sfxPrefab != null)
+        {
+            GameObject combateSFXObject = Instantiate(sfxPrefab, transform);
+            combateSFXObject.name = "SFXCombate";
+            combateSFXPlayer = combateSFXObject.GetComponent<PlaySFX>();
+
+            if (combateSFXPlayer != null)
+            {
+                combateSFXPlayer.disparoLigeroClip = disparoLigeroSFX;
+                combateSFXPlayer.disparoPesadoClip = disparoPesadoSFX;
+            }
+        }
+    }
+
+    public void ReproducirDisparoLigero()
+    {
+        combateSFXPlayer?.Play(SFXType.Ligero);
+    }
+
+    public void ReproducirDisparoPesado()
+    {
+        combateSFXPlayer?.Play(SFXType.Pesado);
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -47,12 +76,9 @@ public class SFXManager : MonoBehaviour
                     sfxPlayer.clickClip = clickClip;
                     sfxPlayer.hoverClip = hoverClip;
 
-
                     btn.onClick.AddListener(() =>
                     {
-                        // Check if the button has a special sound
                         SpecialSFXClip specialClip = obj.GetComponent<SpecialSFXClip>();
-
                         if (specialClip != null && specialClip.clickOverride != null)
                         {
                             sfxPlayer.PlayOneShot(specialClip.clickOverride);
@@ -63,8 +89,6 @@ public class SFXManager : MonoBehaviour
                         }
                     });
 
-
-                    // Hover
                     EventTrigger trigger = obj.GetComponent<EventTrigger>();
                     if (trigger == null)
                         trigger = obj.AddComponent<EventTrigger>();
@@ -88,5 +112,10 @@ public class SFXManager : MonoBehaviour
     void OnDestroy()
     {
         SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    public static SFXManager GetInstance()
+    {
+        return instance;
     }
 }

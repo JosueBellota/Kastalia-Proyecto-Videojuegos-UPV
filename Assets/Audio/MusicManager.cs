@@ -82,12 +82,12 @@ public class MusicManager : MonoBehaviour
 
         else if (sceneName.StartsWith("Menu_Victoria"))
         {
-            ChangeMusic(mazmorraClip);
+            ChangeMusic(victoriaClip);
         }
 
         else if (sceneName.StartsWith("Derrota"))
         {
-            ChangeMusic(mazmorraClip);
+            ChangeMusic(derrotaClip);
         }
         else
         {

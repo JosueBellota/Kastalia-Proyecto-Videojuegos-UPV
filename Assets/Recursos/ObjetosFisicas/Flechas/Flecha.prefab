@@ -74,12 +74,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e48ddc75ff39d6645ba6f2f3ab528b71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bloodParticles: 15
-  bloodForce: 1.2
-  bloodSize: 0.15
-  bloodColor: {r: 0.8, g: 0, b: 0, a: 1}
-  bloodDuration: 2
-  bloodSplatterSize: 0.75
   TTL: 3
 --- !u!65 &1692533317870297581
 BoxCollider:
@@ -111,8 +105,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 5029216024713975265}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 31c36f707b995a24f8630b65c95faa73, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 160
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 31c36f707b995a24f8630b65c95faa73, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 31c36f707b995a24f8630b65c95faa73, type: 3}
       propertyPath: m_LocalScale.z
-      value: 43.41886
+      value: 160
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 31c36f707b995a24f8630b65c95faa73, type: 3}
       propertyPath: m_LocalPosition.x
@@ -157,11 +159,11 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 31c36f707b995a24f8630b65c95faa73, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: 793a75688d4a3694bbb57c6fc44e2115, type: 2}
+      objectReference: {fileID: 2100000, guid: d606e37a3685ef74395cb3c144c1b03f, type: 2}
     - target: {fileID: -7511558181221131132, guid: 31c36f707b995a24f8630b65c95faa73, type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: 793a75688d4a3694bbb57c6fc44e2115, type: 2}
+      objectReference: {fileID: 2100000, guid: d606e37a3685ef74395cb3c144c1b03f, type: 2}
     - target: {fileID: -7511558181221131132, guid: 31c36f707b995a24f8630b65c95faa73, type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
