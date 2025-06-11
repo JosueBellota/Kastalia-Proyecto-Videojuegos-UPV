@@ -33078,7 +33078,7 @@ PrefabInstance:
     - target: {fileID: 2369233329539453744, guid: dac84e4a2a6335d438194b4cd5c1095d, type: 3}
       propertyPath: mazmorraClip
       value: 
-      objectReference: {fileID: 8300000, guid: af8a24e33dfd8cb44af4624db7aa7320, type: 3}
+      objectReference: {fileID: 8300000, guid: 93a6c5d4298dda146b2a18ae0c6b604d, type: 3}
     - target: {fileID: 5467378709275734356, guid: dac84e4a2a6335d438194b4cd5c1095d, type: 3}
       propertyPath: m_Name
       value: MusicManager
