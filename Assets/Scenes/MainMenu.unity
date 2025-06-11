@@ -33076,9 +33076,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2369233329539453744, guid: dac84e4a2a6335d438194b4cd5c1095d, type: 3}
+      propertyPath: derrotaClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 4fcd033bb1ccb0540af3ca0ff3b575f0, type: 3}
+    - target: {fileID: 2369233329539453744, guid: dac84e4a2a6335d438194b4cd5c1095d, type: 3}
       propertyPath: mazmorraClip
       value: 
       objectReference: {fileID: 8300000, guid: 93a6c5d4298dda146b2a18ae0c6b604d, type: 3}
+    - target: {fileID: 2369233329539453744, guid: dac84e4a2a6335d438194b4cd5c1095d, type: 3}
+      propertyPath: victoriaClip
+      value: 
+      objectReference: {fileID: 8300000, guid: e9858451788496d4cb0375b940d98afb, type: 3}
     - target: {fileID: 5467378709275734356, guid: dac84e4a2a6335d438194b4cd5c1095d, type: 3}
       propertyPath: m_Name
       value: MusicManager
