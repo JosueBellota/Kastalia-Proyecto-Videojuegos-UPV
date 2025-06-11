@@ -225,6 +225,7 @@ GameObject:
   - component: {fileID: 57537348}
   - component: {fileID: 57537347}
   - component: {fileID: 57537351}
+  - component: {fileID: 57537352}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -338,6 +339,21 @@ MonoBehaviour:
   botonPantalla: {fileID: 2006135969}
   botonVolver: {fileID: 486018866}
   resolucionDropdown: {fileID: 1396204045}
+--- !u!114 &57537352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 57537345}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05803b562d4cd4b49a0a39218edb9218, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mainMixer: {fileID: 24100000, guid: 099916fb617d9bd479456e30b44bf95d, type: 2}
+  musicaSlider: {fileID: 1397517246}
+  efectosSlider: {fileID: 1099468390}
 --- !u!1001 &58526973
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5117,7 +5133,7 @@ GameObject:
   - component: {fileID: 1099468390}
   - component: {fileID: 1099468388}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: SliderEfectos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6621,7 +6637,7 @@ GameObject:
   - component: {fileID: 1397517244}
   - component: {fileID: 1397517246}
   m_Layer: 5
-  m_Name: Slider
+  m_Name: SliderMusica
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
