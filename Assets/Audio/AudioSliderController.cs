@@ -30,14 +30,14 @@ public class AudioSliderController : MonoBehaviour
     public void SetMusicaVolume(float value)
     {
         float dB = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
-        mainMixer.SetFloat("MusicaVolume", dB);
+        mainMixer.SetFloat("Vol_Musica", dB); // NOMBRE CORREGIDO
         PlayerPrefs.SetFloat("MusicaVolume", value);
     }
 
     public void SetSFXVolume(float value)
     {
         float dB = Mathf.Log10(Mathf.Clamp(value, 0.0001f, 1f)) * 20f;
-        mainMixer.SetFloat("SFXVolume", dB);
+        mainMixer.SetFloat("Vol_Sfx", dB); // NOMBRE CORREGIDO
         PlayerPrefs.SetFloat("SFXVolume", value);
     }
 }
