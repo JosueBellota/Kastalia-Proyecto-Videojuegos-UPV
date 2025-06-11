@@ -79,11 +79,20 @@ public class SFXManager : MonoBehaviour
     {
         combateSFXPlayer?.Play(SFXType.Sword);
     }
-
-
+    
     public void ReproducirRunning()
     {
         combateSFXPlayer?.Play(SFXType.Running);
+    }
+
+    public void EmpezarRunningLoop()
+    {
+        combateSFXPlayer?.PlayRunningLoop();
+    }
+
+    public void DetenerRunningLoop()
+    {
+        combateSFXPlayer?.StopRunningLoop();
     }
 
     public void ReproducirExplosion()

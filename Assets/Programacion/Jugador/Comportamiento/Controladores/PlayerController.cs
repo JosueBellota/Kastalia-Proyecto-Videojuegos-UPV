@@ -33,6 +33,9 @@ public abstract class PlayerController : MonoBehaviour
 
     public Animator animator;
 
+    private bool estabaCorriendo = false;
+
+
     protected virtual void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -62,8 +65,27 @@ public abstract class PlayerController : MonoBehaviour
 
         if (controller != null && controller.enabled && controller.gameObject.activeInHierarchy)
         {
+
+            SFXManager.GetInstance()?.ReproducirRunning();
+
             controller.Move(finalMove * Time.deltaTime);
+
+
+            bool estaCorriendoAhora = finalMove.magnitude > 0.1f;
+
+            if (estaCorriendoAhora && !estabaCorriendo)
+            {
+                SFXManager.GetInstance()?.EmpezarRunningLoop();
+            }
+            else if (!estaCorriendoAhora && estabaCorriendo)
+            {
+                SFXManager.GetInstance()?.DetenerRunningLoop();
+            }
+
+            estabaCorriendo = estaCorriendoAhora;
+
         }
+
 
         // Dash handling
         if (Input.GetKeyDown(KeyCode.Space) && !isDashing)

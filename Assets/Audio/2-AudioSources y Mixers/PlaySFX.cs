@@ -16,9 +16,11 @@ public enum SFXType
 
 public class PlaySFX : MonoBehaviour
 {
-    public AudioSource audioSource;
+    private AudioSource audioSource;
+
     public AudioClip clickClip;
     public AudioClip hoverClip;
+
     public AudioClip disparoLigeroClip;
     public AudioClip disparoPesadoClip;
     public AudioClip enemywoundedClip;
@@ -29,59 +31,31 @@ public class PlaySFX : MonoBehaviour
 
     void Awake()
     {
-        if (audioSource == null)
-        {
-            audioSource = GetComponent<AudioSource>();
-
-            if (audioSource == null)
-            {
-                Debug.LogWarning("No AudioSource found on " + gameObject.name + ". Adding one automatically.");
-                audioSource = gameObject.AddComponent<AudioSource>();
-                audioSource.playOnAwake = false;
-            }
-        }
+        audioSource = GetComponent<AudioSource>();
     }
 
     public void Play(SFXType type)
     {
-        AudioClip clipToPlay = null;
-
+        AudioClip clip = null;
         switch (type)
         {
-            case SFXType.Click:
-                clipToPlay = clickClip;
-                break;
-            case SFXType.Hover:
-                clipToPlay = hoverClip;
-                break;
-            case SFXType.Ligero:
-                clipToPlay = disparoLigeroClip;
-                break;
-            case SFXType.Pesado:
-                clipToPlay = disparoPesadoClip;
-                break;
-            case SFXType.EnemyWounded:
-                clipToPlay = enemywoundedClip;
-                break;
-            case SFXType.PlayerWounded:
-                clipToPlay = playerwoundedClip;
-                break;
-            case SFXType.Sword:
-                clipToPlay = swordClip;
-                break;
-            case SFXType.Explosion:
-                clipToPlay = explosionClip;
-                break;
-
-            case SFXType.Running:
-                clipToPlay = runningClip;
-                break;
-            
+            case SFXType.Click: clip = clickClip; break;
+            case SFXType.Hover: clip = hoverClip; break;
+            case SFXType.Ligero: clip = disparoLigeroClip; break;
+            case SFXType.Pesado: clip = disparoPesadoClip; break;
+            case SFXType.EnemyWounded: clip = enemywoundedClip; break;
+            case SFXType.PlayerWounded: clip = playerwoundedClip; break;
+            case SFXType.Sword: clip = swordClip; break;
+            case SFXType.Explosion: clip = explosionClip; break;
+            case SFXType.Running: 
+                PlayRunningLoop();
+                return;
         }
 
-        if (clipToPlay != null)
+        if (clip != null)
         {
-            PlaySimultaneous(clipToPlay);
+            audioSource.loop = false;
+            audioSource.PlayOneShot(clip);
         }
     }
 
@@ -89,17 +63,28 @@ public class PlaySFX : MonoBehaviour
     {
         if (clip != null)
         {
+            audioSource.loop = false;
             audioSource.PlayOneShot(clip);
         }
     }
 
-    private void PlaySimultaneous(AudioClip clip)
+    public void PlayRunningLoop()
     {
-        GameObject tempGO = new GameObject("TempSFX");
-        tempGO.transform.SetParent(transform); // keep hierarchy organized
-        AudioSource tempAudio = tempGO.AddComponent<AudioSource>();
-        tempAudio.clip = clip;
-        tempAudio.Play();
-        Destroy(tempGO, clip.length);
+        if (audioSource.isPlaying && audioSource.clip == runningClip && audioSource.loop)
+            return;
+
+        audioSource.clip = runningClip;
+        audioSource.loop = true;
+        audioSource.Play();
+    }
+
+    public void StopRunningLoop()
+    {
+        if (audioSource.isPlaying && audioSource.clip == runningClip)
+        {
+            audioSource.Stop();
+            audioSource.loop = false;
+        }
     }
 }
+
