@@ -168,8 +168,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   attackrange: 3
-  chargeRequiredTime: 2
-  chargeMultiplier: 3
+  chargeRequiredTime: 1
+  chargeMultiplier: 2
   chargeTime: 0
   isChargingSword: 0
   isFullyCharged: 0
