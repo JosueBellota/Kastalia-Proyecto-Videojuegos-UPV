@@ -50,6 +50,7 @@
 
         void AbrirCofre()
         {
+        SFXManager.GetInstance()?.ReproducirOpenChest();
             if (animator != null)
             {
                 animator.SetTrigger("abrir");

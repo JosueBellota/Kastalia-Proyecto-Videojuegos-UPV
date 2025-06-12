@@ -37,7 +37,15 @@ public class EnemyHealth : MonoBehaviour
         if(currentHealth - damage > 0)
         {
 
+        if (gameObject.CompareTag("Demon"))
+        {
+            SFXManager.GetInstance()?.ReproducirDemonDamage();
+        }
+        else
+        {
             SFXManager.GetInstance()?.ReproducirEnemyWounded();
+        }
+           
             currentHealth -= damage;
             if (damageFlash != null)
                 damageFlash.Flash();

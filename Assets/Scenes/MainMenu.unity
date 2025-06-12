@@ -32833,6 +32833,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1206395136775729357, guid: 7b063f300d375ee44919d500769fba2c, type: 3}
+      propertyPath: ChestSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: a96361e89c142e742bb1b981cce6e170, type: 3}
+    - target: {fileID: 1206395136775729357, guid: 7b063f300d375ee44919d500769fba2c, type: 3}
       propertyPath: DemonSFX
       value: 
       objectReference: {fileID: 8300000, guid: c8f8909ea95ed544ba49bb9f4f53abcd, type: 3}

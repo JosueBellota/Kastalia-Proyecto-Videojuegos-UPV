@@ -9,6 +9,8 @@ TagManager:
   - Floor
   - Pet
   - BotonUI
+  - Demon
+  - DemonWall
   layers:
   - Default
   - TransparentFX
