@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Espadachin : MonoBehaviour
 {
-    [SerializeField] float attackrange = 2f;
+    [SerializeField] float attackrange = 0f;
     [SerializeField] float chargeRequiredTime = 1f;
     public float chargeMultiplier = 3f;
     public float chargeTime = 0f;

@@ -56,18 +56,16 @@ public abstract class PlayerController : MonoBehaviour
     {
         if (GameManager.instance.isPaused) return;
 
-        // Movement handling
+        // Movement handling - Modified to sprint by default and walk when pressing Shift
         Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-        float speedMultiplier = Input.GetKey(KeyCode.LeftShift) ? sprintValue : 1f;
+        float speedMultiplier = Input.GetKey(KeyCode.LeftShift) ? 1f : sprintValue; // Inverted the condition
         Vector3 finalMove = move * playerSpeed * speedMultiplier;
         float inputMagnitude = finalMove.magnitude;
         animator.SetFloat("InputMagnitude", inputMagnitude, 0.05f, Time.deltaTime);
 
         if (controller != null && controller.enabled && controller.gameObject.activeInHierarchy)
         {
-
             controller.Move(finalMove * Time.deltaTime);
-
 
             bool estaCorriendoAhora = finalMove.magnitude > 0.1f;
 
@@ -81,9 +79,7 @@ public abstract class PlayerController : MonoBehaviour
             }
 
             estabaCorriendo = estaCorriendoAhora;
-
         }
-
 
         // Dash handling
         if (Input.GetKeyDown(KeyCode.Space) && !isDashing)
@@ -132,13 +128,11 @@ public abstract class PlayerController : MonoBehaviour
             mainInterface.LightUpItem(ItemType.Habilidad, AbilityType.Curativa);
         }
 
-
         if (Input.GetKeyDown(KeyCode.Mouse0) && playerInventory.selectedItemType == ItemType.Habilidad)
         {
             switch (playerInventory.selectedAbilityType)
             {
                 case AbilityType.Ofensiva:
-
                     SFXManager.GetInstance()?.ReproducirFireball();
                     StartCoroutine(UseAbilityAndSwitchBack(
                         offensiveAbilityController.offensiveAbility(),
@@ -147,7 +141,6 @@ public abstract class PlayerController : MonoBehaviour
                     break;
 
                 case AbilityType.Defensiva:
-
                     SFXManager.GetInstance()?.ReproducirForceField();
                     StartCoroutine(UseAbilityAndSwitchBack(
                         defensiveAbilityController.enableShield(),
@@ -156,7 +149,6 @@ public abstract class PlayerController : MonoBehaviour
                     break;
 
                 case AbilityType.Curativa:
-
                     SFXManager.GetInstance()?.ReproducirCuracion();
                     StartCoroutine(UseAbilityAndSwitchBack(
                         healingAbilityController.healingAbility(),
@@ -199,7 +191,6 @@ public abstract class PlayerController : MonoBehaviour
         isDashing = false;
     }
 
-
     public void comprobarEnemigosEnArea(Vector3 attackPosition, float attackRadius, int damage)
     {
         Collider[] colliders = Physics.OverlapSphere(attackPosition, attackRadius);
@@ -229,7 +220,6 @@ public abstract class PlayerController : MonoBehaviour
         playerInventory.selectedItemType = ItemType.Arma;
         playerInventory.selectedAbilityType = AbilityType.None;
         mainInterface.LightUpItem(ItemType.Arma, AbilityType.None);
-
     }
 
     private void SelectAbility(AbilityType abilityType)
@@ -247,30 +237,22 @@ public abstract class PlayerController : MonoBehaviour
                 switch (playerInventory.selectedAbilityType)
                 {
                     case AbilityType.Ofensiva:
-
                         StartCoroutine(UseAbilityAndSwitchBack(
                         offensiveAbilityController.offensiveAbility(),
                         AbilityType.Ofensiva
                         ));
-
                         break;
                     case AbilityType.Defensiva:
-
                         StartCoroutine(UseAbilityAndSwitchBack(
                             defensiveAbilityController.enableShield(),
                             AbilityType.Defensiva
                         ));
-
-
                         break;
                     case AbilityType.Curativa:
-
                         StartCoroutine(UseAbilityAndSwitchBack(
                             healingAbilityController.healingAbility(),
                             AbilityType.Curativa
                         ));
-
-
                         break;
                 }
                 break;
@@ -288,7 +270,6 @@ public abstract class PlayerController : MonoBehaviour
         ShowWeapon(true);
     }
 
-
     public void ShowWeapon(bool value)
     {
         if (mano != null && mano.childCount > 0)
@@ -299,8 +280,4 @@ public abstract class PlayerController : MonoBehaviour
             mano.GetChild(0).gameObject.SetActive(shouldShow);
         }
     }
-    
-
-
-
 }

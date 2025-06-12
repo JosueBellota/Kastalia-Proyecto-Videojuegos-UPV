@@ -168,7 +168,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefabFlecha: {fileID: 1082511336032855041, guid: bd5ab033dd4978c4886ccba1cce15e50, type: 3}
   fuerza: 30
-  delayDisparoVisual: 1.4
   delayRafaga: 0.05
 --- !u!114 &5396867147106388286
 MonoBehaviour:
