@@ -145,7 +145,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isDashing: 0
   gravityValue: -9.81
-  playerSpeed: 2
+  playerSpeed: 1
   sprintValue: 2
   dashSpeed: 20
   dashTime: 0.1
