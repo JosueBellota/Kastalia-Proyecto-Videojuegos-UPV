@@ -41,17 +41,15 @@ public class Arquero : MonoBehaviour
     {
         if (!puedeDisparar || GameManager.instance.isPaused) return;
 
-
         // AQUI se lanza el sonido del disparo ligero
         SFXManager.GetInstance()?.ReproducirDisparoLigero();
 
-
         puedeDisparar = false;
-
         playerController.animator.SetTrigger("PrimaryShot");
 
         
-      
+        
+
         StartCoroutine(Disparar(1, cooldownLigero, 1f));
         
     }

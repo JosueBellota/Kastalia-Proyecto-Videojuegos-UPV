@@ -66,8 +66,6 @@ public abstract class PlayerController : MonoBehaviour
         if (controller != null && controller.enabled && controller.gameObject.activeInHierarchy)
         {
 
-            SFXManager.GetInstance()?.ReproducirRunning();
-
             controller.Move(finalMove * Time.deltaTime);
 
 
