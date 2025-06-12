@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -15,39 +14,35 @@ public class MantenerDistanciaBombardero : Estado
 
     void Update()
     {
-        if (GameManager.instance.isPaused) return;
+        if (GameManager.instance.isPaused || controller == null || controller.jugador == null) return;
+        if (controller.estaLanzandoBomba) return;
 
-        if (controller != null && controller.jugador != null)
+        float distancia = controller.distanciaAJugador;
+        Vector3 directionToPlayer = (controller.jugador.position - transform.position).normalized;
+
+        if (distancia < controller.safeDistance)
         {
-            float distancia = controller.distanciaAJugador;
-            Vector3 directionToPlayer = (controller.jugador.position - transform.position).normalized;
+            transform.LookAt(controller.jugador);
 
-            if (distancia < controller.safeDistance)
+            if (!controller.isFiring)
             {
-                agent.ResetPath();
-                transform.LookAt(controller.jugador);
-                if (!controller.isFiring)
-                {
-                    controller.isFiring = true;
-                    StartCoroutine(controller.ShootBomba());
-                }
-                Vector3 fleePosition = transform.position - directionToPlayer * 2f;
-                NavMeshHit hit;
-                if (NavMesh.SamplePosition(fleePosition, out hit, 2f, NavMesh.AllAreas))
-                {
-                    agent.SetDestination(hit.position);
-                }
+                controller.isFiring = true;
+                controller.animator.SetTrigger("Atacar");
             }
-            else if (distancia <= controller.shootingDistance)
-            {
-                agent.ResetPath();
-                transform.LookAt(controller.jugador);
-                controller.SetEstado(controller.atacarEstado.Value);
-            }
-            else
-            {
-                agent.SetDestination(controller.jugador.position);
-            }
+
+            Vector3 fleePosition = transform.position - directionToPlayer * 2f;
+            if (NavMesh.SamplePosition(fleePosition, out NavMeshHit hit, 2f, NavMesh.AllAreas))
+                agent.SetDestination(hit.position);
+        }
+        else if (distancia <= controller.shootingDistance)
+        {
+            if (controller.estaLanzandoBomba) return;
+            agent.ResetPath();
+            controller.SetEstado(controller.atacarEstado.Value);
+        }
+        else
+        {
+            agent.SetDestination(controller.jugador.position);
         }
     }
 }

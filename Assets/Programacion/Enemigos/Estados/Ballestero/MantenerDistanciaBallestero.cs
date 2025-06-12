@@ -4,50 +4,53 @@ using UnityEngine.AI;
 public class MantenerDistanciaBallestero : Estado
 {
     NavMeshAgent agent;
-    Transform player;
     BallesteroController controller;
+    float cooldown = 1.5f;
+    float tiempoRestante = 0f;
+
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         controller = maquina as BallesteroController;
-        player = controller.jugador;
     }
 
     void Update()
     {
-        if (GameManager.instance.isPaused) return;
+        if (GameManager.instance.isPaused || controller == null || controller.jugador == null) return;
 
-        if (controller != null && controller.jugador != null)
+        float distancia = controller.distanciaAJugador;
+        Vector3 directionToPlayer = (controller.jugador.position - transform.position).normalized;
+
+        controller.velocidadActual = agent.velocity.magnitude;
+        tiempoRestante -= Time.deltaTime;
+
+        if (distancia < controller.safeDistance)
         {
-            float distancia = controller.distanciaAJugador;
-            Vector3 directionToPlayer = (controller.jugador.position - transform.position).normalized;
+            transform.LookAt(controller.jugador);
 
-            if (distancia < controller.safeDistance)
+            // Disparo si no estoy disparando ni lanzando, y ha pasado el cooldown
+            if (!controller.isFiring && !controller.estaDisparando && tiempoRestante <= 0f)
             {
-                transform.LookAt(controller.jugador);
-                if (!controller.isFiring)
-                {
-                    StartCoroutine(controller.ShootArrow());
-                }
-                Vector3 fleePosition = transform.position - directionToPlayer * 2f;
-                NavMeshHit hit;
-                if (NavMesh.SamplePosition(fleePosition, out hit, 2f, NavMesh.AllAreas))
-                {
-                    agent.SetDestination(hit.position);
-                }
+                controller.isFiring = true;
+                controller.animator.SetTrigger("Atacar");
+                tiempoRestante = cooldown;
             }
-            else if (distancia <= controller.shootingDistance)
+
+            // Huir un poco hacia atrás
+            Vector3 fleePosition = transform.position - directionToPlayer * 2f;
+            if (NavMesh.SamplePosition(fleePosition, out NavMeshHit hit, 2f, NavMesh.AllAreas))
             {
-                agent.ResetPath();
-                transform.LookAt(controller.jugador);
-                controller.SetEstado(controller.atacarEstado.Value);
-            }
-            else
-            {
-                agent.SetDestination(controller.jugador.position);
+                agent.SetDestination(hit.position);
             }
         }
+        else if (distancia <= controller.shootingDistance)
+        {
+            agent.ResetPath();
+            controller.SetEstado(controller.atacarEstado.Value);
+        }
+        else
+        {
+            agent.SetDestination(controller.jugador.position);
+        }
     }
-
 }
-

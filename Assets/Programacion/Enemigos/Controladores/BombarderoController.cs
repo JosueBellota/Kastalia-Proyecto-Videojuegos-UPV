@@ -18,9 +18,9 @@ public class BombarderoController : Maquina
     [HideInInspector] public Animator animator;
     [HideInInspector] public NavMeshAgent agente;
     [HideInInspector] public float velocidadActual = 0f;
-    [HideInInspector] public bool dispararAnimacion = false;
+    [HideInInspector] public bool estaLanzandoBomba = false;
 
-    bool yaHaMuerto = false;
+    private bool yaHaMuerto = false;
 
     void Start()
     {
@@ -43,16 +43,9 @@ public class BombarderoController : Maquina
 
         distanciaAJugador = getDistanceToPlayer();
 
-        // Animaciones
         if (animator != null)
         {
             animator.SetFloat("Speed", velocidadActual);
-
-            if (dispararAnimacion)
-            {
-                animator.SetTrigger("Atacar");
-                dispararAnimacion = false;
-            }
         }
     }
 
@@ -85,23 +78,48 @@ public class BombarderoController : Maquina
 
         bomba.IniciarCuentaRegresiva();
 
-        yield return new WaitForSeconds(4);
-        isFiring = false;
+        yield return new WaitForSeconds(0.1f); // espera mínima tras lanzar
+
+        estaLanzandoBomba = false;
+
+        // Recalcula estado tras lanzar
+        if (distanciaAJugador <= safeDistance)
+        {
+            SetEstado(mantenerDistanciaEstado.Value);
+        }
+        else if (distanciaAJugador <= shootingDistance)
+        {
+            SetEstado(atacarEstado.Value);
+        }
+        else
+        {
+            SetEstado(deambularEstado.Value);
+        }
+    }
+
+    public void LanzarBomba()
+    {
+        if (isFiring && !estaLanzandoBomba)
+        {
+            estaLanzandoBomba = true;
+            StartCoroutine(ShootBomba());
+            isFiring = false;
+        }
     }
 
     public void Morir()
-{
-    if (!yaHaMuerto)
     {
-        animator.SetTrigger("Morir");
-        yaHaMuerto = true;
-        StartCoroutine(EsperarYDesaparecer());
+        if (!yaHaMuerto)
+        {
+            animator.SetTrigger("Morir");
+            yaHaMuerto = true;
+            StartCoroutine(EsperarYDesaparecer());
+        }
     }
-}
 
-IEnumerator EsperarYDesaparecer()
-{
-    yield return new WaitForSeconds(3f); // ⏱️ espera a que la animación se vea
-    gameObject.SetActive(false);         // o Destroy(gameObject); si prefieres
-}
+    IEnumerator EsperarYDesaparecer()
+    {
+        yield return new WaitForSeconds(3f);
+        gameObject.SetActive(false);
+    }
 }

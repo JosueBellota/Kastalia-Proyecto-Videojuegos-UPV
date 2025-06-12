@@ -34,7 +34,7 @@ ModelImporter:
       name: caminar
       takeName: "Esqueleto|Esqueleto_acci\xF3n"
       internalID: 4582559413860510281
-      firstFrame: 2
+      firstFrame: 0
       lastFrame: 35
       wrapMode: 0
       orientationOffsetY: 0

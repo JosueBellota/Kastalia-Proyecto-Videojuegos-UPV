@@ -1,4 +1,3 @@
-using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,6 +5,9 @@ public class AtacarBallestero : Estado
 {
     NavMeshAgent agent;
     BallesteroController controller;
+
+    float cooldown = 1.5f;
+    float cooldownActual = 0f;
 
     void Start()
     {
@@ -19,15 +21,18 @@ public class AtacarBallestero : Estado
 
         transform.LookAt(controller.jugador);
         controller.velocidadActual = agent.velocity.magnitude;
+        cooldownActual -= Time.deltaTime;
 
         if (controller.distanciaAJugador < controller.shootingDistance && controller.distanciaAJugador > controller.safeDistance)
         {
-            if (!controller.isFiring)
+            if (cooldownActual <= 0f && !controller.estaDisparando)
             {
-                StartCoroutine(controller.ShootArrow()); // lanza flecha y activa animación
+                controller.isFiring = true;
+                controller.animator.SetTrigger("Atacar"); // ← evento llama a LanzarFlecha
+                cooldownActual = cooldown;
             }
         }
-        else if (controller.distanciaAJugador < controller.safeDistance)
+        else if (controller.distanciaAJugador <= controller.safeDistance)
         {
             agent.ResetPath();
             transform.LookAt(controller.jugador);

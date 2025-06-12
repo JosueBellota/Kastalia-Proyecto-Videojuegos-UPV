@@ -23,7 +23,7 @@ public class BallesteroController : Maquina
     [HideInInspector] public Animator animator;
     [HideInInspector] public NavMeshAgent agente;
     [HideInInspector] public float velocidadActual = 0f;
-    [HideInInspector] public bool dispararAnimacion = false;
+    [HideInInspector] public bool estaDisparando = false;
 
     private bool yaHaMuerto = false;
 
@@ -45,31 +45,26 @@ public class BallesteroController : Maquina
             if (!jugador) return;
         }
 
-        distanciaAJugador = getDistanceToPlayer();
+        distanciaAJugador = Vector3.Distance(transform.position, jugador.position);
 
         if (animator != null)
         {
             animator.SetFloat("Speed", velocidadActual);
-
-            if (dispararAnimacion)
-            {
-                animator.SetTrigger("Atacar");
-                dispararAnimacion = false;
-            }
         }
     }
 
-    private float getDistanceToPlayer()
+    public void LanzarFlecha()
     {
-        return jugador ? Vector3.Distance(transform.position, jugador.position) : 0f;
+        if (isFiring && !estaDisparando)
+        {
+            estaDisparando = true;
+            StartCoroutine(ShootArrow());
+            isFiring = false;
+        }
     }
 
     public IEnumerator ShootArrow()
     {
-        isFiring = true;
-
-        dispararAnimacion = true; // ← activar trigger desde Update()
-
         Vector3 spawnPos = transform.position + transform.forward * 2f + Vector3.up * 1.75f;
         Vector3 direction = (jugador.position - transform.position).normalized;
 
@@ -79,7 +74,7 @@ public class BallesteroController : Maquina
         rb.AddForce(direction * arrowForce, ForceMode.Impulse);
 
         yield return new WaitForSeconds(fireCooldown);
-        isFiring = false;
+        estaDisparando = false;
     }
 
     public void Morir()
@@ -95,6 +90,6 @@ public class BallesteroController : Maquina
     IEnumerator EsperarYDesaparecer()
     {
         yield return new WaitForSeconds(2.5f);
-        gameObject.SetActive(false); // o Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 }
