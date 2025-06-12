@@ -6,8 +6,8 @@
     {
         public List<GameObject> posiblesItems;
         public Transform puntoSpawn;
-        public float tiempoDeVida = 5f;
-        private float tiempoSpawn;
+        // public float tiempoDeVida = 5f;
+        // private float tiempoSpawn;
         private bool jugadorCerca = false;
         private bool haSoltado = false;
 
@@ -16,7 +16,7 @@
         void Start()
         {
             // Tiempo de aparición
-            tiempoSpawn = Cronometro.instance != null ? Cronometro.instance.ObtenerTiempoRaw() : 0f;
+            // tiempoSpawn = Cronometro.instance != null ? Cronometro.instance.ObtenerTiempoRaw() : 0f;
 
             // Configurar el collider como trigger y con radio similar al wall
             SphereCollider sc = GetComponent<SphereCollider>();
@@ -38,14 +38,14 @@
                 AbrirCofre();
             }
 
-            if (!haSoltado && Cronometro.instance != null)
-            {
-                float tiempoActual = Cronometro.instance.ObtenerTiempoRaw();
-                if (tiempoActual >= tiempoSpawn + tiempoDeVida)
-                {
-                    Destroy(gameObject);
-                }
-            }
+            // if (!haSoltado && Cronometro.instance != null)
+            // {
+            //     float tiempoActual = Cronometro.instance.ObtenerTiempoRaw();
+            //     if (tiempoActual >= tiempoSpawn + tiempoDeVida)
+            //     {
+            //         Destroy(gameObject);
+            //     }
+            // }
         }
 
         void AbrirCofre()

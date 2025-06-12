@@ -5,7 +5,7 @@ public class Arrow : MonoBehaviour
 {
     
     [Header("Arrow Settings")]
-    [SerializeField] private float TTL = 3f;
+    [SerializeField] private float TTL = 1f;
     
     private Rigidbody rb;
     private bool hasHit = false;
