@@ -5,23 +5,28 @@ public class CofreItemDrop : MonoBehaviour
 {
     public List<GameObject> posiblesItems;
     public Transform puntoSpawn;
+    public float tiempoDeVida = 5f;
 
-    public float tiempoDeVida = 5f; // segundos hasta desaparecer
     private float tiempoSpawn;
-
     private bool jugadorCerca = false;
     private bool haSoltado = false;
+
+    private Animator animator;
 
     void Start()
     {
         tiempoSpawn = Cronometro.instance != null ? Cronometro.instance.ObtenerTiempoRaw() : 0f;
+        animator = GetComponentInChildren<Animator>();
+
+        if (animator == null)
+            Debug.LogWarning("No se encontró el Animator en el Cofre.");
     }
 
     void Update()
     {
         if (jugadorCerca && !haSoltado && Input.GetKeyDown(KeyCode.J))
         {
-            SoltarItem();
+            AbrirCofre();
         }
 
         if (!haSoltado && Cronometro.instance != null)
@@ -32,6 +37,14 @@ public class CofreItemDrop : MonoBehaviour
                 Destroy(gameObject);
             }
         }
+    }
+
+    void AbrirCofre()
+    {
+        if (animator != null)
+            animator.SetTrigger("abrir");
+
+        SoltarItem();
     }
 
     void SoltarItem()
@@ -61,3 +74,4 @@ public class CofreItemDrop : MonoBehaviour
             jugadorCerca = false;
     }
 }
+
