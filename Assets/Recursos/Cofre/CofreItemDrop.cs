@@ -32,6 +32,8 @@
         {
             if (jugadorCerca && !haSoltado && Input.GetKeyDown(KeyCode.J))
             {
+
+                ///animacion caminzar
                 Debug.Log("Presionaste J cerca del cofre. Intentando abrir...");
                 AbrirCofre();
             }
@@ -78,7 +80,6 @@
             if (other.CompareTag("Player"))
             {
                 jugadorCerca = true;
-                Debug.Log("Jugador cerca del cofre.");
             }
         }
 
@@ -87,7 +88,6 @@
             if (other.CompareTag("Player"))
             {
                 jugadorCerca = false;
-                Debug.Log("Jugador se alejó del cofre.");
             }
         }
     }

@@ -3,21 +3,43 @@ using UnityEngine;
 public class AbilityPickup : MonoBehaviour
 {
     public Ability abilityData;
+    public float distanciaRecolecta = 2f; // Puedes ajustar este valor según tu preferencia
 
-    private void OnTriggerEnter(Collider other)
+    private Transform jugador;
+
+    void Start()
     {
-        PlayerInventory inventario = other.GetComponent<PlayerInventory>();
-
-        if (inventario && !inventario.HasAbility(abilityData))
+        // Buscar al jugador por etiqueta, ajusta si usas otra forma
+        GameObject playerObj = GameObject.FindGameObjectWithTag("Player");
+        if (playerObj != null)
         {
-
-            SFXManager.GetInstance()?.ReproducirPickup();
-            inventario.EquipAbility(abilityData);
-            Destroy(gameObject);
+            jugador = playerObj.transform;
         }
         else
         {
-            Debug.Log("Ya tienes esta habilidad equipada.");
+            Debug.LogWarning("No se encontró el jugador con la etiqueta 'Player'.");
+        }
+    }
+
+    void Update()
+    {
+        if (jugador == null) return;
+
+        float distancia = Vector3.Distance(transform.position, jugador.position);
+        if (distancia <= distanciaRecolecta)
+        {
+            PlayerInventory inventario = jugador.GetComponent<PlayerInventory>();
+
+            if (inventario && !inventario.HasAbility(abilityData))
+            {
+                SFXManager.GetInstance()?.ReproducirPickup();
+                inventario.EquipAbility(abilityData);
+                Destroy(gameObject);
+            }
+            else
+            {
+                Debug.Log("Ya tienes esta habilidad equipada.");
+            }
         }
     }
 }
