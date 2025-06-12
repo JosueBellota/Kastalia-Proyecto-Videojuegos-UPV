@@ -10,6 +10,8 @@ public class AbilityPickup : MonoBehaviour
 
         if (inventario && !inventario.HasAbility(abilityData))
         {
+
+            SFXManager.GetInstance()?.ReproducirPickup();
             inventario.EquipAbility(abilityData);
             Destroy(gameObject);
         }

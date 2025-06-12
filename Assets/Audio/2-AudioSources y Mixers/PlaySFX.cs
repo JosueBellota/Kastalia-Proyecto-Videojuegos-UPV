@@ -19,7 +19,17 @@ public enum SFXType
 
     Demon,
 
-    DemonDamage
+    DemonDamage,
+
+    Curacion,
+
+    Fireball,
+
+    ForceField,
+
+    Pickup
+
+
 }
 
 public class PlaySFX : MonoBehaviour
@@ -43,7 +53,13 @@ public class PlaySFX : MonoBehaviour
     public AudioClip DemonClip;
     public AudioClip DemonDamageClip;
 
+    public AudioClip FireballClip;
 
+    public AudioClip ForceFieldClip;
+
+    public AudioClip CuracionClip;
+
+    public AudioClip PickupClip;
 
     void Awake()
     {
@@ -67,6 +83,10 @@ public class PlaySFX : MonoBehaviour
             case SFXType.PlayerDeath: clip = PlayerDeathClip; break;
             case SFXType.Demon: clip = DemonClip; break;
             case SFXType.DemonDamage: clip = DemonDamageClip; break;
+            case SFXType.Fireball: clip = FireballClip; break;
+            case SFXType.ForceField: clip = ForceFieldClip; break;
+            case SFXType.Curacion: clip = CuracionClip; break;
+            case SFXType.Pickup: clip = PickupClip; break;
 
 
             case SFXType.Running: 

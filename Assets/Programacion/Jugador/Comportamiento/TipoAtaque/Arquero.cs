@@ -66,11 +66,6 @@ public class Arquero : MonoBehaviour
             cargando = true;
             SFXManager.GetInstance()?.ReproducirDisparoPesado();
             playerController.animator.SetTrigger("SecondaryShot");
-
-
-            
-          
-
             StartCoroutine(Disparar(5, cooldownCargado, delayRafaga));
         }
     }

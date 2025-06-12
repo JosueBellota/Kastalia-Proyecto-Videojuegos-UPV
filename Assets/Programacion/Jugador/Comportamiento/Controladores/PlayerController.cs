@@ -138,6 +138,8 @@ public abstract class PlayerController : MonoBehaviour
             switch (playerInventory.selectedAbilityType)
             {
                 case AbilityType.Ofensiva:
+
+                    SFXManager.GetInstance()?.ReproducirFireball();
                     StartCoroutine(UseAbilityAndSwitchBack(
                         offensiveAbilityController.offensiveAbility(),
                         AbilityType.Ofensiva
@@ -145,6 +147,8 @@ public abstract class PlayerController : MonoBehaviour
                     break;
 
                 case AbilityType.Defensiva:
+
+                    SFXManager.GetInstance()?.ReproducirForceField();
                     StartCoroutine(UseAbilityAndSwitchBack(
                         defensiveAbilityController.enableShield(),
                         AbilityType.Defensiva
@@ -152,6 +156,8 @@ public abstract class PlayerController : MonoBehaviour
                     break;
 
                 case AbilityType.Curativa:
+
+                    SFXManager.GetInstance()?.ReproducirCuracion();
                     StartCoroutine(UseAbilityAndSwitchBack(
                         healingAbilityController.healingAbility(),
                         AbilityType.Curativa

@@ -29,7 +29,16 @@ public class SFXManager : MonoBehaviour
 
     public AudioClip DemonDamageSFX;
 
+    public AudioClip FireballSFX;
+
+    public AudioClip ForceFieldSFX;
+
+    public AudioClip CuracionSFX;
+
+    public AudioClip PickupSFX;
+
     private PlaySFX combateSFXPlayer;
+    
 
     void Awake()
     {
@@ -58,7 +67,6 @@ public class SFXManager : MonoBehaviour
                 combateSFXPlayer.playerwoundedClip = playerWoundedSFX;
                 combateSFXPlayer.swordClip = swordSFX;
                 combateSFXPlayer.swordHeavyClip = swordHeavySFX;
-
                 combateSFXPlayer.explosionClip = explosionSFX;
                 combateSFXPlayer.runningClip = runningSFX;
                 combateSFXPlayer.PlayerDeathClip = PlayerDeathSFX;
@@ -132,6 +140,33 @@ public class SFXManager : MonoBehaviour
     {
         combateSFXPlayer?.Play(SFXType.DemonDamage);
     }
+
+
+
+    public void ReproducirCuracion()
+    {
+        if (CuracionSFX != null)
+            combateSFXPlayer?.PlayOneShot(CuracionSFX);
+    }
+
+    public void ReproducirPickup()
+    {
+        if (PickupSFX != null)
+            combateSFXPlayer?.PlayOneShot(PickupSFX);
+    }
+
+    public void ReproducirFireball()
+    {
+        if (FireballSFX != null)
+            combateSFXPlayer?.PlayOneShot(FireballSFX);
+    }
+
+    public void ReproducirForceField()
+    {
+        if (ForceFieldSFX != null)
+            combateSFXPlayer?.PlayOneShot(ForceFieldSFX);
+    }
+
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
