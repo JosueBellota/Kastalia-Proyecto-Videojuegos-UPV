@@ -27,7 +27,9 @@ public enum SFXType
 
     ForceField,
 
-    Pickup
+    Pickup,
+
+    Chest
 
 
 }
@@ -61,6 +63,8 @@ public class PlaySFX : MonoBehaviour
 
     public AudioClip PickupClip;
 
+    public AudioClip ChestClip;
+
     void Awake()
     {
         audioSource = GetComponent<AudioSource>();
@@ -87,6 +91,8 @@ public class PlaySFX : MonoBehaviour
             case SFXType.ForceField: clip = ForceFieldClip; break;
             case SFXType.Curacion: clip = CuracionClip; break;
             case SFXType.Pickup: clip = PickupClip; break;
+            case SFXType.Chest: clip = ChestClip; break;
+
 
 
             case SFXType.Running: 

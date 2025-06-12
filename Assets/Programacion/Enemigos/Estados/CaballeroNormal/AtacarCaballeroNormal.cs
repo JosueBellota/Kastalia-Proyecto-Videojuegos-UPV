@@ -14,6 +14,9 @@ public class Atacar : Estado
 
     [SerializeField] float distanceToPlayer;
 
+
+
+
     void Start()
     {
         player = FindFirstObjectByType<PlayerController>().transform;
@@ -30,15 +33,18 @@ public class Atacar : Estado
         // Check if within visual attack range and can attack
         if (distanceToPlayer <= controller.distanciaAtaque && puedeAtacar )
         {
+
             StartCoroutine(LoopAtaque());
         }
 
         if (distanceToPlayer > controller.AttackDistance)
         {
+
             puedeAtacar = true;
             StopAllCoroutines();
             maquina.SetEstado(controller.perseguirEstado.Value);
         }
+
     }
 
 

@@ -8,9 +8,14 @@ public class WallProximityDetector : MonoBehaviour
     public Material proximityMaterial;
 
     private Renderer wallRenderer;
+    
+    private bool hasPlayedSound = false;
 
     private void Start()
     {
+
+
+
         SphereCollider sc = GetComponent<SphereCollider>();
         sc.isTrigger = true;
         sc.radius = detectionRadius;
@@ -31,6 +36,11 @@ public class WallProximityDetector : MonoBehaviour
     {
         if (other.gameObject.layer == LayerMask.NameToLayer("Player"))
         {
+            
+
+           
+
+
             Vector3 localPos = transform.InverseTransformPoint(other.transform.position);
 
             if (localPos.z < 0f)
@@ -55,6 +65,13 @@ public class WallProximityDetector : MonoBehaviour
                 if (wallRenderer != null && proximityMaterial != null && wallRenderer.material != proximityMaterial)
                 {
                     wallRenderer.material = proximityMaterial;
+
+                     // 🔊 Play Demon SFX when entering a "DemonWall"
+                    if (gameObject.CompareTag("DemonWall") && !hasPlayedSound)
+                    {
+                        SFXManager.GetInstance()?.ReproducirDemon();
+                        hasPlayedSound = true;
+                    }
                 }
             }
             else

@@ -167,13 +167,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69ad8db08504ced4e91fb01190706079, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackrange: 6
+  attackrange: 3
   chargeRequiredTime: 2
   chargeMultiplier: 3
   chargeTime: 0
   isChargingSword: 0
   isFullyCharged: 0
-  empujeFuerza: 5
+  empujeFuerza: 10
   attackCooldown: 0.5
 --- !u!114 &5396867147106388286
 MonoBehaviour:

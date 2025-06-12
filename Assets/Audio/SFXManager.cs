@@ -37,9 +37,11 @@ public class SFXManager : MonoBehaviour
 
     public AudioClip PickupSFX;
 
-    private PlaySFX combateSFXPlayer;
-    
+    public AudioClip ChestSFX;
 
+    private PlaySFX combateSFXPlayer;
+
+    
     void Awake()
     {
         if (instance != null && instance != this)
@@ -72,6 +74,8 @@ public class SFXManager : MonoBehaviour
                 combateSFXPlayer.PlayerDeathClip = PlayerDeathSFX;
                 combateSFXPlayer.DemonClip = DemonSFX;
                 combateSFXPlayer.DemonDamageClip = DemonDamageSFX;
+                combateSFXPlayer.ChestClip = ChestSFX;
+
             }
         }
     }
@@ -165,6 +169,13 @@ public class SFXManager : MonoBehaviour
     {
         if (ForceFieldSFX != null)
             combateSFXPlayer?.PlayOneShot(ForceFieldSFX);
+    }
+
+
+    public void ReproducirOpenChest()
+    {
+        if (ForceFieldSFX != null)
+            combateSFXPlayer?.PlayOneShot(ChestSFX);
     }
 
 

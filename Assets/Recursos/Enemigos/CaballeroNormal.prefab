@@ -79,9 +79,9 @@ MonoBehaviour:
       m_Calls: []
   agroPopupPrefab: {fileID: 800571591104117930, guid: 0c5884c97bf2e0b4ba4b1cd51956da87, type: 3}
   tipoEnemigo: 0
-  distanciaAtaque: 3
-  distanciaDeteccion: 20
-  attackDamage: 20
+  distanciaAtaque: 1
+  distanciaDeteccion: 15
+  attackDamage: 10
   deambularEstado: {fileID: 11400000, guid: 12978dd09c039ba42a43d88d702c611c, type: 2}
   perseguirEstado: {fileID: 11400000, guid: 18f0b41aba7231e44a4787b60456c609, type: 2}
   atacarEstado: {fileID: 11400000, guid: b701a6a47d0f04c4a9e6dc5acfecaf51, type: 2}
