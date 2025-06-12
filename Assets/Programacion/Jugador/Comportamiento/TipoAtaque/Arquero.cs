@@ -84,15 +84,14 @@ public class Arquero : MonoBehaviour
 
     private IEnumerator Disparar(int cantidad, float cooldown, float delay)
     {
-        Vector3 direction = enemyLock.isLocked && enemyLock.currentTarget
-            ? (enemyLock.currentTarget.position + Vector3.down - transform.position).normalized
-            : (posicionCursor.lookPoint - transform.position).normalized;
-
         for (int i = 0; i < cantidad; i++)
         {
-
-            // delay entre cada flecha (solo afecta al disparo pesado)
             yield return new WaitForSeconds(delay); 
+
+            // Update direction right before shooting each arrow
+            Vector3 direction = enemyLock.isLocked && enemyLock.currentTarget
+                ? (enemyLock.currentTarget.position + Vector3.down - transform.position).normalized
+                : (posicionCursor.lookPoint - transform.position).normalized;
 
             Vector3 spawnPos = transform.position + transform.forward * 2f + Vector3.up * 1.75f;
             Quaternion baseRotation = Quaternion.LookRotation(direction);
@@ -109,13 +108,7 @@ public class Arquero : MonoBehaviour
             flecha.GetComponent<Rigidbody>().AddForce(baseRotation * Vector3.forward * fuerza, ForceMode.Impulse);
         }
 
-        // Aquí se aplica el cooldown antes de volver a permitir disparar:
         yield return new WaitForSeconds(cooldown);
-
-        // ← Este cooldown depende del tipo de disparo:
-        // - DisparoLigero usa cooldownLigero = 0.5f
-        // - Disparo cargado (pesado) usa cooldownCargado = 1f
         puedeDisparar = true;
     }
-
 }
