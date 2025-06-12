@@ -63,6 +63,9 @@ public class PlayerHealth : MonoBehaviour
 
     public void Die()
     {
+
+        SFXManager.GetInstance()?.ReproducirPlayerDeath();
+        
         if (Cronometro.instance != null)
         {
             Cronometro.instance.Detener();

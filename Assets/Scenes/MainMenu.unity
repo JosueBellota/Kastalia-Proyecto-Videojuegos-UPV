@@ -32910,9 +32910,21 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1206395136775729357, guid: 7b063f300d375ee44919d500769fba2c, type: 3}
+      propertyPath: DemonSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: c8f8909ea95ed544ba49bb9f4f53abcd, type: 3}
+    - target: {fileID: 1206395136775729357, guid: 7b063f300d375ee44919d500769fba2c, type: 3}
       propertyPath: swordSFX
       value: 
       objectReference: {fileID: 8300000, guid: 277a38a744cb4c94c94236c6a98162c7, type: 3}
+    - target: {fileID: 1206395136775729357, guid: 7b063f300d375ee44919d500769fba2c, type: 3}
+      propertyPath: clickClip
+      value: 
+      objectReference: {fileID: 8300000, guid: 0a0c9b6da7e792949b9915ed1637ff75, type: 3}
+    - target: {fileID: 1206395136775729357, guid: 7b063f300d375ee44919d500769fba2c, type: 3}
+      propertyPath: hoverClip
+      value: 
+      objectReference: {fileID: 8300000, guid: cb35bef9420636c4ea13f2d1c55753fb, type: 3}
     - target: {fileID: 1206395136775729357, guid: 7b063f300d375ee44919d500769fba2c, type: 3}
       propertyPath: runningSFX
       value: 
@@ -32921,6 +32933,18 @@ PrefabInstance:
       propertyPath: explosionSFX
       value: 
       objectReference: {fileID: 8300000, guid: 1135d4fa341b1a3428cf0b9c1c527c90, type: 3}
+    - target: {fileID: 1206395136775729357, guid: 7b063f300d375ee44919d500769fba2c, type: 3}
+      propertyPath: swordHeavySFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 76bedecdf3c415b46ab41d48173d4537, type: 3}
+    - target: {fileID: 1206395136775729357, guid: 7b063f300d375ee44919d500769fba2c, type: 3}
+      propertyPath: DemonDamageSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: baca9160754ced54b9409b06576b44d8, type: 3}
+    - target: {fileID: 1206395136775729357, guid: 7b063f300d375ee44919d500769fba2c, type: 3}
+      propertyPath: PlayerDeathSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 5b1d0b6e009eeb643bc5bc6fa2b39210, type: 3}
     - target: {fileID: 1206395136775729357, guid: 7b063f300d375ee44919d500769fba2c, type: 3}
       propertyPath: enemyWoundedSFX
       value: 
@@ -32932,7 +32956,7 @@ PrefabInstance:
     - target: {fileID: 1206395136775729357, guid: 7b063f300d375ee44919d500769fba2c, type: 3}
       propertyPath: disparoPesadoSFX
       value: 
-      objectReference: {fileID: 8300000, guid: 3ce005b669c880e4092d450d076dfaff, type: 3}
+      objectReference: {fileID: 8300000, guid: 0a069bc9028655b46908172218cef6e1, type: 3}
     - target: {fileID: 1206395136775729357, guid: 7b063f300d375ee44919d500769fba2c, type: 3}
       propertyPath: playerWoundedSFX
       value: 

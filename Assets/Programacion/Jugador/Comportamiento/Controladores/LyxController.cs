@@ -34,6 +34,8 @@ public class LyxController : PlayerController
 
                 if (espadachin.isFullyCharged && !isAttacking && !isDashing)
                 {
+
+                    SFXManager.GetInstance()?.ReproducirSwordHeavy();
                     int damage = Mathf.CeilToInt(playerInventory.weapon.damage * espadachin.chargeMultiplier);
                     StartCoroutine(espadachin.SwordAttack(damage));
 

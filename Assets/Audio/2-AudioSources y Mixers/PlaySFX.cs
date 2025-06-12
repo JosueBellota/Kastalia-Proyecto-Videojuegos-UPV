@@ -9,9 +9,17 @@ public enum SFXType
     EnemyWounded,
     PlayerWounded,
     Sword,
+
+    SwordHeavy,
     Explosion,
 
-    Running
+    Running,
+
+    PlayerDeath,
+
+    Demon,
+
+    DemonDamage
 }
 
 public class PlaySFX : MonoBehaviour
@@ -26,8 +34,16 @@ public class PlaySFX : MonoBehaviour
     public AudioClip enemywoundedClip;
     public AudioClip playerwoundedClip;
     public AudioClip swordClip;
+
+    public AudioClip swordHeavyClip;
+
     public AudioClip explosionClip;
     public AudioClip runningClip;
+    public AudioClip PlayerDeathClip;
+    public AudioClip DemonClip;
+    public AudioClip DemonDamageClip;
+
+
 
     void Awake()
     {
@@ -46,7 +62,13 @@ public class PlaySFX : MonoBehaviour
             case SFXType.EnemyWounded: clip = enemywoundedClip; break;
             case SFXType.PlayerWounded: clip = playerwoundedClip; break;
             case SFXType.Sword: clip = swordClip; break;
+            case SFXType.SwordHeavy: clip = swordHeavyClip; break;
             case SFXType.Explosion: clip = explosionClip; break;
+            case SFXType.PlayerDeath: clip = PlayerDeathClip; break;
+            case SFXType.Demon: clip = DemonClip; break;
+            case SFXType.DemonDamage: clip = DemonDamageClip; break;
+
+
             case SFXType.Running: 
                 PlayRunningLoop();
                 return;

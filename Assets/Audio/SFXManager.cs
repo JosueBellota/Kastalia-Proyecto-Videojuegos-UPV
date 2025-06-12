@@ -18,8 +18,16 @@ public class SFXManager : MonoBehaviour
     public AudioClip playerWoundedSFX;
     public AudioClip swordSFX;
 
+    public AudioClip swordHeavySFX;
+
     public AudioClip explosionSFX;
     public AudioClip runningSFX;
+
+    public AudioClip PlayerDeathSFX;
+
+    public AudioClip DemonSFX;
+
+    public AudioClip DemonDamageSFX;
 
     private PlaySFX combateSFXPlayer;
 
@@ -49,8 +57,13 @@ public class SFXManager : MonoBehaviour
                 combateSFXPlayer.enemywoundedClip = enemyWoundedSFX;
                 combateSFXPlayer.playerwoundedClip = playerWoundedSFX;
                 combateSFXPlayer.swordClip = swordSFX;
+                combateSFXPlayer.swordHeavyClip = swordHeavySFX;
+
                 combateSFXPlayer.explosionClip = explosionSFX;
                 combateSFXPlayer.runningClip = runningSFX;
+                combateSFXPlayer.PlayerDeathClip = PlayerDeathSFX;
+                combateSFXPlayer.DemonClip = DemonSFX;
+                combateSFXPlayer.DemonDamageClip = DemonDamageSFX;
             }
         }
     }
@@ -79,6 +92,11 @@ public class SFXManager : MonoBehaviour
     {
         combateSFXPlayer?.Play(SFXType.Sword);
     }
+
+    public void ReproducirSwordHeavy()
+    {
+        combateSFXPlayer?.Play(SFXType.SwordHeavy);
+    }
     
     public void ReproducirRunning()
     {
@@ -98,6 +116,21 @@ public class SFXManager : MonoBehaviour
     public void ReproducirExplosion()
     {
         combateSFXPlayer?.Play(SFXType.Explosion);
+    }
+
+    public void ReproducirPlayerDeath()
+    {
+        combateSFXPlayer?.Play(SFXType.PlayerDeath);
+    }
+
+    public void ReproducirDemon()
+    {
+        combateSFXPlayer?.Play(SFXType.Demon);
+    }
+
+    public void ReproducirDemonDamage()
+    {
+        combateSFXPlayer?.Play(SFXType.DemonDamage);
     }
 
     void OnSceneLoaded(Scene scene, LoadSceneMode mode)
