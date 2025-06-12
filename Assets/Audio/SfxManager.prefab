@@ -48,3 +48,5 @@ MonoBehaviour:
   clickClip: {fileID: 8300000, guid: cb35bef9420636c4ea13f2d1c55753fb, type: 3}
   hoverClip: {fileID: 8300000, guid: bfeb0c41855068c4593f0e30c13ca12b, type: 3}
   targetTag: BotonUI
+  disparoLigeroSFX: {fileID: 8300000, guid: 3ce005b669c880e4092d450d076dfaff, type: 3}
+  disparoPesadoSFX: {fileID: 8300000, guid: 3ce005b669c880e4092d450d076dfaff, type: 3}

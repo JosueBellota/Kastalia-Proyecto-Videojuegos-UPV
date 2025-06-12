@@ -6,10 +6,16 @@ public class Arquero : MonoBehaviour
     [Header("Disparo")]
     public GameObject prefabFlecha;
     public float fuerza = 30f;
-    public float delayDisparoVisual = 0.5f; 
+
+    // delayRafaga: Tiempo entre cada flecha disparada en un ataque cargado (ráfaga múltiple).
     public float delayRafaga = 0.05f;
+
+    // cooldownLigero: Tiempo que debe pasar después de un disparo ligero antes de poder volver a disparar.
     private float cooldownLigero = 0f;
+
+    // cooldownCargado: Tiempo que debe pasar después de un disparo cargado antes de poder volver a disparar.
     private float cooldownCargado = 1f;
+
 
     [Header("Carga")]
     private float tiempoCarga = 1f;
@@ -35,10 +41,19 @@ public class Arquero : MonoBehaviour
     {
         if (!puedeDisparar || GameManager.instance.isPaused) return;
 
-        puedeDisparar = false; // ← bloqueo inmediato
+        // AQUI se lanza el sonido del disparo ligero
+        SFXManager.GetInstance()?.ReproducirDisparoLigero();
+
+        puedeDisparar = false;
         playerController.animator.SetTrigger("PrimaryShot");
-        StartCoroutine(DispararConDelay(1, cooldownLigero, delayDisparoVisual ));
+
+        
+        
+
+        StartCoroutine(Disparar(1, cooldownLigero, 1f));
+        
     }
+
 
     public void EmpezarCarga()
     {
@@ -46,7 +61,10 @@ public class Arquero : MonoBehaviour
 
         if (acumuladoCarga >= tiempoCarga && !cargando)
         {
+              
+            
             cargando = true;
+            SFXManager.GetInstance()?.ReproducirDisparoPesado();
             playerController.animator.SetTrigger("SecondaryShot");
             StartCoroutine(Disparar(5, cooldownCargado, delayRafaga));
         }
@@ -66,13 +84,14 @@ public class Arquero : MonoBehaviour
 
     private IEnumerator Disparar(int cantidad, float cooldown, float delay)
     {
-        Vector3 direction = enemyLock.isLocked && enemyLock.currentTarget
-            ? (enemyLock.currentTarget.position + Vector3.down - transform.position).normalized
-            : (posicionCursor.lookPoint - transform.position).normalized;
-
         for (int i = 0; i < cantidad; i++)
         {
-            yield return new WaitForSeconds(delay);
+            yield return new WaitForSeconds(delay); 
+
+            // Update direction right before shooting each arrow
+            Vector3 direction = enemyLock.isLocked && enemyLock.currentTarget
+                ? (enemyLock.currentTarget.position + Vector3.down - transform.position).normalized
+                : (posicionCursor.lookPoint - transform.position).normalized;
 
             Vector3 spawnPos = transform.position + transform.forward * 2f + Vector3.up * 1.75f;
             Quaternion baseRotation = Quaternion.LookRotation(direction);

@@ -38,6 +38,7 @@ public class PlayerHealth : MonoBehaviour
         }
         if (vidaActual - damage > 0)
         {
+            SFXManager.GetInstance()?.ReproducirPlayerWounded();
             vidaActual -= damage;
             damageFlash?.Flash();
 
@@ -62,6 +63,9 @@ public class PlayerHealth : MonoBehaviour
 
     public void Die()
     {
+
+        SFXManager.GetInstance()?.ReproducirPlayerDeath();
+        
         if (Cronometro.instance != null)
         {
             Cronometro.instance.Detener();

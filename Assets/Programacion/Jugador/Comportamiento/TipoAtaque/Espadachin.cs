@@ -92,6 +92,7 @@ public class Espadachin : MonoBehaviour
 
         if (chargeTime >= chargeRequiredTime)
         {
+            SFXManager.GetInstance()?.ReproducirSwordHeavy();
             Debug.Log("CARGA COMPLETA");
             int baseDamage = playerInventory.weapon.damage;
             int calculatedDamage = Mathf.CeilToInt(baseDamage * chargeMultiplier);

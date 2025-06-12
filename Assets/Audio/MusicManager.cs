@@ -5,7 +5,9 @@ public class MusicManager : MonoBehaviour
 {
     public GameObject musicaPrefab; 
     public AudioClip menuClip;  
-    public AudioClip mazmorraClip;  
+    public AudioClip mazmorraClip; 
+    public AudioClip victoriaClip;
+    public AudioClip derrotaClip;  
 
     private static MusicManager instance;
     private PlayMusica musicaPlayer;
@@ -76,6 +78,16 @@ public class MusicManager : MonoBehaviour
         else if (sceneName.StartsWith("Mazmorra") || sceneName.StartsWith("Tutorial") || sceneName == "PauseMenu")
         {
             ChangeMusic(mazmorraClip);
+        }
+
+        else if (sceneName.StartsWith("Menu_Victoria"))
+        {
+            ChangeMusic(victoriaClip);
+        }
+
+        else if (sceneName.StartsWith("Derrota"))
+        {
+            ChangeMusic(derrotaClip);
         }
         else
         {

@@ -185,8 +185,6 @@ MonoBehaviour:
   vidaMaxima: 100
   vidaActual: 0
   defensiveAbilityHits: 0
-  transitionDuration: 0.25
-  fadeDuration: 0.25
 --- !u!114 &2329343856140047616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -215,7 +213,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7e6a456d34887e5489923516c9c63988, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  offensiveAbilityCooldown: 0
   abilityTargetIndicatorPrefab: {fileID: 8411447535181882806, guid: 992498b1173f58748888d600a6d14f08, type: 3}
   fireballPrefab: {fileID: 2004382742554402445, guid: 2eca2656283dcfe4badb03e8f48fb702, type: 3}
 --- !u!114 &4590723734969508553
@@ -243,7 +240,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1fabed66b44a6934a876c1c15b464dd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healingAbilityCooldown: 0
 --- !u!114 &7460853828753018524
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,6 +518,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -1526964690268444965, guid: fbc526d9fe5d6774e80aa1e87222816a, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 1f8c3ff9a65093b42a8e12e72b3b161a, type: 2}
+    - target: {fileID: -1526964690268444965, guid: fbc526d9fe5d6774e80aa1e87222816a, type: 3}
+      propertyPath: 'm_Materials.Array.data[2]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 8fde24717b0361348a8fe9ee05f20fe9, type: 2}
     - target: {fileID: 919132149155446097, guid: fbc526d9fe5d6774e80aa1e87222816a, type: 3}
       propertyPath: m_Name
       value: Dreven_Animado 1

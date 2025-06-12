@@ -36,6 +36,8 @@ public class EnemyHealth : MonoBehaviour
         
         if(currentHealth - damage > 0)
         {
+
+            SFXManager.GetInstance()?.ReproducirEnemyWounded();
             currentHealth -= damage;
             if (damageFlash != null)
                 damageFlash.Flash();

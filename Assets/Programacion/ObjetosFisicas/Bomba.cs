@@ -71,6 +71,8 @@ public class Bomba : MonoBehaviour
         if (hasExploded) return;
         hasExploded = true;
 
+        SFXManager.GetInstance()?.ReproducirExplosion();
+
         DealExplosionDamage(transform.position);
         ShowExplosionRadius();
     }

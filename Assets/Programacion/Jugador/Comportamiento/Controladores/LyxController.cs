@@ -26,6 +26,8 @@ public class LyxController : PlayerController
             // Soltar clic derecho
             if (Input.GetKeyUp(KeyCode.Mouse1))
             {
+                
+
                 if (cargaCoroutine != null)
                 {
                     StopCoroutine(cargaCoroutine);
@@ -34,6 +36,8 @@ public class LyxController : PlayerController
 
                 if (espadachin.isFullyCharged && !isAttacking && !isDashing)
                 {
+
+                    
                     int damage = Mathf.CeilToInt(playerInventory.weapon.damage * espadachin.chargeMultiplier);
                     StartCoroutine(espadachin.SwordAttack(damage));
 
@@ -54,6 +58,8 @@ public class LyxController : PlayerController
                     {
                         damage = Mathf.CeilToInt(damage * 0.5f);
                     }
+
+                    SFXManager.GetInstance()?.ReproducirSword();
 
                     StartCoroutine(espadachin.SwordAttack(damage));
 
