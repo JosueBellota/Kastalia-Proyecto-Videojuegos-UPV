@@ -29488,10 +29488,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemies:
-  - {fileID: 8115032155769542572, guid: 267ce24bb5897234480b5024a8689c80, type: 3}
-  - {fileID: 7133347364983744333, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
   - {fileID: 8115032155769542572, guid: a3540a64c1d181b4ba9df4787f6bfeba, type: 3}
-  - {fileID: 7133347364983744333, guid: 3e1ad07717a66514aa8ad6f576510048, type: 3}
 --- !u!23 &991994843
 MeshRenderer:
   m_ObjectHideFlags: 0

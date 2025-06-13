@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6817588594778981369}
   - component: {fileID: 9141975531390571173}
   - component: {fileID: 7429913557499489046}
+  - component: {fileID: 7628618866960696718}
   m_Layer: 7
   m_Name: Bombardero
   m_TagString: Enemy
@@ -166,6 +167,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.12, y: 2, z: 0.67}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &7628618866960696718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7133347364983744333}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5d296dd7607ed3141a6db237e5334d63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  flashMaterial: {fileID: 2100000, guid: 59c8c241538d81642a972644e8a00260, type: 2}
+  flashDuration: 0.2
 --- !u!1001 &3746056786960230402
 PrefabInstance:
   m_ObjectHideFlags: 0
