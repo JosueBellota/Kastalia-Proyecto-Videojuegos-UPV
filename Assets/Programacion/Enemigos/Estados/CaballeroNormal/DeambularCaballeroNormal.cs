@@ -17,29 +17,23 @@ public class DeambularCaballeroNormal : Estado
     }
     
     void Update()
-{
-    if (GameManager.instance != null && GameManager.instance.isPaused) return;
-
-    if (controller != null && controller.Player != null)
     {
-        controller.velocidadActual = agent.velocity.magnitude;
-
-        float distanciaAJugador = Vector3.Distance(transform.position, controller.Player.position);
-        if (distanciaAJugador <= controller.DetectionDistance)
+        if (GameManager.instance != null && GameManager.instance.isPaused) return;
+        if (controller != null && controller.Player != null)
         {
-            StopAllCoroutines();
-            estaDeambulando = false;
-            controller.DisplayAgroPopup();
-            maquina.SetEstado(controller.perseguirEstado.Value);
-        }
-        else if (!estaDeambulando)
-        {
-            estaDeambulando = true;
-            StartCoroutine(DeambularCoorutina());
+            float distanciaAJugador = Vector3.Distance(transform.position, controller.Player.position);
+            if (distanciaAJugador <= controller.DetectionDistance)
+            {
+                StopAllCoroutines();
+                estaDeambulando = false;
+                controller.DisplayAgroPopup();
+                maquina.SetEstado(controller.perseguirEstado.Value);
+            } else if(!estaDeambulando){
+                estaDeambulando = true;
+                StartCoroutine(DeambularCoorutina());
+            }
         }
     }
-}
-
 
     private Vector3 ElegirPosicionAleatoria()
     {
