@@ -10,7 +10,7 @@ public class Atacar : Estado
     bool puedeAtacar = true;
 
     public float damage = 20f;
-    public EnemigoTipo tipoDeEnemigo;
+    
 
     [SerializeField] float distanceToPlayer;
 
@@ -49,20 +49,25 @@ public class Atacar : Estado
 
 
     IEnumerator LoopAtaque()
-    {
-        puedeAtacar = false;
-        if (player != null)
-        {
-            PlayerHealth PlayerHealth = player.GetComponent<PlayerHealth>();
-            if (PlayerHealth != null)
-            {
-                PlayerHealth.takeDamage(controller.attackDamage);
-            }
+{
+    puedeAtacar = false;
 
-            yield return new WaitForSeconds(1f); // Cooldown
+    if (player != null)
+    {
+        // Activar animación
+        controller.atacarAnimacion = true;
+
+        PlayerHealth PlayerHealth = player.GetComponent<PlayerHealth>();
+        if (PlayerHealth != null)
+        {
+            PlayerHealth.takeDamage(controller.attackDamage);
         }
-        puedeAtacar = true;
+
+        yield return new WaitForSeconds(1f);
     }
+
+    puedeAtacar = true;
+}
 
     private void DistanceToPlayer()
     {
