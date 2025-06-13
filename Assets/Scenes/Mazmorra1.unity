@@ -8692,7 +8692,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3755673377478875705, guid: 3e1ad07717a66514aa8ad6f576510048, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -22740,7 +22741,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 452173066988786564, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.35
+      value: 3.51
       objectReference: {fileID: 0}
     - target: {fileID: 452173066988786564, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
       propertyPath: m_LocalPosition.y
@@ -22748,7 +22749,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 452173066988786564, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 44.68
+      value: 41.37
       objectReference: {fileID: 0}
     - target: {fileID: 452173066988786564, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
       propertyPath: m_LocalRotation.w
@@ -29487,7 +29488,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemies:
-  - {fileID: 427888179239857829, guid: 361a6acc6ba69914492a8828699656d1, type: 3}
+  - {fileID: 8115032155769542572, guid: 267ce24bb5897234480b5024a8689c80, type: 3}
+  - {fileID: 7133347364983744333, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
+  - {fileID: 8115032155769542572, guid: a3540a64c1d181b4ba9df4787f6bfeba, type: 3}
+  - {fileID: 7133347364983744333, guid: 3e1ad07717a66514aa8ad6f576510048, type: 3}
 --- !u!23 &991994843
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -41328,7 +41332,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2178074228811378424, guid: 8e45921914c5f3d49b50bc9e72658f90, type: 3}
       propertyPath: m_TagString
-      value: DemonWall
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 5026935702832654946, guid: 8e45921914c5f3d49b50bc9e72658f90, type: 3}
       propertyPath: m_Name
@@ -42497,7 +42501,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 452173066988786564, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.3500004
+      value: 12.86
       objectReference: {fileID: 0}
     - target: {fileID: 452173066988786564, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
       propertyPath: m_LocalPosition.y
@@ -42505,7 +42509,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 452173066988786564, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 44.68
+      value: 44.45
       objectReference: {fileID: 0}
     - target: {fileID: 452173066988786564, guid: 4ffb05f13b0a49e4197e2a0dbdd7ec89, type: 3}
       propertyPath: m_LocalRotation.w
@@ -44005,7 +44009,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2178074228811378424, guid: 8e45921914c5f3d49b50bc9e72658f90, type: 3}
       propertyPath: m_TagString
-      value: DemonWall
+      value: Untagged
       objectReference: {fileID: 0}
     - target: {fileID: 5026935702832654946, guid: 8e45921914c5f3d49b50bc9e72658f90, type: 3}
       propertyPath: m_Name
@@ -44476,7 +44480,8 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3755673377478875705, guid: 3e1ad07717a66514aa8ad6f576510048, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
