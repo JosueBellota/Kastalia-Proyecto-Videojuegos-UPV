@@ -10,6 +10,8 @@ public class EnemyHealth : MonoBehaviour
     private int currentHealth;
     public GameObject jugador;
 
+    public bool isMiniBoss = false;
+
     private DamageFlash damageFlash;
 
     private void Start()
@@ -74,8 +76,14 @@ public class EnemyHealth : MonoBehaviour
     {
         
         StopAllCoroutines();
+        
+        if (isMiniBoss)
+        {
+            GameManager.instance.WinGame(); 
+        }
 
-        if (EnemyManager.Instance) 
+
+        if (EnemyManager.Instance)
             EnemyManager.Instance.UnregisterEnemy();
 
         Destroy(gameObject);

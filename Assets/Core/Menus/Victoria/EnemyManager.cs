@@ -26,9 +26,9 @@ public class EnemyManager : MonoBehaviour
     {
 
         enemiesRemaining--;
-        if (enemiesRemaining <= 0)
-        {
-            GameManager.instance.WinGame();
-        }
+        // if (enemiesRemaining <= 0)
+        // {
+        //     GameManager.instance.WinGame();
+        // }
     }
 }
