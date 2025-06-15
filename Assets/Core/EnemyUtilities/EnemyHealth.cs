@@ -69,13 +69,18 @@ public class EnemyHealth : MonoBehaviour
         maxHealth = value; 
         currentHealth = value;
     }
+    
+    public int CurrentHealth()
+    {
+        return currentHealth;
+    }
 
     private void Die()
     {
-        
+
         StopAllCoroutines();
 
-        if (EnemyManager.Instance) 
+        if (EnemyManager.Instance)
             EnemyManager.Instance.UnregisterEnemy();
 
         Destroy(gameObject);

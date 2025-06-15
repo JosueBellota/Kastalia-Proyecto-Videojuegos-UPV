@@ -24,7 +24,6 @@ public class DamageFlash : MonoBehaviour
 
     public void Flash()
     {
-        Debug.Log("Player took damage!");
 
         if (flashMaterial == null)
         {
