@@ -1491,6 +1491,7 @@ GameObject:
   - component: {fileID: 381938038}
   - component: {fileID: 381938037}
   - component: {fileID: 381938035}
+  - component: {fileID: 381938039}
   m_Layer: 5
   m_Name: Dreven
   m_TagString: BotonUI
@@ -1562,7 +1563,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 381938034}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 82}
   m_LocalScale: {x: 0.41666663, y: 0.41666663, z: 0.41666663}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1571,7 +1572,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 320, y: -126}
+  m_AnchoredPosition: {x: 370, y: -126}
   m_SizeDelta: {x: 600, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &381938037
@@ -1587,7 +1588,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0, g: 0, b: 0, a: 0}
+  m_Color: {r: 0.7610062, g: 0.38824213, b: 0.12683429, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -1612,6 +1613,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 381938034}
   m_CullTransparentMesh: 1
+--- !u!114 &381938039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381938034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7081a31ddb6f494a8a922165228419d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedColor: {r: 0.7607843, g: 0.3882353, b: 0.1254902, a: 0.36862746}
+  hoverColor: {r: 0.729, g: 0.549, b: 0.118, a: 0.141}
+  defaultColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!1001 &388145720
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2396,7 +2412,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6198631357306510433, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
       propertyPath: m_TranslationOffsets.Array.data[0].y
-      value: 1.2163917
+      value: 1.2163922
       objectReference: {fileID: 0}
     - target: {fileID: 6198631357306510433, guid: 6827afba3aea9214a9efd5efcf336fae, type: 3}
       propertyPath: m_TranslationOffsets.Array.data[0].z
@@ -3463,6 +3479,7 @@ GameObject:
   - component: {fileID: 1374898823}
   - component: {fileID: 1374898822}
   - component: {fileID: 1374898820}
+  - component: {fileID: 1374898824}
   m_Layer: 5
   m_Name: Lyx
   m_TagString: BotonUI
@@ -3534,7 +3551,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1374898819}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -26}
+  m_LocalPosition: {x: 0, y: 0, z: 90}
   m_LocalScale: {x: 0.41666663, y: 0.41666663, z: 0.41666663}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3543,7 +3560,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -409, y: -129}
+  m_AnchoredPosition: {x: -447, y: -129}
   m_SizeDelta: {x: 600, y: 1000}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1374898822
@@ -3584,6 +3601,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1374898819}
   m_CullTransparentMesh: 1
+--- !u!114 &1374898824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1374898819}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7081a31ddb6f494a8a922165228419d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectedColor: {r: 0.7607843, g: 0.3882353, b: 0.1254902, a: 0.36862746}
+  hoverColor: {r: 0.729, g: 0.549, b: 0.118, a: 0.141}
+  defaultColor: {r: 1, g: 1, b: 1, a: 0}
 --- !u!1001 &1423787733
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4021,7 +4053,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6.1, y: 412}
+  m_AnchoredPosition: {x: -29, y: 412}
   m_SizeDelta: {x: 500, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1616673318
@@ -19771,7 +19803,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: -14.969849, y: 0, z: 0, w: 0}
+  m_margin: {x: -14.969849, y: 0, z: 17.660309, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -19801,7 +19833,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 6.1, y: 421}
+  m_AnchoredPosition: {x: -23, y: 421}
   m_SizeDelta: {x: 1000, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &2063158966
