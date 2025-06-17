@@ -92,6 +92,12 @@ public class GameManager : MonoBehaviour
         isPaused = true;
     }
 
+    public void PauseControls()
+    {
+
+        StartCoroutine(LoadSceneWithTransition("PauseControls", true));
+
+    }
 
     public void Tutorial()
     {

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +7,8 @@ public class EnemyLifebarUpdater : MonoBehaviour
     private EnemyHealth enemyHealth;
     private List<Renderer> lifebarQuads = new List<Renderer>();
     private int lastKnownHealth = -1;
+    private Transform lifebar;
+    private Coroutine hideCoroutine;
 
     void Start()
     {
@@ -19,7 +22,7 @@ public class EnemyLifebarUpdater : MonoBehaviour
         }
 
         // Find the Lifebar child and collect its Quads
-        Transform lifebar = transform.Find("Lifebar");
+        lifebar = transform.Find("Lifebar");
         if (lifebar != null)
         {
             foreach (Transform child in lifebar)
@@ -30,6 +33,9 @@ public class EnemyLifebarUpdater : MonoBehaviour
                     lifebarQuads.Add(rend);
                 }
             }
+
+            // Start hidden
+            lifebar.gameObject.SetActive(false);
         }
         else
         {
@@ -49,7 +55,32 @@ public class EnemyLifebarUpdater : MonoBehaviour
         {
             Debug.Log($"[EnemyLifebar] Enemy took damage: {lastKnownHealth} → {currentHealth}");
             lastKnownHealth = currentHealth;
+            ShowLifebarTemporarily();
             UpdateLifebar();
+        }
+    }
+
+    private void ShowLifebarTemporarily()
+    {
+        if (lifebar != null)
+        {
+            lifebar.gameObject.SetActive(true);
+
+            // Restart the timer if it's already running
+            if (hideCoroutine != null)
+            {
+                StopCoroutine(hideCoroutine);
+            }
+            hideCoroutine = StartCoroutine(HideLifebarAfterDelay(3f));
+        }
+    }
+
+    private IEnumerator HideLifebarAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (lifebar != null)
+        {
+            lifebar.gameObject.SetActive(false);
         }
     }
 
